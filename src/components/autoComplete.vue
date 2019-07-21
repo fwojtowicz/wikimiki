@@ -14,8 +14,6 @@
   </div>
 </template>
 <script>
-import categories from "./data/categories";
-
 export default {
   data() {
     return {
@@ -45,7 +43,8 @@ export default {
       type: Array,
       required: false,
       default: () => []
-    }
+    },
+    categories: []
   }
 };
 </script>
