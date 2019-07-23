@@ -6,6 +6,7 @@
     <button @click="getCategoriesHandler">Submit</button>
     <p>Term: {{fullURL}}</p>
     <p>lastElement {{lastElement}}</p>
+    <p>next url {{nextURL}}</p>
     <ul>
       <li v-for="searchResult in searchResults" :key="searchResult.id">{{ searchResult['*'] }}</li>
     </ul>
@@ -29,12 +30,18 @@ export default {
       searchURL:
         "https://en.wikipedia.org/w/api.php?action=query&list=allcategories&aclimit=max&format=json&accontinue&acprefix=",
       term: "",
-      lastElement: null
+      lastElement: null,
+      nextPageURL: ""
     };
   },
   computed: {
     fullURL() {
       return this.searchURL + this.term + "&origin=*";
+    },
+    nextURL() {
+      return (
+        this.searchURL + this.term + "acfrom=" + this.lastElement + "&origin=*"
+      );
     }
   },
   components: {
@@ -58,10 +65,3 @@ export default {
   }
 };
 </script>
-
-
-// this.searchURL +
-//               this.term +
-//               "acfrom=" +
-//               this.searchResults[this.searchResults.length - 1]["*"] +
-//               "&origin=*"
