@@ -14,7 +14,7 @@
     <ul>
       <li v-for="searchResult2 in searchResults2" :key="searchResult2.id">{{ searchResult2['*'] }}</li>
     </ul>
-    <button>Next page</button>
+    <button @click="getNextPageHandler">Next page</button>
   </div>
 </template>
 
@@ -40,7 +40,7 @@ export default {
     },
     nextURL() {
       return (
-        this.searchURL + this.term + "acfrom=" + this.lastElement + "&origin=*"
+        this.searchURL + this.term + "&acfrom=" + this.lastElement + "&origin=*"
       );
     }
   },
@@ -52,6 +52,19 @@ export default {
       console.log("getting categories");
       axios
         .get(this.fullURL)
+        .then(response => {
+          console.log(response);
+          this.searchResults = response.data.query.allcategories;
+          this.lastElement = this.searchResults[this.searchResults.length - 1][
+            "*"
+          ];
+          console.log(this.lastElement);
+        })
+        .catch(error => console.log(error));
+    },
+    getNextPageHandler() {
+      axios
+        .get(this.nextURL)
         .then(response => {
           console.log(response);
           this.searchResults = response.data.query.allcategories;
