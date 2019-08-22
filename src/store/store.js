@@ -9,6 +9,7 @@ export const store = new Vuex.Store({
         searchTerm: "music",
         lastElement: "",
         searchResults: [],
+        newArray: [],
         searchURL: "https://en.wikipedia.org/w/api.php?action=query&list=allcategories&aclimit=max&format=json&accontinue&acprefix=",
         fullURL: "",
         nextURL: ""
@@ -47,6 +48,13 @@ export const store = new Vuex.Store({
             state.lastElement = state.searchResults[state.searchResults.length - 1][
                 "*"];
         },
+        appendSearchResultsValue: (state, response) => {
+            state.newArray = response.data.query.allcategories;
+            state.lastElement = state.newArray[state.newArray.length - 1][
+                "*"];
+            state.searchResults.concat(state.newArray)
+
+        },
 
     },
 
@@ -56,8 +64,9 @@ export const store = new Vuex.Store({
             axios
                 .get(state.fullURL)
                 .then(response => {
-                    console.log(response);
                     commit('setSearchResultsValue', response);
+                    console.log(state.lastElement);
+
                 })
                 .catch(error => console.log(error));
         },
@@ -66,15 +75,14 @@ export const store = new Vuex.Store({
             axios
                 .get(state.nextURL)
                 .then(response => {
-                    console.log(response);
-                    commit('setSearchResultsValue', response);
-                    console.log(this.lastElement);
+                    commit('appendSearchResultsValue', response);
+                    console.log(state.lastElement);
+                    console.log(state.searchResults);
                 })
                 .catch(error => console.log(error));
         },
         updateSearchTerm: ({ commit }, payload) => {
             console.log("updating searchTerm");
-
             commit('updateSearchTerm', payload);
         }
     }
