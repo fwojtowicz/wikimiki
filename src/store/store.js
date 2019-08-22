@@ -61,6 +61,17 @@ export const store = new Vuex.Store({
                 })
                 .catch(error => console.log(error));
         },
+
+        getNextPageHandler: ({ commit, state }) => {
+            axios
+                .get(state.nextURL)
+                .then(response => {
+                    console.log(response);
+                    commit('setSearchResultsValue', response);
+                    console.log(this.lastElement);
+                })
+                .catch(error => console.log(error));
+        },
         updateSearchTerm: ({ commit }, payload) => {
             console.log("updating searchTerm");
 

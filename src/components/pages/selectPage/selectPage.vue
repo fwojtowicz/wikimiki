@@ -11,7 +11,7 @@
       <li v-for="searchResult in searchResults" :key="searchResult.id">{{ searchResult['*'] }}</li>
     </ul>
     <hr />
-    <!-- <button @click="getNextPageHandler">Next page</button> -->
+    <button @click="getNextPage">Next page</button>
   </div>
 </template>
 
@@ -58,24 +58,13 @@ export default {
     appHeader
   },
   methods: {
-    ...mapActions(["getCategoriesHandler"]),
+    ...mapActions(["getCategoriesHandler", "getNextPageHandler"]),
     submitTerm() {
       this.$store.dispatch("getCategoriesHandler");
+    },
+    getNextPage() {
+      this.$store.dispatch("getNextPageHandler");
     }
-
-    // getNextPageHandler() {
-    //   axios
-    //     .get(this.nextURL)
-    //     .then(response => {
-    //       console.log(response);
-    //       this.searchResults = response.data.query.allcategories;
-    //       this.lastElement = this.searchResults[this.searchResults.length - 1][
-    //         "*"
-    //       ];
-    //       console.log(this.lastElement);
-    //     })
-    //     .catch(error => console.log(error));
-    // }
   }
 };
 </script>
