@@ -17,7 +17,6 @@
 
 <script>
 import appHeader from "../../Header";
-import axios from "axios";
 import { mapActions } from "vuex";
 
 export default {
@@ -50,21 +49,9 @@ export default {
     },
     searchResults: {
       get() {
-        return this.$store.getters.searchResultsGetter;
+        return this.$store.getters.searchResultGetter;
       }
     }
-
-    // searchResults() {
-    //   return this.$store.getters.searchResultGetter;
-    // },
-    // fullURL() {
-    //   return this.searchURL + this.term + "&origin=*";
-    // },
-    // nextURL() {
-    //   return (
-    //     this.searchURL + this.term + "&acfrom=" + this.lastElement + "&origin=*"
-    //   );
-    // }
   },
 
   components: {

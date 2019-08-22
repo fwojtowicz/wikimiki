@@ -32,6 +32,7 @@ export const store = new Vuex.Store({
             return state.lastElement;
         },
         nextURLGetter: state => {
+            state.nextURL = state.searchURL + state.searchTerm + "&acfrom=" + state.lastElement + "&origin=*"
             return state.nextURL;
         }
 
@@ -45,7 +46,6 @@ export const store = new Vuex.Store({
             state.searchResults = response.data.query.allcategories;
             state.lastElement = state.searchResults[state.searchResults.length - 1][
                 "*"];
-            console.log(state.lastElement);
         },
 
     },
