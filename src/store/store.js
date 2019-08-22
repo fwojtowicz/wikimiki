@@ -36,14 +36,13 @@ export const store = new Vuex.Store({
             state.nextURL = state.searchURL + state.searchTerm + "&acfrom=" + state.lastElement + "&origin=*"
             return state.nextURL;
         }
-
-
     },
     mutations: {
-        updateSearchTerm: (state, payload) => {
-            state.searchTerm = payload;
-        },
+        // updateSearchTerm: (state, payload) => {
+        //     state.searchTerm = payload;
+        // },
         setSearchResultsValue: (state, response) => {
+            console.log(response)
             state.searchResults = response.data.query.allcategories;
             state.lastElement = state.searchResults[state.searchResults.length - 1][
                 "*"];
@@ -55,9 +54,7 @@ export const store = new Vuex.Store({
             state.searchResults.concat(state.newArray)
 
         },
-
     },
-
     actions: {
         getCategoriesHandler: ({ commit, state }) => {
             console.log("getting categories");
@@ -70,7 +67,6 @@ export const store = new Vuex.Store({
                 })
                 .catch(error => console.log(error));
         },
-
         getNextPageHandler: ({ commit, state }) => {
             axios
                 .get(state.nextURL)
@@ -81,9 +77,9 @@ export const store = new Vuex.Store({
                 })
                 .catch(error => console.log(error));
         },
-        updateSearchTerm: ({ commit }, payload) => {
-            console.log("updating searchTerm");
-            commit('updateSearchTerm', payload);
-        }
+        // updateSearchTerm: ({ commit }, payload) => {
+        //     console.log("updating searchTerm");
+        //     commit('updateSearchTerm', payload);
+        // }
     }
 });
