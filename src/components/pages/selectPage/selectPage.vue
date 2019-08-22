@@ -2,16 +2,16 @@
   <div>
     <appHeader></appHeader>
     <h1>Select categories</h1>
-    <input type="text" v-model="term" />
+    <input type="text" />
     <button @click="submitTerm">Submit</button>
-    <p>Term: {{fullURL}}</p>
+    <p>fullURL: {{fullURL}}</p>
     <p>lastElement {{lastElement}}</p>
     <p>next url {{nextURL}}</p>
     <ul>
       <li v-for="searchResult in searchResults" :key="searchResult.id">{{ searchResult['*'] }}</li>
     </ul>
     <hr />
-    <button @click="getNextPageHandler">Next page</button>
+    <!-- <button @click="getNextPageHandler">Next page</button> -->
   </div>
 </template>
 
@@ -22,26 +22,51 @@ import { mapActions } from "vuex";
 
 export default {
   data() {
-    return {
-      searchURL:
-        "https://en.wikipedia.org/w/api.php?action=query&list=allcategories&aclimit=max&format=json&accontinue&acprefix=",
-      term: "",
-      lastElement: null
-    };
+    return {};
   },
   computed: {
-    searchResults() {
-      return this.$store.getters.searchResultGetter;
+    searchTerm: {
+      get() {
+        return this.$store.getters.searchTerm;
+      },
+      set(searchTerm) {
+        this.$store.dispatch("updateSearchTerm", searchTerm);
+      }
     },
-    fullURL() {
-      return this.searchURL + this.term + "&origin=*";
+    fullURL: {
+      get() {
+        return this.$store.getters.fullURLGetter;
+      }
     },
-    nextURL() {
-      return (
-        this.searchURL + this.term + "&acfrom=" + this.lastElement + "&origin=*"
-      );
+    lastElement: {
+      get() {
+        return this.$store.getters.lastElementGetter;
+      }
+    },
+    nextURL: {
+      get() {
+        return this.$store.getters.nextURLGetter;
+      }
+    },
+    searchResults: {
+      get() {
+        return this.$store.getters.searchResultsGetter;
+      }
     }
+
+    // searchResults() {
+    //   return this.$store.getters.searchResultGetter;
+    // },
+    // fullURL() {
+    //   return this.searchURL + this.term + "&origin=*";
+    // },
+    // nextURL() {
+    //   return (
+    //     this.searchURL + this.term + "&acfrom=" + this.lastElement + "&origin=*"
+    //   );
+    // }
   },
+
   components: {
     appHeader
   },
@@ -49,20 +74,21 @@ export default {
     ...mapActions(["getCategoriesHandler"]),
     submitTerm() {
       this.$store.dispatch("getCategoriesHandler");
-    },
-    getNextPageHandler() {
-      axios
-        .get(this.nextURL)
-        .then(response => {
-          console.log(response);
-          this.searchResults = response.data.query.allcategories;
-          this.lastElement = this.searchResults[this.searchResults.length - 1][
-            "*"
-          ];
-          console.log(this.lastElement);
-        })
-        .catch(error => console.log(error));
     }
+
+    // getNextPageHandler() {
+    //   axios
+    //     .get(this.nextURL)
+    //     .then(response => {
+    //       console.log(response);
+    //       this.searchResults = response.data.query.allcategories;
+    //       this.lastElement = this.searchResults[this.searchResults.length - 1][
+    //         "*"
+    //       ];
+    //       console.log(this.lastElement);
+    //     })
+    //     .catch(error => console.log(error));
+    // }
   }
 };
 </script>
