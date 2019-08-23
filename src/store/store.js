@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        searchTerm: "music",
+        searchTerm: "",
         lastElement: "",
         searchResults: [{}],
         searchURL: "https://en.wikipedia.org/w/api.php?action=query&list=allcategories&aclimit=max&format=json&accontinue&acprefix=",
@@ -37,9 +37,9 @@ export const store = new Vuex.Store({
         }
     },
     mutations: {
-        // updateSearchTerm: (state, payload) => {
-        //     state.searchTerm = payload;
-        // },
+        updateSearchTerm: (state, payload) => {
+            state.searchTerm = payload;
+        },
         setSearchResultsValue: (state, response) => {
             console.log(response.data.query.allcategories)
             state.searchResults = response.data.query.allcategories;
@@ -76,9 +76,9 @@ export const store = new Vuex.Store({
                 })
                 .catch(error => console.log(error));
         },
-        // updateSearchTerm: ({ commit }, payload) => {
-        //     console.log("updating searchTerm");
-        //     commit('updateSearchTerm', payload);
-        // }
+        updateSearchTerm: ({ commit }, payload) => {
+            console.log("updating searchTerm");
+            commit('updateSearchTerm', payload);
+        }
     }
 });
