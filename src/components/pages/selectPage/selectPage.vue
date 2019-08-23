@@ -2,7 +2,7 @@
   <div>
     <appHeader></appHeader>
     <h1>Select categories</h1>
-    <input type="text" />
+    <input type="text" v-model="searchTerm" />
     <button @click="submitTerm">Submit</button>
     <p>fullURL: {{fullURL}}</p>
     <p>lastElement {{lastElement}}</p>
@@ -26,7 +26,7 @@ export default {
   computed: {
     searchTerm: {
       get() {
-        return this.$store.getters.searchTerm;
+        return this.$store.getters.searchTermGetter;
       },
       set(searchTerm) {
         this.$store.dispatch("updateSearchTerm", searchTerm);
