@@ -2,78 +2,68 @@
   <div>
     <appHeader></appHeader>
     <h1>Select categories</h1>
-    <input type="text" v-model="term" />
-    <button @click="getCategoriesHandler">Submit</button>
-    <p>Term: {{fullURL}}</p>
-    <p>lastElement {{lastElement}}</p>
+    <input type="text" v-model="searchTerm" />
+    <button @click="submitTerm">Submit</button>
+    <p>fullURL: {{fullURL}}</p>
+    <p>lastElement: {{lastElement}}</p>
     <p>next url {{nextURL}}</p>
     <ul>
       <li v-for="searchResult in searchResults" :key="searchResult.id">{{ searchResult['*'] }}</li>
     </ul>
     <hr />
-    <ul>
-      <li v-for="searchResult2 in searchResults2" :key="searchResult2.id">{{ searchResult2['*'] }}</li>
-    </ul>
-    <button @click="getNextPageHandler">Next page</button>
+    <button @click="getNextPage">Next page</button>
   </div>
 </template>
 
 <script>
 import appHeader from "../../Header";
-import axios from "axios";
+import { mapActions } from "vuex";
 
 export default {
   data() {
-    return {
-      searchResults: [],
-      searchResults2: [],
-      searchURL:
-        "https://en.wikipedia.org/w/api.php?action=query&list=allcategories&aclimit=max&format=json&accontinue&acprefix=",
-      term: "",
-      lastElement: null,
-      nextPageURL: ""
-    };
+    return {};
   },
   computed: {
-    fullURL() {
-      return this.searchURL + this.term + "&origin=*";
+    searchTerm: {
+      get() {
+        return this.$store.getters.searchTermGetter;
+      },
+      set(searchTerm) {
+        this.$store.dispatch("updateSearchTerm", searchTerm);
+      }
     },
-    nextURL() {
-      return (
-        this.searchURL + this.term + "&acfrom=" + this.lastElement + "&origin=*"
-      );
+    fullURL: {
+      get() {
+        return this.$store.getters.fullURLGetter;
+      }
+    },
+    lastElement: {
+      get() {
+        return this.$store.getters.lastElementGetter;
+      }
+    },
+    nextURL: {
+      get() {
+        return this.$store.getters.nextURLGetter;
+      }
+    },
+    searchResults: {
+      get() {
+        return this.$store.getters.searchResultGetter;
+      }
     }
   },
+
   components: {
     appHeader
   },
   methods: {
-    getCategoriesHandler() {
-      console.log("getting categories");
-      axios
-        .get(this.fullURL)
-        .then(response => {
-          console.log(response);
-          this.searchResults = response.data.query.allcategories;
-          this.lastElement = this.searchResults[this.searchResults.length - 1][
-            "*"
-          ];
-          console.log(this.lastElement);
-        })
-        .catch(error => console.log(error));
+    ...mapActions(["getCategoriesHandler", "getNextPageHandler"]),
+    submitTerm() {
+      this.$store.dispatch("getCategoriesHandler");
     },
-    getNextPageHandler() {
-      axios
-        .get(this.nextURL)
-        .then(response => {
-          console.log(response);
-          this.searchResults = response.data.query.allcategories;
-          this.lastElement = this.searchResults[this.searchResults.length - 1][
-            "*"
-          ];
-          console.log(this.lastElement);
-        })
-        .catch(error => console.log(error));
+    getNextPage() {
+      this.$store.dispatch("getNextPageHandler");
     }
   }
 };
