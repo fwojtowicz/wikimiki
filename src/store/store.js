@@ -37,16 +37,17 @@ export const store = new Vuex.Store({
         }
     },
     mutations: {
-        updateSearchTerm (state, payload) {
+        updateSearchTerm(state, payload) {
             state.searchTerm = payload;
         },
-        setSearchResultsValue (state, response) {
+        setSearchResultsValue(state, response) {
             console.log(response.data.query.allcategories)
             state.searchResults = response.data.query.allcategories;
             state.lastElement = state.searchResults[state.searchResults.length - 1][
                 "*"];
         },
-        appendSearchResultsValue (state, response) {
+        appendSearchResultsValue(state, response) {
+            state.searchResults.pop();
             const newArray = [...state.searchResults, ...response.data.query.allcategories]
             state.searchResults = newArray
             state.lastElement = state.searchResults[state.searchResults.length - 1][

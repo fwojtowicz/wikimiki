@@ -5,7 +5,7 @@
     <input type="text" v-model="searchTerm" />
     <button @click="submitTerm">Submit</button>
     <p>fullURL: {{fullURL}}</p>
-    <p>lastElement {{lastElement}}</p>
+    <p>lastElement: {{lastElement}}</p>
     <p>next url {{nextURL}}</p>
     <ul>
       <li v-for="searchResult in searchResults" :key="searchResult.id">{{ searchResult['*'] }}</li>
