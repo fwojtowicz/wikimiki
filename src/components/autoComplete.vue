@@ -3,7 +3,6 @@
     <p>Select your categories</p>
     <input v-model="categoryInput" @input="onChange" type="text" />
     <p>We are looking for {{categoryInput}}</p>
-
     <ul v-show="isTypying" class="autocomplete-results">
       <li
         v-for="(result, i) in results"
@@ -12,9 +11,10 @@
         class="autocomplete-result"
       >{{result["*"]}}</li>
     </ul>
-    <!-- <ul>
+    <hr />
+    <ul>
       <li v-for="searchResult in searchResults" :key="searchResult.id">{{ searchResult['*'] }}</li>
-    </ul>-->
+    </ul>
   </div>
 </template>
 <script>
@@ -37,6 +37,9 @@ export default {
     onChange() {
       this.isTypying = true;
       this.filterResults();
+      if (this.categoryInput == "") {
+        this.results = [];
+      }
     },
     filterResults() {
       this.results = this.searchResults.filter(
