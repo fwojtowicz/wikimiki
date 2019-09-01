@@ -13,7 +13,8 @@ export const store = new Vuex.Store({
         fullURL: "",
         nextURL: "",
         categoryInput: "",
-        filteredResults: []
+        filteredResults: [],
+        userCategories: []
 
     },
     getters: {
@@ -42,6 +43,9 @@ export const store = new Vuex.Store({
         },
         filteredResultsGetter: state => {
             return state.filteredResults;
+        },
+        userCategoriesGetter: state => {
+            return state.userCategories;
         }
     },
     mutations: {
@@ -76,11 +80,12 @@ export const store = new Vuex.Store({
                 state.filteredResults = [];
             }
         },
-        setResult(state) {
-            state.categoryInput = filteredResult;
-            this.isTypying = false;
-            console.log(filteredResult)
 
+        updateUserCategories(state, payload) {
+            console.log(typeof (payload))
+            console.log((payload['*']))
+            state.userCategories.push(payload);
+            // console.log(state.userCategories)
         }
     },
     actions: {
@@ -122,7 +127,12 @@ export const store = new Vuex.Store({
         setResult: ({ commit }, payload) => {
             console.log(" setResult");
             commit('setResult', payload);
+        },
+        updateUserCategories: ({ commit }, payload) => {
+            console.log(" updateUserCategories");
+            commit('updateUserCategories', payload);
         }
+
     }
 
 });

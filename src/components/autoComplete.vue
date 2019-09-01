@@ -4,8 +4,8 @@
     <input v-model="categoryInput" @input="onChange" type="text" />
     <p>We are looking for {{categoryInput}}</p>
     <div v-for="(filteredResult, i) in filteredResults" :key="i">
+      <input v-model="userCategories" type="checkbox" @input="updateUserCategories" />
       <label>{{filteredResult['*']}}</label>
-      <input type="checkbox" />
     </div>
     <hr />
     <ul>
@@ -43,17 +43,26 @@ export default {
       set(filteredResults) {
         this.$store.dispatch("updateFilteredResults", filteredResults);
       }
+    },
+    userCategories: {
+      get() {
+        return this.$store.getters.userCategoriesGetter;
+      },
+      set(userCategories) {
+        this.$store.dispatch("updateUserCategories", userCategories);
+      }
     }
   },
   methods: {
-    ...mapActions(["updateFilteredResults"]),
+    ...mapActions(["updateFilteredResults", "updateUserCategories"]),
 
     onChange() {
       this.isTypying = true;
       this.$store.dispatch("updateFilteredResults");
     },
-    setResult() {
-      this.$store.dispatch("setResult");
+
+    updateUserCategories() {
+      this.$store.dispatch("updateUserCategories");
     }
   }
 };
