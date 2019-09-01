@@ -76,7 +76,7 @@ export const store = new Vuex.Store({
                 state.filteredResults = [];
             }
         },
-        setResult(state, filteredResult) {
+        setResult(state) {
             state.categoryInput = filteredResult;
             this.isTypying = false;
             console.log(filteredResult)

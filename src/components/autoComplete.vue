@@ -3,14 +3,10 @@
     <p>Select your categories</p>
     <input v-model="categoryInput" @input="onChange" type="text" />
     <p>We are looking for {{categoryInput}}</p>
-    <ul v-show="isTypying" class="autocomplete-results">
-      <li
-        v-for="(filteredResult, i) in filteredResults"
-        :key="i"
-        @click="setResult(filteredResult)"
-        class="autocomplete-result"
-      >{{filteredResult['*']}}</li>
-    </ul>
+    <div v-for="(filteredResult, i) in filteredResults" :key="i">
+      <label>{{filteredResult['*']}}</label>
+      <input type="checkbox" />
+    </div>
     <hr />
     <ul>
       <li v-for="searchResult in searchResults" :key="searchResult.id">{{ searchResult['*'] }}</li>
@@ -56,7 +52,6 @@ export default {
       this.isTypying = true;
       this.$store.dispatch("updateFilteredResults");
     },
-
     setResult() {
       this.$store.dispatch("setResult");
     }
