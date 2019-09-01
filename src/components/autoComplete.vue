@@ -21,7 +21,6 @@
 export default {
   data() {
     return {
-      categoryInput: "",
       results: [],
       isTypying: false
     };
@@ -30,6 +29,14 @@ export default {
     searchResults: {
       get() {
         return this.$store.getters.searchResultGetter;
+      }
+    },
+    categoryInput: {
+      get() {
+        return this.$store.getters.categoryInputGetter;
+      },
+      set(categoryInput) {
+        this.$store.dispatch("updateCategoryInput", categoryInput);
       }
     }
   },
