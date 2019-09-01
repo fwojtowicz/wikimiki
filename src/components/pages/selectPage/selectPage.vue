@@ -7,21 +7,23 @@
     <p>fullURL: {{fullURL}}</p>
     <p>lastElement: {{lastElement}}</p>
     <p>next url {{nextURL}}</p>
-    <ul>
+    <autoComplete></autoComplete>
+    <!-- <ul>
       <li v-for="searchResult in searchResults" :key="searchResult.id">{{ searchResult['*'] }}</li>
-    </ul>
+    </ul>-->
     <hr />
-    <button @click="getNextPage">Next page</button>
+    <button @click="getNextPage" v-show="dataDownloaded">Next page</button>
   </div>
 </template>
 
 <script>
 import appHeader from "../../Header";
+import autoComplete from "../../autoComplete";
 import { mapActions } from "vuex";
 
 export default {
   data() {
-    return {};
+    return { dataDownloaded: false };
   },
   computed: {
     searchTerm: {
@@ -55,11 +57,13 @@ export default {
   },
 
   components: {
-    appHeader
+    appHeader,
+    autoComplete
   },
   methods: {
     ...mapActions(["getCategoriesHandler", "getNextPageHandler"]),
     submitTerm() {
+      this.dataDownloaded = true;
       this.$store.dispatch("getCategoriesHandler");
     },
     getNextPage() {
