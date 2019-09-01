@@ -12,7 +12,8 @@ export const store = new Vuex.Store({
         searchURL: "https://en.wikipedia.org/w/api.php?action=query&list=allcategories&aclimit=max&format=json&accontinue&acprefix=",
         fullURL: "",
         nextURL: "",
-        categoryInput: ""
+        categoryInput: "",
+        filteredResults: []
 
     },
     getters: {
@@ -38,7 +39,9 @@ export const store = new Vuex.Store({
         },
         categoryInputGetter: state => {
             return state.categoryInput;
-
+        },
+        filteredResultsGetter: state => {
+            return state.filteredResults;
         }
     },
     mutations: {
@@ -58,14 +61,32 @@ export const store = new Vuex.Store({
         appendSearchResultsValue(state, response) {
             state.searchResults.pop();
             const newArray = [...state.searchResults, ...response.data.query.allcategories]
-            state.searchResults = newArray
+            state.searchResults = newArray;
             state.lastElement = state.searchResults[state.searchResults.length - 1][
                 "*"];
-
         },
+        updateFilteredResults(state) {
+            state.filteredResults = state.searchResults.filter(
+                searchResult =>
+                    searchResult["*"]
+                        .toLowerCase()
+                        .indexOf(state.categoryInput.toLowerCase()) > -1
+            );
+            if (state.categoryInput == "") {
+                state.filteredResults = [];
+            }
+        },
+        setResult(state, filteredResult) {
+            state.categoryInput = filteredResult;
+            this.isTypying = false;
+            console.log(filteredResult)
+
+        }
     },
     actions: {
         getCategoriesHandler: ({ commit, state }) => {
+            state.filteredResults = []
+            state.categoryInput = ""
             console.log("getting categories");
             axios
                 .get(state.fullURL)
@@ -93,6 +114,15 @@ export const store = new Vuex.Store({
         updateCategoryInput: ({ commit }, payload) => {
             console.log("updating categoryInput");
             commit('updateCategoryInput', payload);
+        },
+        updateFilteredResults: ({ commit }, payload) => {
+            console.log("updating filteredResults");
+            commit('updateFilteredResults', payload);
+        },
+        setResult: ({ commit }, payload) => {
+            console.log(" setResult");
+            commit('setResult', payload);
         }
     }
+
 });

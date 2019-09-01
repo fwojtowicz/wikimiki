@@ -5,11 +5,11 @@
     <p>We are looking for {{categoryInput}}</p>
     <ul v-show="isTypying" class="autocomplete-results">
       <li
-        v-for="(result, i) in results"
+        v-for="(filteredResult, i) in filteredResults"
         :key="i"
-        @click="setResult(result)"
+        @click="setResult(filteredResult)"
         class="autocomplete-result"
-      >{{result["*"]}}</li>
+      >{{filteredResult['*']}}</li>
     </ul>
     <hr />
     <ul>
@@ -18,10 +18,11 @@
   </div>
 </template>
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
-      results: [],
       isTypying: false
     };
   },
@@ -38,27 +39,26 @@ export default {
       set(categoryInput) {
         this.$store.dispatch("updateCategoryInput", categoryInput);
       }
+    },
+    filteredResults: {
+      get() {
+        return this.$store.getters.filteredResultsGetter;
+      },
+      set(filteredResults) {
+        this.$store.dispatch("updateFilteredResults", filteredResults);
+      }
     }
   },
   methods: {
+    ...mapActions(["updateFilteredResults"]),
+
     onChange() {
       this.isTypying = true;
-      this.filterResults();
-      if (this.categoryInput == "") {
-        this.results = [];
-      }
+      this.$store.dispatch("updateFilteredResults");
     },
-    filterResults() {
-      this.results = this.searchResults.filter(
-        searchResult =>
-          searchResult["*"]
-            .toLowerCase()
-            .indexOf(this.categoryInput.toLowerCase()) > -1
-      );
-    },
-    setResult(result) {
-      this.categoryInput = result;
-      this.isTypying = false;
+
+    setResult() {
+      this.$store.dispatch("setResult");
     }
   }
 };
