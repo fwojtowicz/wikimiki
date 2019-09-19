@@ -1,18 +1,40 @@
 <template>
-  <div class="autocomplete">
+  <div class="wikiResults">
     <p>Select your categories</p>
     <input v-model="categoryInput" @input="onChange" type="text" />
     <p>We are looking for {{categoryInput}}</p>
-    <div v-for="(filteredResult, i) in filteredResults" :key="i">
-      <input v-model="userCategories" type="checkbox" @input="updateUserCategories" />
-      <label>{{filteredResult['*']}}</label>
+    <div class="md-layout md-gutter">
+      <div v-for="(filteredResult, i) in filteredResults" :key="i">
+        <md-card>
+          <md-card-header>
+            <div class="md-title">{{filteredResult['*']}}</div>
+          </md-card-header>
+          <md-card-actions>
+            <md-button class="md-icon-button">
+              <md-icon>favorite</md-icon>
+            </md-button>
+          </md-card-actions>
+        </md-card>
+      </div>
     </div>
-    <hr />
-    <ul>
-      <li v-for="searchResult in searchResults" :key="searchResult.id">{{ searchResult['*'] }}</li>
-    </ul>
+    <hr/>
+    <div v-if="!categoryInput">
+    <div v-for="wikiResult in wikiResults" :key="wikiResult.id">
+      <md-card>
+        <md-card-header>
+          <div class="md-title">{{ wikiResult['*'] }}</div>
+        </md-card-header>
+        <md-card-actions>
+          <md-button class="md-icon-button">
+            <md-icon>favorite</md-icon>
+          </md-button>
+        </md-card-actions>
+      </md-card>
+    </div>
+  </div>
   </div>
 </template>
+
 <script>
 import { mapActions } from "vuex";
 
@@ -23,9 +45,9 @@ export default {
     };
   },
   computed: {
-    searchResults: {
+    wikiResults: {
       get() {
-        return this.$store.getters.searchResultGetter;
+        return this.$store.getters.wikiResultGetter;
       }
     },
     categoryInput: {
@@ -68,6 +90,12 @@ export default {
 };
 </script>
 
-<style>
+<style  scoped>
+.md-card {
+  width: 320px;
+  margin: 4px;
+  display: inline-block;
+  vertical-align: top;
+}
 </style>
 

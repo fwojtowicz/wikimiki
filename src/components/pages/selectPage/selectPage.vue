@@ -1,24 +1,23 @@
 <template>
   <div>
     <appHeader></appHeader>
-    <h1>Select categories</h1>
-    <input type="text" v-model="searchTerm" />
-    <button @click="submitTerm">Submit</button>
-    <p>fullURL: {{fullURL}}</p>
-    <p>lastElement: {{lastElement}}</p>
-    <p>next url {{nextURL}}</p>
-    <autoComplete></autoComplete>
-    <!-- <ul>
-      <li v-for="searchResult in searchResults" :key="searchResult.id">{{ searchResult['*'] }}</li>
-    </ul>-->
-    <hr />
-    <button @click="getNextPage" v-show="dataDownloaded">Next page</button>
+    <md-content>
+      <h1>Select categories</h1>
+      <input type="text" v-model="searchTerm" />
+      <button @click="submitTerm">Submit</button>
+      <p>fullURL: {{fullURL}}</p>
+      <p>lastElement: {{lastElement}}</p>
+      <p>next url {{nextURL}}</p>
+      <searchResults></searchResults>
+      <hr />
+      <button @click="getNextPage" v-show="dataDownloaded">Next page</button>
+    </md-content>
   </div>
 </template>
 
 <script>
 import appHeader from "../../Header";
-import autoComplete from "../../autoComplete";
+import searchResults from "../../searchResults";
 import { mapActions } from "vuex";
 
 export default {
@@ -58,7 +57,7 @@ export default {
 
   components: {
     appHeader,
-    autoComplete
+    searchResults
   },
   methods: {
     ...mapActions(["getCategoriesHandler", "getNextPageHandler"]),
@@ -72,3 +71,8 @@ export default {
   }
 };
 </script>
+ <style scoped>
+.md-content {
+  padding: 1px 16px;
+}
+</style>

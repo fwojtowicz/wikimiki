@@ -8,7 +8,7 @@ export const store = new Vuex.Store({
     state: {
         searchTerm: "",
         lastElement: "",
-        searchResults: [],
+        wikiResults: [],
         searchURL: "https://en.wikipedia.org/w/api.php?action=query&list=allcategories&aclimit=max&format=json&accontinue&acprefix=",
         fullURL: "",
         nextURL: "",
@@ -21,8 +21,8 @@ export const store = new Vuex.Store({
         searchTermGetter: state => {
             return state.searchTerm;
         },
-        searchResultGetter: state => {
-            return state.searchResults;
+        wikiResultGetter: state => {
+            return state.wikiResults;
         },
         searchURLGetter: state => {
             return state.searchURL;
@@ -58,21 +58,21 @@ export const store = new Vuex.Store({
 
         setSearchResultsValue(state, response) {
             console.log(response.data.query.allcategories)
-            state.searchResults = response.data.query.allcategories;
-            state.lastElement = state.searchResults[state.searchResults.length - 1][
+            state.wikiResults = response.data.query.allcategories;
+            state.lastElement = state.wikiResults[state.wikiResults.length - 1][
                 "*"];
         },
         appendSearchResultsValue(state, response) {
-            state.searchResults.pop();
-            const newArray = [...state.searchResults, ...response.data.query.allcategories]
-            state.searchResults = newArray;
-            state.lastElement = state.searchResults[state.searchResults.length - 1][
+            state.wikiResults.pop();
+            const newArray = [...state.wikiResults, ...response.data.query.allcategories]
+            state.wikiResults = newArray;
+            state.lastElement = state.wikiResults[state.wikiResults.length - 1][
                 "*"];
         },
         updateFilteredResults(state) {
-            state.filteredResults = state.searchResults.filter(
-                searchResult =>
-                    searchResult["*"]
+            state.filteredResults = state.wikiResults.filter(
+                wikiResults =>
+                    wikiResults["*"]
                         .toLowerCase()
                         .indexOf(state.categoryInput.toLowerCase()) > -1
             );
