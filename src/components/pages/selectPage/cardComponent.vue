@@ -21,7 +21,7 @@
 import { mapActions } from "vuex";
 
 export default {
-  props: ["category"],
+  props: ["category", "filteredResults"],
   data() {
     return {
       isTypying: false
@@ -41,14 +41,14 @@ export default {
         this.$store.dispatch("updateCategoryInput", categoryInput);
       }
     },
-    filteredResults: {
-      get() {
-        return this.$store.getters.filteredResultsGetter;
-      },
-      set(filteredResults) {
-        this.$store.dispatch("updateFilteredResults", filteredResults);
-      }
-    },
+    // filteredResults: {
+    //   get() {
+    //     return this.$store.getters.filteredResultsGetter;
+    //   },
+    //   set(filteredResults) {
+    //     this.$store.dispatch("updateFilteredResults", filteredResults);
+    //   }
+    // },
     userCategories: {
       get() {
         return this.$store.getters.userCategoriesGetter;

@@ -7,16 +7,25 @@
       <div v-for="(filteredResult, i) in filteredResults" :key="i">
         <md-card>
           <md-card-header>
-            <div class="md-title">{{filteredResult}}</div>
+            <div class="md-title">{{filteredResult.categoryCard.title}}</div>
           </md-card-header>
+          <md-card-actions>
+            <md-button
+              v-bind:class="{chosen: isChosen}"
+              class="md-icon-button"
+              @click="updateUserCategories"
+            >
+              <md-icon>favorite</md-icon>
+            </md-button>
+          </md-card-actions>
         </md-card>
       </div>
     </div>
     <hr />
     <div v-if="!categoryInput"></div>
 
-    <wikiCard v-for="category in categoriesArray" :key="category.id" :category="category"></wikiCard>
-    <!-- <md-card>
+    <div v-for="category in categoriesArray" :key="category.id">
+      <md-card>
         <md-card-header>
           <div class="md-title">{{ category.categoryCard.title }}</div>
         </md-card-header>
@@ -29,18 +38,15 @@
             <md-icon>favorite</md-icon>
           </md-button>
         </md-card-actions>
-    </md-card>-->
+      </md-card>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
-import cardComponent from "./cardComponent";
 
 export default {
-  components: {
-    wikiCard: cardComponent
-  },
   data() {
     return {
       isTypying: false
