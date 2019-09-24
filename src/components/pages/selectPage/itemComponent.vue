@@ -3,7 +3,7 @@
     <div class="md-layout md-gutter">
       <md-card>
         <md-card-header>
-          <div class="md-title">{{ category.categoryCard.title }} {{category.categoryCard.key}}</div>
+          <div class="md-title">{{ category.categoryCard.title }}</div>
         </md-card-header>
         <md-card-actions>
           <md-button
@@ -69,12 +69,12 @@ export default {
         return this.$store.getters.categoriesArrayGetter;
       }
     },
-    currentCategory: {
+    currentCategoryID: {
       get() {
-        return this.$store.getters.currentCategoryGetter;
+        return this.$store.getters.currentCategoryIDGetter;
       },
-      set(currentCategory) {
-        this.$store.dispatch("updateCurrentCategory", currentCategory);
+      set(currentCategoryID) {
+        this.$store.dispatch("updatecurrentCategoryID", currentCategoryID);
       }
     }
   },
@@ -83,7 +83,7 @@ export default {
     ...mapActions([
       "updateFilteredResults",
       "updateUserCategories",
-      "updateCurrentCategory"
+      "updatecurrentCategoryID"
     ]),
 
     onChange() {
@@ -92,7 +92,7 @@ export default {
     },
 
     updateUserCategories() {
-      this.currentCategory = this.category.categoryCard.key;
+      this.currentCategoryID = this.category.categoryCard.key;
       this.$store.dispatch("updateUserCategories");
     }
   }

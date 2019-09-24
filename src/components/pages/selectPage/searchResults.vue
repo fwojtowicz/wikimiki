@@ -82,12 +82,12 @@ export default {
         return this.$store.getters.categoriesArrayGetter;
       }
     },
-    currentCategory: {
+    currentCategoryID: {
       get() {
-        return this.$store.getters.currentCategoryGetter;
+        return this.$store.getters.currentCategoryIDGetter;
       },
-      set(currentCategory) {
-        this.$store.dispatch("updateCurrentCategory", currentCategory);
+      set(currentCategoryID) {
+        this.$store.dispatch("updatecurrentCategoryID", currentCategoryID);
       }
     }
   },
