@@ -89,12 +89,10 @@ export const store = new Vuex.Store({
 
             }
             state.categoriesArray = Object.values(state.wikiResults)
-            // console.log(state.categoriesArray)
             state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
         },
         appendSearchResultsValue(state, response) {
             JSON.stringify(response.data)
-            // console.log(state.categoriesArray.length - 1)
             for (state.categoryCounter = 0; state.categoryCounter < response.data.query.allcategories.length; state.categoryCounter++) {
                 state.wikiResults[state.categoryCounter] = ({
                     categoryCard: {
@@ -104,13 +102,10 @@ export const store = new Vuex.Store({
                     }
                 })
             }
-            // console.log(state.wikiResults)
             state.newArray = Object.values(state.wikiResults)
-            // console.log(state.newArray)
             state.categoriesArray.pop();
             state.categoriesArray.push(...state.newArray);
             state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title
-            // console.log(state.categoriesArray)
         },
 
         updateFilteredResults(state) {
@@ -121,27 +116,22 @@ export const store = new Vuex.Store({
             if (state.categoryInput == "") {
                 state.filteredResults = [];
             }
+            // console.log(state.filteredResults)
+
         },
 
         updateUserCategories(state) {
 
-            // let currentCardID = categoriesArray.categoryCard.ti
-            // console.log((state.currentCategoryID))
-            // console.log(state.categoriesArray[state.currentCategoryID].categoryCard.title)
-            state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = true;
-            // console.log(state.categoriesArray[state.currentCategoryID]);
+            state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
+            if (!state.categoriesArray[state.currentCategoryID].categoryCard.isChosen) { state.userCategories.splice(state.currentCategoryID, 0) }
 
-            state.userCategories[state.selectedCatCounter] = state.categoriesArray[state.currentCategoryID];
-            state.selectedCatCounter++;
+            else {
+                state.userCategories[state.selectedCatCounter] = state.categoriesArray[state.currentCategoryID];
+                state.selectedCatCounter++;
+            }
             console.log(state.selectedCatCounter)
-
+            console.log(state.categoriesArray[state.currentCategoryID].categoryCard.isChosen)
             console.log(state.userCategories)
-
-            // state.categoriesArray.categoryCard.isChosen = true
-            // console.log(state.categoriesArray.hasOwnProperty(key))
-            // console.log((payload))
-            // state.userCategories.push(payload);
-            // console.log(state.userCategories)
         }
     },
     actions: {

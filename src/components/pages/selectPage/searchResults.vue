@@ -3,23 +3,8 @@
     <p>Select your categories</p>
     <input v-model="categoryInput" @input="onChange" type="text" />
     <p>We are looking for {{categoryInput}}</p>
-    <div class="md-layout md-gutter">
-      <div v-for="(filteredResult, i) in filteredResults" :key="i">
-        <md-card>
-          <md-card-header>
-            <div class="md-title">{{filteredResult.categoryCard.title}}</div>
-          </md-card-header>
-          <md-card-actions>
-            <md-button
-              v-bind:class="{chosen: isChosen}"
-              class="md-icon-button"
-              @click="updateUserCategories"
-            >
-              <md-icon>favorite</md-icon>
-            </md-button>
-          </md-card-actions>
-        </md-card>
-      </div>
+    <div>
+      <app-item v-for="(filteredResult, i) in filteredResults" :key="i" :category="filteredResult"></app-item>
     </div>
     <hr />
     <div v-if="!categoryInput"></div>
@@ -82,12 +67,12 @@ export default {
         return this.$store.getters.categoriesArrayGetter;
       }
     },
-    currentCategoryID: {
+    currentCategory: {
       get() {
-        return this.$store.getters.currentCategoryIDGetter;
+        return this.$store.getters.currentCategoryGetter;
       },
-      set(currentCategoryID) {
-        this.$store.dispatch("updatecurrentCategoryID", currentCategoryID);
+      set(currentCategory) {
+        this.$store.dispatch("updateCurrentCategory", currentCategory);
       }
     }
   },
