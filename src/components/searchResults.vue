@@ -15,10 +15,11 @@
     </div>
     <hr />
     <div v-if="!categoryInput"></div>
-    <div v-for="categoryCard in categoriesArray.categoryCard" :key="categoryCard.key">
+
+    <div v-for="category in categoriesArray" :key="category.id">
       <md-card>
         <md-card-header>
-          <div class="md-title">{{categoryCard.title }}</div>
+          <div class="md-title">{{ category.categoryCard.title }}</div>
         </md-card-header>
         <md-card-actions>
           <md-button

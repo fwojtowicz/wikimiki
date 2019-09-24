@@ -66,17 +66,13 @@ export const store = new Vuex.Store({
 
         setSearchResultsValue(state, response) {
             JSON.stringify(response.data)
-
             for (state.categoryCounter = 0; state.categoryCounter < response.data.query.allcategories.length; state.categoryCounter++) {
-
                 state.wikiResults[state.categoryCounter] = ({
                     categoryCard: {
                         key: state.categoryCounter,
                         title: response.data.query.allcategories[state.categoryCounter]['*'],
                         isChosen: false,
-
                     }
-
                 })
                 // state.categoryCard.title = response.data.query.allcategories[state.categoryCounter]['*']
                 // state.categoryCard.isChosen = false;
@@ -91,10 +87,8 @@ export const store = new Vuex.Store({
             }
 
             state.categoriesArray = Object.values(state.wikiResults)
-
             console.log(state.wikiResults)
             console.log(state.categoriesArray)
-
             state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
         },
         appendSearchResultsValue(state, response) {
