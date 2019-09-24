@@ -133,8 +133,10 @@ export const store = new Vuex.Store({
         updateUserCategories(state, payload) {
 
             // let currentCardID = categoriesArray.categoryCard.ti
-            // console.log(state.categoriesArray[].categoryCard.title)
             console.log((state.currentCategory))
+            console.log(state.categoriesArray[state.currentCategory].categoryCard.title)
+            state.categoriesArray[state.currentCategory].categoryCard.isChosen = true;
+            console.log(state.categoriesArray[state.currentCategory]);
 
             // state.categoriesArray.categoryCard.isChosen = true
             // console.log(state.categoriesArray.hasOwnProperty(key))
