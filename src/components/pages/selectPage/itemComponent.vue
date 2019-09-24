@@ -7,7 +7,7 @@
         </md-card-header>
         <md-card-actions>
           <md-button
-            v-bind:class="{chosen: isChosen}"
+            v-bind:class="{'md-accent': category.categoryCard.isChosen}"
             class="md-icon-button"
             @click="updateUserCategories"
           >
@@ -101,7 +101,7 @@ export default {
 
 <style  scoped>
 .chosen {
-  background-color: #f44336;
+  color: #f44336;
 }
 .md-card {
   width: 320px;
