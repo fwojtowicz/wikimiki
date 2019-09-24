@@ -110,7 +110,6 @@ export const store = new Vuex.Store({
         },
 
         updateUserCategories(state, payload) {
-            // console.log("btn works")
             // console.log(typeof (payload))
             state.categoriesArray.categoryCard.isChosen = true
             console.log(state.state.wikiResults.title)

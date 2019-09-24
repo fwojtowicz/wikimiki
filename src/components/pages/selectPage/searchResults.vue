@@ -15,8 +15,8 @@
     <hr />
     <div v-if="!categoryInput"></div>
 
-    <div v-for="category in categoriesArray" :key="category.id">
-      <md-card>
+    <wikiCard v-for="category in categoriesArray" :key="category.id" :category="category"></wikiCard>
+    <!-- <md-card>
         <md-card-header>
           <div class="md-title">{{ category.categoryCard.title }}</div>
         </md-card-header>
@@ -29,15 +29,18 @@
             <md-icon>favorite</md-icon>
           </md-button>
         </md-card-actions>
-      </md-card>
-    </div>
+    </md-card>-->
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+import cardComponent from "./cardComponent";
 
 export default {
+  components: {
+    wikiCard: cardComponent
+  },
   data() {
     return {
       isTypying: false

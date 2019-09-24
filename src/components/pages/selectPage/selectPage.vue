@@ -17,7 +17,7 @@
 
 <script>
 import appHeader from "../../Header";
-import searchResults from "../../searchResults";
+import searchResults from "../selectPage/searchResults";
 import { mapActions } from "vuex";
 
 export default {
