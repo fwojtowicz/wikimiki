@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from "axios";
+import { Number } from 'core-js';
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ export const store = new Vuex.Store({
         filteredResults: [],
         userCategories: [],
         categoriesArray: [],
+        currentCategory: Number
 
     },
     getters: {
@@ -54,6 +56,9 @@ export const store = new Vuex.Store({
         },
         categoriesArrayGetter: state => {
             return state.categoriesArray;
+        },
+        currentCategoryGetter: state => {
+            return state.currentCategory;
         }
     },
     mutations: {
@@ -63,10 +68,13 @@ export const store = new Vuex.Store({
         updateCategoryInput(state, payload) {
             state.categoryInput = payload;
         },
+        updateCurrentCategory(state, payload) {
+            state.currentCategory = payload
+        },
 
         setSearchResultsValue(state, response) {
             JSON.stringify(response.data)
-            for (state.categoryCounter = 0; state.categoryCounter < response.data.query.allcategories.length; state.categoryCounter++) {
+            for (state.categoryCounter = 0; state.categoryCounter < 2; state.categoryCounter++) {
                 state.wikiResults[state.categoryCounter] = ({
                     categoryCard: {
                         key: state.categoryCounter,
@@ -87,7 +95,7 @@ export const store = new Vuex.Store({
             }
             state.categoriesArray = Object.values(state.wikiResults)
             // console.log(state.wikiResults)
-            // console.log(state.categoriesArray)
+            console.log(state.categoriesArray)
             state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
         },
         appendSearchResultsValue(state, response) {
@@ -109,7 +117,7 @@ export const store = new Vuex.Store({
             state.categoriesArray.pop();
             state.categoriesArray.push(...state.newArray);
             state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title
-            // console.log(state.categoriesArray.length)
+            console.log(state.categoriesArray)
         },
 
         updateFilteredResults(state) {
@@ -123,7 +131,10 @@ export const store = new Vuex.Store({
         },
 
         updateUserCategories(state, payload) {
-            // console.log(typeof (payload))
+
+            // let currentCardID = categoriesArray.categoryCard.ti
+            // console.log(state.categoriesArray[].categoryCard.title)
+            console.log((state.currentCategory))
 
             // state.categoriesArray.categoryCard.isChosen = true
             // console.log(state.categoriesArray.hasOwnProperty(key))
@@ -171,6 +182,10 @@ export const store = new Vuex.Store({
         setResult: ({ commit }, payload) => {
             console.log(" setResult");
             commit('setResult', payload);
+        },
+        updateCurrentCategory: ({ commit }, payload) => {
+            console.log(" updateCurrentCategory");
+            commit('updateCurrentCategory', payload);
         },
         updateUserCategories: ({ commit }, payload) => {
             console.log(" updateUserCategories");

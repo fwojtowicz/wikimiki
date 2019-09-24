@@ -1,42 +1,29 @@
 <template>
-  <div class="wikiResults">
-    <p>Select your categories</p>
-    <input v-model="categoryInput" @input="onChange" type="text" />
-    <p>We are looking for {{categoryInput}}</p>
+  <div>
     <div class="md-layout md-gutter">
-      <div v-for="(filteredResult, i) in filteredResults" :key="i">
-        <md-card>
-          <md-card-header>
-            <div class="md-title">{{filteredResult.categoryCard.title}}</div>
-          </md-card-header>
-          <md-card-actions>
-            <md-button
-              v-bind:class="{chosen: isChosen}"
-              class="md-icon-button"
-              @click="updateUserCategories"
-            >
-              <md-icon>favorite</md-icon>
-            </md-button>
-          </md-card-actions>
-        </md-card>
-      </div>
+      <md-card>
+        <md-card-header>
+          <div class="md-title">{{ category.categoryCard.title }} {{category.categoryCard.key}}</div>
+        </md-card-header>
+        <md-card-actions>
+          <md-button
+            v-bind:class="{chosen: isChosen}"
+            class="md-icon-button"
+            @click="updateUserCategories"
+          >
+            <md-icon>favorite</md-icon>
+          </md-button>
+        </md-card-actions>
+      </md-card>
     </div>
-    <hr />
-    <div v-if="!categoryInput"></div>
-    <app-item
-      v-for="category in categoriesArray"
-      :key="category.categoryCard.key"
-      :category="category"
-    ></app-item>
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
-import itemComponent from "./itemComponent";
 
 export default {
-  components: { appItem: itemComponent },
+  props: ["category"],
   data() {
     return {
       isTypying: false
@@ -93,7 +80,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(["updateFilteredResults", "updateUserCategories"]),
+    ...mapActions([
+      "updateFilteredResults",
+      "updateUserCategories",
+      "updateCurrentCategory"
+    ]),
 
     onChange() {
       this.isTypying = true;
@@ -101,6 +92,7 @@ export default {
     },
 
     updateUserCategories() {
+      this.currentCategory = this.category.categoryCard.key;
       this.$store.dispatch("updateUserCategories");
     }
   }
