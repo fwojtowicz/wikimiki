@@ -5,33 +5,32 @@
     <p>We are looking for {{categoryInput}}</p>
     <div class="md-layout md-gutter">
       <div v-for="(filteredResult, i) in filteredResults" :key="i">
-        <md-card>
+        <!-- <md-card>
           <md-card-header>
             <div class="md-title">{{filteredResult['*']}}</div>
           </md-card-header>
-          <md-card-actions>
-            <md-button class="md-icon-button">
-              <md-icon>favorite</md-icon>
-            </md-button>
-          </md-card-actions>
-        </md-card>
+
+        </md-card>-->
       </div>
     </div>
-    <hr/>
-    <div v-if="!categoryInput">
-    <div v-for="wikiResult in wikiResults" :key="wikiResult.id">
+    <hr />
+    <div v-if="!categoryInput"></div>
+    <div v-for="categoryCard in categoriesArray.categoryCard" :key="categoryCard.key">
       <md-card>
         <md-card-header>
-          <div class="md-title">{{ wikiResult['*'] }}</div>
+          <div class="md-title">{{categoryCard.title }}</div>
         </md-card-header>
         <md-card-actions>
-          <md-button class="md-icon-button">
+          <md-button
+            v-bind:class="{chosen: isChosen}"
+            class="md-icon-button"
+            @click="updateUserCategories"
+          >
             <md-icon>favorite</md-icon>
           </md-button>
         </md-card-actions>
       </md-card>
     </div>
-  </div>
   </div>
 </template>
 
@@ -73,8 +72,19 @@ export default {
       set(userCategories) {
         this.$store.dispatch("updateUserCategories", userCategories);
       }
+    },
+    isChosen: {
+      get() {
+        return this.$store.getters.isChosenGetter;
+      }
+    },
+    categoriesArray: {
+      get() {
+        return this.$store.getters.categoriesArrayGetter;
+      }
     }
   },
+
   methods: {
     ...mapActions(["updateFilteredResults", "updateUserCategories"]),
 
@@ -91,6 +101,9 @@ export default {
 </script>
 
 <style  scoped>
+.chosen {
+  background-color: #f44336;
+}
 .md-card {
   width: 320px;
   margin: 4px;

@@ -8,13 +8,15 @@ export const store = new Vuex.Store({
     state: {
         searchTerm: "",
         lastElement: "",
-        wikiResults: [],
+        wikiResults: {},
         searchURL: "https://en.wikipedia.org/w/api.php?action=query&list=allcategories&aclimit=max&format=json&accontinue&acprefix=",
         fullURL: "",
         nextURL: "",
         categoryInput: "",
+        categoryCounter: 0,
         filteredResults: [],
-        userCategories: []
+        userCategories: [],
+        categoriesArray: [],
 
     },
     getters: {
@@ -46,6 +48,12 @@ export const store = new Vuex.Store({
         },
         userCategoriesGetter: state => {
             return state.userCategories;
+        },
+        isChosenGetter: state => {
+            return state.isChosen;
+        },
+        categoriesArrayGetter: state => {
+            return state.categoriesArray;
         }
     },
     mutations: {
@@ -57,17 +65,45 @@ export const store = new Vuex.Store({
         },
 
         setSearchResultsValue(state, response) {
-            console.log(response.data.query.allcategories)
-            state.wikiResults = response.data.query.allcategories;
-            state.lastElement = state.wikiResults[state.wikiResults.length - 1][
-                "*"];
+            JSON.stringify(response.data)
+
+            for (state.categoryCounter = 0; state.categoryCounter < response.data.query.allcategories.length; state.categoryCounter++) {
+
+                state.wikiResults[state.categoryCounter] = ({
+                    categoryCard: {
+                        key: state.categoryCounter,
+                        title: response.data.query.allcategories[state.categoryCounter]['*'],
+                        isChosen: false,
+
+                    }
+
+                })
+                // state.categoryCard.title = response.data.query.allcategories[state.categoryCounter]['*']
+                // state.categoryCard.isChosen = false;
+                // console.log('title')
+                // console.log(state.categoryCard.title)
+                // state.wikiResults.push(state.categoryCard);
+                // console.log(response.length)
+                // console.log(response.data.query.allcategories.length)
+                // console.log(response.data.query.allcategories[state.categoryCounter])
+                // console.log(response.data.query.allcategories[state.categoryCounter]['*'])
+
+            }
+
+            state.categoriesArray = Object.values(state.wikiResults)
+
+            console.log(state.wikiResults)
+            console.log(state.categoriesArray)
+
+            state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
         },
         appendSearchResultsValue(state, response) {
-            state.wikiResults.pop();
-            const newArray = [...state.wikiResults, ...response.data.query.allcategories]
-            state.wikiResults = newArray;
-            state.lastElement = state.wikiResults[state.wikiResults.length - 1][
+            state.categoriesArray.pop();
+            const newArray = [...state.categoriesArray, ...response.data.query.allcategories]
+            state.categoriesArray = newArray;
+            state.lastElement = state.categoriesArray[state.categoriesArray.length - 1][
                 "*"];
+            console.log(state.categoriesArray.length)
         },
         updateFilteredResults(state) {
             state.filteredResults = state.wikiResults.filter(
@@ -82,9 +118,12 @@ export const store = new Vuex.Store({
         },
 
         updateUserCategories(state, payload) {
-            console.log(typeof (payload))
-            console.log((payload['*']))
-            state.userCategories.push(payload);
+            // console.log("btn works")
+            // console.log(typeof (payload))
+            state.wikiResults.isChosen = true
+            console.log(state.state.wikiResults.title)
+            // console.log((payload))
+            // state.userCategories.push(payload);
             // console.log(state.userCategories)
         }
     },
