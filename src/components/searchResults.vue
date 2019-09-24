@@ -5,12 +5,11 @@
     <p>We are looking for {{categoryInput}}</p>
     <div class="md-layout md-gutter">
       <div v-for="(filteredResult, i) in filteredResults" :key="i">
-        <!-- <md-card>
+        <md-card>
           <md-card-header>
-            <div class="md-title">{{filteredResult['*']}}</div>
+            <div class="md-title">{{filteredResult}}</div>
           </md-card-header>
-
-        </md-card>-->
+        </md-card>
       </div>
     </div>
     <hr />

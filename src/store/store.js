@@ -100,11 +100,9 @@ export const store = new Vuex.Store({
             console.log(state.categoriesArray.length)
         },
         updateFilteredResults(state) {
-            state.filteredResults = state.wikiResults.filter(
-                wikiResults =>
-                    wikiResults["*"]
-                        .toLowerCase()
-                        .indexOf(state.categoryInput.toLowerCase()) > -1
+            state.filteredResults = state.categoriesArray.filter(categoriesArray => categoriesArray.categoryCard.title
+                .toLowerCase()
+                .indexOf(state.categoryInput.toLowerCase()) > -1
             );
             if (state.categoryInput == "") {
                 state.filteredResults = [];
@@ -114,7 +112,7 @@ export const store = new Vuex.Store({
         updateUserCategories(state, payload) {
             // console.log("btn works")
             // console.log(typeof (payload))
-            state.wikiResults.isChosen = true
+            state.categoriesArray.categoryCard.isChosen = true
             console.log(state.state.wikiResults.title)
             // console.log((payload))
             // state.userCategories.push(payload);
