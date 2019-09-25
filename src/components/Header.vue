@@ -1,9 +1,9 @@
 <template>
   <div>
-    <md-tabs md-snc-route class="md-primary" md-alignment="fixed">
-      <md-tab md-label="Home" to="/"></md-tab>
-      <md-tab md-label="Your articles" to="articlesPage"></md-tab>
-      <md-tab md-label="Select Categories" to="selectPage"></md-tab>
+    <md-tabs md-sync-route class="md-primary" md-alignment="fixed">
+      <md-tab id="tab-home" md-label="Home" to="/" exact></md-tab>
+      <md-tab id="tab-articles" md-label="Your articles" to="articlesPage"></md-tab>
+      <md-tab id="tab-select" md-label="Select Categories" to="selectPage"></md-tab>
     </md-tabs>
     <h3 class="md-title" style="flex: 1; padding:10px">
       {{title
