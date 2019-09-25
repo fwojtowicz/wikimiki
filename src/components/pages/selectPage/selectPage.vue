@@ -2,14 +2,22 @@
   <div>
     <appHeader :title="title"></appHeader>
     <md-content>
-      <input type="text" v-model="searchTerm" />
-      <button @click="submitTerm">Submit</button>
-      <p>fullURL: {{fullURL}}</p>
-      <p>lastElement: {{lastElement}}</p>
+      <md-field>
+        <label>I'll look up for categories starting with the term provided</label>
+        <md-input v-model="searchTerm"></md-input>
+      </md-field>
+      <md-button class="md-dense md-raised md-primary" @click="submitTerm">Search</md-button>
+
+      <p>fullURL {{fullURL}}</p>
+      <p>lastElement {{lastElement}}</p>
       <p>next url {{nextURL}}</p>
       <searchResults></searchResults>
       <hr />
-      <button @click="getNextPage" v-show="dataDownloaded">Next page</button>
+      <md-button
+        class="md-dense md-raised md-primary"
+        @click="getNextPage"
+        v-show="dataDownloaded"
+      >Next page</md-button>
     </md-content>
   </div>
 </template>

@@ -15,7 +15,7 @@ Vue.use(MdTabs);
 Vue.use(MdCard);
 Vue.use(MdIcon);
 Vue.use(MdToolbar);
-Vue.use(MdField)
+Vue.use(MdField);
 
 Vue.config.productionTip = false;
 const router = new VueRouter({

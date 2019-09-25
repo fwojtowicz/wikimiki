@@ -19,4 +19,7 @@ export default {
 };
 </script>
 <style>
+.md-content {
+  padding: 10px;
+}
 </style>

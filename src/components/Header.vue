@@ -1,21 +1,14 @@
 <template>
   <div>
-    <md-toolbar md-elevation="1">
-      <h3 class="md-title" style="flex: 1">
-        {{title
-        }}
-      </h3>
-      <md-button>
-        <router-link to="/">Home</router-link>
-      </md-button>
-      <md-button>
-        <router-link to="/selectPage">Select Categories</router-link>
-      </md-button>
-      <md-button>
-        <router-link to="/articlesPage">Your articles</router-link>
-      </md-button>
-      <md-button>Logout</md-button>
-    </md-toolbar>
+    <md-tabs md-sync-route class="md-primary" md-alignment="fixed">
+      <md-tab id="tab-home" md-label="Home" to="/" exact></md-tab>
+      <md-tab id="tab-articles" md-label="Your articles" to="articlesPage"></md-tab>
+      <md-tab id="tab-select" md-label="Select Categories" to="selectPage"></md-tab>
+    </md-tabs>
+    <h3 class="md-title" style="flex: 1; padding:10px">
+      {{title
+      }}
+    </h3>
   </div>
 </template>
 
@@ -26,8 +19,7 @@ export default {
 </script>
 
 <style scoped>
-.md-toolbar {
-  margin-top: 16px;
+.md-tabs {
   margin-bottom: 16px;
 }
 </style>
