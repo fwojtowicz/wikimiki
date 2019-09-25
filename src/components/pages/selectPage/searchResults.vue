@@ -1,8 +1,10 @@
 <template>
-  <div class="wikiResults">
-    <p>Select your categories</p>
-    <input v-model="categoryInput" @input="onChange" type="text" />
-    <p>We are looking for {{categoryInput}}</p>
+  <div>
+    <h3>Select your categories</h3>
+    <md-field>
+      <label>Search for a more specific category</label>
+      <md-input v-model="categoryInput" @input="onChange"></md-input>
+    </md-field>
     <div>
       <app-item v-for="(filteredResult, i) in filteredResults" :key="i" :category="filteredResult"></app-item>
     </div>
