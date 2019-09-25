@@ -120,19 +120,31 @@ export const store = new Vuex.Store({
 
         },
 
-        updateUserCategories(state) {
+        chooseCategory(state) {
 
             state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
-            if (!state.categoriesArray[state.currentCategoryID].categoryCard.isChosen) { state.userCategories.splice(state.currentCategoryID, 0) }
+            store.dispatch('updateUserCategory')
+        },
+
+        updateUserCategory(state) {
+            if (state.categoriesArray[state.currentCategoryID].categoryCard.isChosen == false) {
+                state.userCategories.splice(state.currentCategoryID, 1)
+                console.log(state.userCategories)
+                state.userCategories = state.userCategories.filter(userCategories => userCategories != (undefined || null || ''));
+
+            }
 
             else {
                 state.userCategories[state.selectedCatCounter] = state.categoriesArray[state.currentCategoryID];
                 state.selectedCatCounter++;
+                console.log(state.userCategories)
+
+                state.userCategories = state.userCategories.filter(userCategories => userCategories != (undefined || null || ''));
+
             }
-            console.log(state.selectedCatCounter)
-            console.log(state.categoriesArray[state.currentCategoryID].categoryCard.isChosen)
-            console.log(state.userCategories)
         }
+
+
     },
     actions: {
         getCategoriesHandler: ({ commit, state }) => {
@@ -178,10 +190,15 @@ export const store = new Vuex.Store({
             console.log(" updatecurrentCategoryID");
             commit('updatecurrentCategoryID', payload);
         },
-        updateUserCategories: ({ commit }, payload) => {
-            console.log(" updateUserCategories");
-            commit('updateUserCategories', payload);
-        }
+        chooseCategory: ({ commit }, payload) => {
+            console.log(" chooseCategory");
+            commit('chooseCategory', payload);
+        },
+        updateUserCategory: ({ commit }, payload) => {
+            console.log(" updateUserCategory");
+            commit('updateUserCategory', payload);
+        },
+
 
     }
 

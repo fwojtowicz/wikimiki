@@ -54,7 +54,7 @@ export default {
         return this.$store.getters.userCategoriesGetter;
       },
       set(userCategories) {
-        this.$store.dispatch("updateUserCategories", userCategories);
+        this.$store.dispatch("chooseCategory", userCategories);
       }
     },
     isChosen: {
@@ -78,15 +78,15 @@ export default {
   },
 
   methods: {
-    ...mapActions(["updateFilteredResults", "updateUserCategories"]),
+    ...mapActions(["updateFilteredResults", "chooseCategory"]),
 
     onChange() {
       this.isTypying = true;
       this.$store.dispatch("updateFilteredResults");
     },
 
-    updateUserCategories() {
-      this.$store.dispatch("updateUserCategories");
+    chooseCategory() {
+      this.$store.dispatch("chooseCategory");
     }
   }
 };

@@ -9,7 +9,7 @@
           <md-button
             v-bind:class="{'md-accent': category.categoryCard.isChosen}"
             class="md-icon-button"
-            @click="updateUserCategories"
+            @click="chooseCategory"
           >
             <md-icon>favorite</md-icon>
           </md-button>
@@ -56,7 +56,7 @@ export default {
         return this.$store.getters.userCategoriesGetter;
       },
       set(userCategories) {
-        this.$store.dispatch("updateUserCategories", userCategories);
+        this.$store.dispatch("chooseCategory", userCategories);
       }
     },
     isChosen: {
@@ -82,7 +82,7 @@ export default {
   methods: {
     ...mapActions([
       "updateFilteredResults",
-      "updateUserCategories",
+      "chooseCategory",
       "updatecurrentCategoryID"
     ]),
 
@@ -91,9 +91,9 @@ export default {
       this.$store.dispatch("updateFilteredResults");
     },
 
-    updateUserCategories() {
+    chooseCategory() {
       this.currentCategoryID = this.category.categoryCard.key;
-      this.$store.dispatch("updateUserCategories");
+      this.$store.dispatch("chooseCategory");
     }
   }
 };
