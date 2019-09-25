@@ -19,6 +19,7 @@ export const store = new Vuex.Store({
         userCategories: [],
         categoryCounter: 0,
         selectedCatCounter: 0,
+        indexOfToBeDeleted: 0,
 
         currentCategoryName: "",
         currentCategoryID: Number
@@ -63,8 +64,11 @@ export const store = new Vuex.Store({
         currentCategoryIDGetter: state => {
             return state.currentCategoryID;
         },
-        currentCategoryNametter: state => {
+        currentCategoryNameGetter: state => {
             return state.currentCategoryName;
+        },
+        indexOfToBeDeletedGetter: state => {
+            return state.indexOfToBeDeleted;
         },
         // selectedCatCounterGetter: state => {
         //     return state.selectedCatCounter;
@@ -142,38 +146,25 @@ export const store = new Vuex.Store({
             if (state.categoriesArray[state.currentCategoryID].categoryCard.isChosen) {
                 state.userCategories[state.selectedCatCounter] = state.categoriesArray[state.currentCategoryID];
                 state.selectedCatCounter++
-                console.log(state.currentCategoryName)
+                // console.log(state.currentCategoryName)
 
                 console.log(state.userCategories)
 
 
             }
             else {
-                console.log(state.currentCategoryName)
-                let index = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
+                // console.log(state.currentCategoryName)
+                state.indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
 
-                // state.userCategories.splice(state.currentCategoryName, 1)
                 //     state.userCategories = state.userCategories.filter(userCategories => userCategories != (undefined || null || ''));
-                console.log(index)
+                // console.log(state.indexOfToBeDeleted)
+                state.userCategories.splice(state.indexOfToBeDeleted, 1)
+
                 console.log(state.userCategories)
 
+
             }
-            // if (state.categoriesArray[state.currentCategoryID].categoryCard.isChosen == false) {
-            //     console.log(this.currentCategoryID);
-            //     state.userCategories.splice(state.currentCategoryID, 1)
-            //     console.log(state.userCategories)
-            //     state.userCategories = state.userCategories.filter(userCategories => userCategories != (undefined || null || ''));
 
-            // }
-
-            // else {
-            //     console.log(this.currentCategoryID);
-            //     state.userCategories[state.selectedCatCounter] = state.categoriesArray[state.currentCategoryID];
-            //     state.selectedCatCounter++;
-            //     console.log(state.userCategories)
-            //     state.userCategories = state.userCategories.filter(userCategories => userCategories != (undefined || null || ''));
-
-            // }
         }
 
 
