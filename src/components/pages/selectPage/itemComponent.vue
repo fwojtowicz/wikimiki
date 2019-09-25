@@ -100,7 +100,6 @@ export default {
     },
 
     chooseCategory() {
-      // console.log(this.category.categoryCard.title);
       this.currentCategoryName = this.category.categoryCard.title;
       this.currentCategoryID = this.category.categoryCard.key;
       this.$store.dispatch("chooseCategory");

@@ -36,8 +36,7 @@ export default {
         this.$store.dispatch("chooseCategory", userCategories);
       }
     }
-  },
-  methods: {}
+  }
 };
 </script>
 

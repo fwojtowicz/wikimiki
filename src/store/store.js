@@ -20,7 +20,6 @@ export const store = new Vuex.Store({
         categoryCounter: 0,
         selectedCatCounter: 0,
         indexOfToBeDeleted: 0,
-
         currentCategoryName: "",
         currentCategoryID: Number
 
@@ -70,9 +69,6 @@ export const store = new Vuex.Store({
         indexOfToBeDeletedGetter: state => {
             return state.indexOfToBeDeleted;
         },
-        // selectedCatCounterGetter: state => {
-        //     return state.selectedCatCounter;
-        // }
     },
     mutations: {
         updateSearchTerm(state, payload) {
@@ -90,7 +86,7 @@ export const store = new Vuex.Store({
 
         setSearchResultsValue(state, response) {
             JSON.stringify(response.data)
-            for (state.categoryCounter = 0; state.categoryCounter < 10; state.categoryCounter++) {
+            for (state.categoryCounter = 0; state.categoryCounter < 50; state.categoryCounter++) {
                 state.wikiResults[state.categoryCounter] = ({
                     categoryCard: {
                         key: state.categoryCounter,
@@ -129,16 +125,11 @@ export const store = new Vuex.Store({
             if (state.categoryInput == "") {
                 state.filteredResults = [];
             }
-            // console.log(state.filteredResults)
-
         },
 
         chooseCategory(state) {
-            // console.log(this.state.currentCategoryID);
-            // console.log(this.state.currentCategoryName);
 
             state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
-            // console.log(state.categoriesArray[state.currentCategoryID].categoryCard.isChosen)
             store.dispatch('updateUserCategory')
         },
 
@@ -146,28 +137,13 @@ export const store = new Vuex.Store({
             if (state.categoriesArray[state.currentCategoryID].categoryCard.isChosen) {
                 state.userCategories[state.selectedCatCounter] = state.categoriesArray[state.currentCategoryID];
                 state.selectedCatCounter++
-                // console.log(state.currentCategoryName)
-
-                console.log(state.userCategories)
-
-
             }
             else {
-                // console.log(state.currentCategoryName)
                 state.indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
-
-                //     state.userCategories = state.userCategories.filter(userCategories => userCategories != (undefined || null || ''));
-                // console.log(state.indexOfToBeDeleted)
                 state.userCategories.splice(state.indexOfToBeDeleted, 1)
-
-                console.log(state.userCategories)
-
-
             }
 
         }
-
-
     },
     actions: {
         getCategoriesHandler: ({ commit, state }) => {
@@ -225,8 +201,6 @@ export const store = new Vuex.Store({
             console.log(" updateUserCategory");
             commit('updateUserCategory', payload);
         },
-
-
     }
 
 });
