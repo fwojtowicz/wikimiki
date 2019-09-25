@@ -86,7 +86,7 @@ export const store = new Vuex.Store({
 
         setSearchResultsValue(state, response) {
             JSON.stringify(response.data)
-            for (state.categoryCounter = 0; state.categoryCounter < 50; state.categoryCounter++) {
+            for (state.categoryCounter = 0; state.categoryCounter < 10; state.categoryCounter++) {
                 state.wikiResults[state.categoryCounter] = ({
                     categoryCard: {
                         key: state.categoryCounter,
@@ -136,11 +136,21 @@ export const store = new Vuex.Store({
         updateUserCategory(state) {
             if (state.categoriesArray[state.currentCategoryID].categoryCard.isChosen) {
                 state.userCategories[state.selectedCatCounter] = state.categoriesArray[state.currentCategoryID];
-                state.selectedCatCounter++
+                console.log(state.currentCategoryID)
+                console.log(state.selectedCatCounter)
+                state.selectedCatCounter++;
+                console.log(state.userCategories)
             }
             else {
-                state.indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
-                state.userCategories.splice(state.indexOfToBeDeleted, 1)
+                console.log(state.indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName)))
+                state.userCategories.splice(state.indexOfToBeDeleted, 1);
+                if (state.userCategories.length == 0) {
+                    state.selectedCatCounter = 0;
+                }
+
+                console.log(state.userCategories)
+
+                // state.userCategories.splice(state.indexOfToBeDeleted, 1);
             }
 
         }

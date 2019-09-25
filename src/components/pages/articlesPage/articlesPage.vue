@@ -7,7 +7,7 @@
         <div>
           <app-item
             v-for="(userCategories) in userCategories"
-            :key="userCategories.categoryCard.title"
+            :key="userCategories.categoryCard.key"
             :category="userCategories"
           ></app-item>
         </div>

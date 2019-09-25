@@ -79,7 +79,7 @@ export default {
     },
     currentCategoryName: {
       get() {
-        return this.$store.getters.currentCategoryNameGetter;
+        return this.$store.getters.current.CategoryNameGetter;
       },
       set(currentCategoryName) {
         this.$store.dispatch("updatecurrentCategoryName", currentCategoryName);
@@ -100,6 +100,7 @@ export default {
     },
 
     chooseCategory() {
+      // console.log(this.category.categoryCard.title);
       this.currentCategoryName = this.category.categoryCard.title;
       this.currentCategoryID = this.category.categoryCard.key;
       this.$store.dispatch("chooseCategory");
