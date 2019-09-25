@@ -1,7 +1,10 @@
 <template>
   <div>
     <appHeader></appHeader>
-    <h1>Home</h1>
+    <md-content>
+      <h1>Home</h1>
+      <p>blah</p>
+    </md-content>
   </div>
 </template>
 <script>

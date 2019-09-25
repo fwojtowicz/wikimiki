@@ -1,15 +1,18 @@
 <template>
   <div>
     <appHeader></appHeader>
-
-    <h1>Articles</h1>
-    <p>your selected categories</p>
-    <div v-if="userCategories.length >0">
-      <app-item
-        v-for="(userCategories) in userCategories"
-        :key="userCategories.id"
-        :category="userCategories"
-      ></app-item>
+    <div>
+      <md-content>
+        <h1>Articles</h1>
+        <p>your selected categories</p>
+        <div v-if="userCategories.length >0">
+          <app-item
+            v-for="(userCategories) in userCategories"
+            :key="userCategories.id"
+            :category="userCategories"
+          ></app-item>
+        </div>
+      </md-content>
     </div>
   </div>
 </template>

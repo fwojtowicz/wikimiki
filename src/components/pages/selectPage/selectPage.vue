@@ -71,7 +71,7 @@ export default {
   }
 };
 </script>
- <style scoped>
+ <style>
 .md-content {
   padding: 1px 16px;
 }
