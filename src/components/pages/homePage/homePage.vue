@@ -1,8 +1,7 @@
 <template>
   <div>
-    <appHeader></appHeader>
+    <appHeader :title="title"></appHeader>
     <md-content>
-      <h1>Home</h1>
       <p>blah</p>
     </md-content>
   </div>
@@ -11,6 +10,9 @@
 import appHeader from "../../Header";
 
 export default {
+  data() {
+    return { title: "Home" };
+  },
   components: {
     appHeader
   }

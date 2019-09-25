@@ -1,8 +1,7 @@
 <template>
   <div>
-    <appHeader></appHeader>
+    <appHeader :title="title"></appHeader>
     <md-content>
-      <h1>Select categories</h1>
       <input type="text" v-model="searchTerm" />
       <button @click="submitTerm">Submit</button>
       <p>fullURL: {{fullURL}}</p>
@@ -22,7 +21,10 @@ import { mapActions } from "vuex";
 
 export default {
   data() {
-    return { dataDownloaded: false };
+    return {
+      dataDownloaded: false,
+      title: "Select categories"
+    };
   },
   computed: {
     searchTerm: {
@@ -73,6 +75,6 @@ export default {
 </script>
  <style>
 .md-content {
-  padding: 1px 16px;
+  padding: 0px 8px;
 }
 </style>

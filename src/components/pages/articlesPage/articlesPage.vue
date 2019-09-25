@@ -1,9 +1,8 @@
 <template>
   <div>
-    <appHeader></appHeader>
+    <appHeader :title="title"></appHeader>
     <div>
       <md-content>
-        <h1>Articles</h1>
         <p>your selected categories</p>
         <div v-if="userCategories.length >0">
           <app-item
@@ -21,6 +20,9 @@ import appHeader from "../../Header";
 import itemComponent from "../selectPage/itemComponent";
 
 export default {
+  data() {
+    return { title: "Your articles" };
+  },
   components: {
     appHeader,
     appItem: itemComponent
