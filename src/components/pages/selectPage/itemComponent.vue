@@ -76,6 +76,14 @@ export default {
       set(currentCategoryID) {
         this.$store.dispatch("updatecurrentCategoryID", currentCategoryID);
       }
+    },
+    currentCategoryName: {
+      get() {
+        return this.$store.getters.currentCategoryNameGetter;
+      },
+      set(currentCategoryName) {
+        this.$store.dispatch("updatecurrentCategoryName", currentCategoryName);
+      }
     }
   },
 
@@ -92,6 +100,8 @@ export default {
     },
 
     chooseCategory() {
+      // console.log(this.category.categoryCard.title);
+      this.currentCategoryName = this.category.categoryCard.title;
       this.currentCategoryID = this.category.categoryCard.key;
       this.$store.dispatch("chooseCategory");
     }

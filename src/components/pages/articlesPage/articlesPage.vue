@@ -3,11 +3,11 @@
     <appHeader :title="title"></appHeader>
     <div>
       <md-content>
-        <p>Your selected categories</p>
-        <div v-if="userCategories.length >0">
+        <p>your selected categories</p>
+        <div>
           <app-item
             v-for="(userCategories) in userCategories"
-            :key="userCategories.id"
+            :key="userCategories.categoryCard.title"
             :category="userCategories"
           ></app-item>
         </div>
