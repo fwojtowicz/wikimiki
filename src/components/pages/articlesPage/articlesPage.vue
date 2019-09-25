@@ -3,7 +3,7 @@
     <appHeader :title="title"></appHeader>
     <div>
       <md-content>
-        <p>your selected categories</p>
+        <p>Your selected categories</p>
         <div v-if="userCategories.length >0">
           <app-item
             v-for="(userCategories) in userCategories"

@@ -16,9 +16,6 @@ Vue.use(MdCard);
 Vue.use(MdIcon);
 Vue.use(MdToolbar);
 
-
-
-
 Vue.config.productionTip = false;
 const router = new VueRouter({
   routes
