@@ -4,10 +4,10 @@
     <div>
       <md-content>
         <p>your selected categories</p>
-        <div v-if="userCategories.length >0">
+        <div>
           <app-item
             v-for="(userCategories) in userCategories"
-            :key="userCategories.id"
+            :key="userCategories.categoryCard.title"
             :category="userCategories"
           ></app-item>
         </div>

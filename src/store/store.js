@@ -9,16 +9,18 @@ export const store = new Vuex.Store({
     state: {
         searchTerm: "",
         lastElement: "",
-        wikiResults: {},
         searchURL: "https://en.wikipedia.org/w/api.php?action=query&list=allcategories&aclimit=max&format=json&accontinue&acprefix=",
         fullURL: "",
         nextURL: "",
         categoryInput: "",
-        categoryCounter: 0,
-        selectedCatCounter: 0,
+        wikiResults: {},
+        categoriesArray: [],
         filteredResults: [],
         userCategories: [],
-        categoriesArray: [],
+        categoryCounter: 0,
+        selectedCatCounter: 0,
+
+        currentCategoryName: "",
         currentCategoryID: Number
 
     },
@@ -61,9 +63,12 @@ export const store = new Vuex.Store({
         currentCategoryIDGetter: state => {
             return state.currentCategoryID;
         },
-        selectedCatCounterGetter: state => {
-            return state.selectedCatCounter;
-        }
+        currentCategoryNametter: state => {
+            return state.currentCategoryName;
+        },
+        // selectedCatCounterGetter: state => {
+        //     return state.selectedCatCounter;
+        // }
     },
     mutations: {
         updateSearchTerm(state, payload) {
@@ -74,6 +79,9 @@ export const store = new Vuex.Store({
         },
         updatecurrentCategoryID(state, payload) {
             state.currentCategoryID = payload
+        },
+        updatecurrentCategoryName(state, payload) {
+            state.currentCategoryName = payload
         },
 
         setSearchResultsValue(state, response) {
@@ -90,6 +98,7 @@ export const store = new Vuex.Store({
             }
             state.categoriesArray = Object.values(state.wikiResults)
             state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
+            console.log(state.categoriesArray)
         },
         appendSearchResultsValue(state, response) {
             JSON.stringify(response.data)
@@ -121,27 +130,50 @@ export const store = new Vuex.Store({
         },
 
         chooseCategory(state) {
+            // console.log(this.state.currentCategoryID);
+            // console.log(this.state.currentCategoryName);
 
             state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
+            // console.log(state.categoriesArray[state.currentCategoryID].categoryCard.isChosen)
             store.dispatch('updateUserCategory')
         },
 
         updateUserCategory(state) {
-            if (state.categoriesArray[state.currentCategoryID].categoryCard.isChosen == false) {
-                state.userCategories.splice(state.currentCategoryID, 1)
-                console.log(state.userCategories)
-                state.userCategories = state.userCategories.filter(userCategories => userCategories != (undefined || null || ''));
-
-            }
-
-            else {
+            if (state.categoriesArray[state.currentCategoryID].categoryCard.isChosen) {
                 state.userCategories[state.selectedCatCounter] = state.categoriesArray[state.currentCategoryID];
-                state.selectedCatCounter++;
+                state.selectedCatCounter++
+                console.log(state.currentCategoryName)
+
                 console.log(state.userCategories)
 
-                state.userCategories = state.userCategories.filter(userCategories => userCategories != (undefined || null || ''));
 
             }
+            else {
+                console.log(state.currentCategoryName)
+                let index = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
+
+                // state.userCategories.splice(state.currentCategoryName, 1)
+                //     state.userCategories = state.userCategories.filter(userCategories => userCategories != (undefined || null || ''));
+                console.log(index)
+                console.log(state.userCategories)
+
+            }
+            // if (state.categoriesArray[state.currentCategoryID].categoryCard.isChosen == false) {
+            //     console.log(this.currentCategoryID);
+            //     state.userCategories.splice(state.currentCategoryID, 1)
+            //     console.log(state.userCategories)
+            //     state.userCategories = state.userCategories.filter(userCategories => userCategories != (undefined || null || ''));
+
+            // }
+
+            // else {
+            //     console.log(this.currentCategoryID);
+            //     state.userCategories[state.selectedCatCounter] = state.categoriesArray[state.currentCategoryID];
+            //     state.selectedCatCounter++;
+            //     console.log(state.userCategories)
+            //     state.userCategories = state.userCategories.filter(userCategories => userCategories != (undefined || null || ''));
+
+            // }
         }
 
 
@@ -189,6 +221,10 @@ export const store = new Vuex.Store({
         updatecurrentCategoryID: ({ commit }, payload) => {
             console.log(" updatecurrentCategoryID");
             commit('updatecurrentCategoryID', payload);
+        },
+        updatecurrentCategoryName: ({ commit }, payload) => {
+            console.log(" updatecurrentCategoryName");
+            commit('updatecurrentCategoryName', payload);
         },
         chooseCategory: ({ commit }, payload) => {
             console.log(" chooseCategory");
