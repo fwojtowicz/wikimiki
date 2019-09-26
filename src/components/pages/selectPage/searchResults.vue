@@ -6,16 +6,24 @@
       <md-input v-model="categoryInput" @input="onChange"></md-input>
     </md-field>
 
-    <div>
-      <app-item v-for="(filteredResult, i) in filteredResults" :key="i" :category="filteredResult"></app-item>
+    <div class="md-layout">
+      <app-item
+        class="md-layout-item"
+        v-for="(filteredResult, i) in filteredResults"
+        :key="i"
+        :category="filteredResult"
+      ></app-item>
     </div>
     <hr />
     <div v-if="!categoryInput"></div>
-    <app-item
-      v-for="category in categoriesArray"
-      :key="category.categoryCard.key"
-      :category="category"
-    ></app-item>
+    <div class="md-layout">
+      <app-item
+        class="md-layout-item"
+        v-for="category in categoriesArray"
+        :key="category.categoryCard.key"
+        :category="category"
+      ></app-item>
+    </div>
   </div>
 </template>
 
@@ -95,7 +103,7 @@ export default {
 };
 </script>
 
-<style  scoped>
+<style lang="scss">
 .chosen {
   background-color: #f44336;
 }
@@ -104,6 +112,10 @@ export default {
   margin: 4px;
   display: inline-block;
   vertical-align: top;
+}
+.md-layout-item {
+  margin: 10px;
+  padding: 25px;
 }
 </style>
 

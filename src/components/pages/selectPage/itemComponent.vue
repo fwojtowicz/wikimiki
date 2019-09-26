@@ -109,7 +109,7 @@ export default {
 };
 </script>
 
-<style  scoped>
+<style lang="scss" scoped>
 .chosen {
   color: #f44336;
 }

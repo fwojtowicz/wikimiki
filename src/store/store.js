@@ -136,10 +136,10 @@ export const store = new Vuex.Store({
         updateUserCategory(state) {
             if (state.categoriesArray[state.currentCategoryID].categoryCard.isChosen) {
                 state.userCategories.push(state.categoriesArray[state.currentCategoryID]);
-                console.log(state.currentCategoryID)
+                // console.log(state.currentCategoryID)
                 // console.log(state.selectedCatCounter)
                 // state.selectedCatCounter++;
-                console.log(state.userCategories)
+                // console.log(state.userCategories)
             }
             else {
                 state.indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
@@ -147,7 +147,7 @@ export const store = new Vuex.Store({
                 //     // state.selectedCatCounter = 0;
                 // }
 
-                console.log(state.userCategories)
+                // console.log(state.userCategories)
 
                 state.userCategories.splice(state.indexOfToBeDeleted, 1);
             }
