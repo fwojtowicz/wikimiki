@@ -8,7 +8,7 @@
           <app-item
             class="md-layout-item"
             v-for="(userCategories) in userCategories"
-            :key="userCategories.categoryCard.id"
+            :key="userCategories.categoryCard.title"
             :category="userCategories"
           ></app-item>
         </div>

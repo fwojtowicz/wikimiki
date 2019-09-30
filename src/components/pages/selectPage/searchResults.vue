@@ -20,7 +20,7 @@
       <app-item
         class="md-layout-item"
         v-for="category in categoriesArray"
-        :key="category.categoryCard.key"
+        :key="category.categoryCard.title"
         :category="category"
       ></app-item>
     </div>

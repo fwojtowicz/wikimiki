@@ -86,10 +86,12 @@ export const store = new Vuex.Store({
 
         setSearchResultsValue(state, response) {
             JSON.stringify(response.data)
+            state.wikiResults = {}
+            state.categoriesArray = []
             for (state.categoryCounter = 0; state.categoryCounter < 10; state.categoryCounter++) {
                 state.wikiResults[state.categoryCounter] = ({
                     categoryCard: {
-                        key: state.categoryCounter,
+                        key: response.data.query.allcategories[state.categoryCounter]['*'],
                         title: response.data.query.allcategories[state.categoryCounter]['*'],
                         isChosen: false,
                     }
@@ -100,21 +102,29 @@ export const store = new Vuex.Store({
             state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
             console.log(state.categoriesArray)
         },
+
         appendSearchResultsValue(state, response) {
             JSON.stringify(response.data)
-            for (state.categoryCounter = 0; state.categoryCounter < response.data.query.allcategories.length; state.categoryCounter++) {
+            for (state.categoryCounter = 0; state.categoryCounter < 10; state.categoryCounter++) {
                 state.wikiResults[state.categoryCounter] = ({
                     categoryCard: {
-                        key: state.categoryCounter + state.categoriesArray.length,
+                        key: response.data.query.allcategories[state.categoryCounter]['*'],
                         title: response.data.query.allcategories[state.categoryCounter]['*'],
                         isChosen: false,
                     }
                 })
             }
             state.newArray = Object.values(state.wikiResults)
-            state.categoriesArray.pop();
+            // console.log(state.newArray)
+            state.newArray.splice(0, 1);
+            console.log(state.selectedCatCounter)
+            // console.log(state.newArray)
             state.categoriesArray.push(...state.newArray);
             state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title
+            console.log(state.categoriesArray)
+            console.log(state.categoriesArray[1])
+
+
         },
 
         updateFilteredResults(state) {
@@ -128,18 +138,22 @@ export const store = new Vuex.Store({
         },
 
         chooseCategory(state) {
-
+            console.log(state.currentCategoryName)
+            state.currentCategoryID = state.categoriesArray.map(e => e.categoryCard.title).indexOf(state.currentCategoryName);
+            console.log(state.currentCategoryID)
             state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
             store.dispatch('updateUserCategory')
         },
 
         updateUserCategory(state) {
+            console.log(state.currentCategoryID)
+
             if (state.categoriesArray[state.currentCategoryID].categoryCard.isChosen) {
                 state.userCategories.push(state.categoriesArray[state.currentCategoryID]);
-                // console.log(state.currentCategoryID)
+                console.log(state.currentCategoryID)
                 // console.log(state.selectedCatCounter)
                 // state.selectedCatCounter++;
-                // console.log(state.userCategories)
+                console.log(state.userCategories)
             }
             else {
                 state.indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
@@ -147,7 +161,7 @@ export const store = new Vuex.Store({
                 //     // state.selectedCatCounter = 0;
                 // }
 
-                // console.log(state.userCategories)
+                console.log(state.userCategories)
 
                 state.userCategories.splice(state.indexOfToBeDeleted, 1);
             }
@@ -195,19 +209,19 @@ export const store = new Vuex.Store({
             commit('setResult', payload);
         },
         updatecurrentCategoryID: ({ commit }, payload) => {
-            console.log(" updatecurrentCategoryID");
+            // console.log(" updatecurrentCategoryID");
             commit('updatecurrentCategoryID', payload);
         },
         updatecurrentCategoryName: ({ commit }, payload) => {
-            console.log(" updatecurrentCategoryName");
+            // console.log(" updatecurrentCategoryName");
             commit('updatecurrentCategoryName', payload);
         },
         chooseCategory: ({ commit }, payload) => {
-            console.log(" chooseCategory");
+            // console.log(" chooseCategory");
             commit('chooseCategory', payload);
         },
         updateUserCategory: ({ commit }, payload) => {
-            console.log(" updateUserCategory");
+            // console.log(" updateUserCategory");
             commit('updateUserCategory', payload);
         },
     }

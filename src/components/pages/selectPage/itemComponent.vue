@@ -102,7 +102,7 @@ export default {
     chooseCategory() {
       // console.log(this.category.categoryCard.title);
       this.currentCategoryName = this.category.categoryCard.title;
-      this.currentCategoryID = this.category.categoryCard.key;
+      // this.currentCategoryID = this.category.categoryCard.title;
       this.$store.dispatch("chooseCategory");
     }
   }
