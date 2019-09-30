@@ -12,6 +12,7 @@
 <script>
 import { wikimiki } from "../../../main";
 import firebase from "firebase";
+import { router } from "../../../router/router";
 export default {
   data() {
     return {

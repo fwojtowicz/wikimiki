@@ -9,6 +9,7 @@ import { firebaseConfig } from './firebase'
 import firebase from 'firebase'
 import router from './router/router'
 
+let vm = '';
 Vue.use(MdButton);
 Vue.use(MdContent);
 Vue.use(MdTabs);
@@ -19,14 +20,19 @@ Vue.use(MdField);
 Vue.use(MdLayout);
 
 firebase.initializeApp(firebaseConfig);
+firebase.auth().onAuthStateChanged(() => {
+  if (!vm) {
 
+    vm = new Vue({
+      store,
+      render: h => h(App),
+      router,
+    }).$mount('#app');
+
+  }
+})
+export const wikimiki = vm;
 Vue.config.productionTip = false;
 
 
 
-let vm = new Vue({
-  store,
-  render: h => h(App),
-  router,
-}).$mount('#app');
-export const wikimiki = vm;

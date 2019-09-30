@@ -1,7 +1,7 @@
 
 
-{/* <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-analytics.js"></script> */}
+/* <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-analytics.js"></script> */
 
 
 // Your web app's Firebase configuration

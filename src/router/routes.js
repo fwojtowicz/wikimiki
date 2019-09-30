@@ -4,14 +4,14 @@ import articlesPage from '../components/pages/articlesPage/articlesPage';
 import loginPage from '../components/pages/loginPage/loginPage';
 import signUpPage from '../components/pages/signUpPage/signUpPage';
 
-import VueRouter from 'vue-router';
-
 export const routes = [
+
     {
-        path: '*', redirect: '/login'
+        path: '*', redirect: '/loginPage'
     },
+
     {
-        path: '/home', name: 'home', components: {
+        path: '/', name: 'home', components: {
             default: Home,
             meta: {
                 requiresAuth: true
@@ -36,19 +36,29 @@ export const routes = [
             }
         }
     },
-    {
-        path: '/login', name: 'loginPage', components: {
-            default: loginPage,
-            meta: {
-                requiresAuth: true
-            }
-        }
-    },
+    // {
+    //     path: '/login', name: 'loginPage', components: {
+    //         default: loginPage,
+    //         // meta: {
+    //         //     requiresAuth: true
+    //         // }
+    //     }
+
+    // },
     {
         path: '/signup', name: 'signUpPage', components: {
             default: signUpPage,
+            // meta: {
+            //     requiresAuth: true
+            // }
+        }
+    },
+
+    {
+        path: '/loginPage', name: 'loginPage', components: {
+            default: loginPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         }
     }
