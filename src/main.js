@@ -7,6 +7,8 @@ import { MdButton, MdContent, MdTabs, MdCard, MdIcon, MdToolbar, MdField, MdLayo
 import 'vue-material/dist/vue-material.min.css';
 import 'vue-material/dist/theme/default.css';
 import '../node_modules/material-icons-font/material-icons-font.css'
+import { firebaseConfig } from './firebase'
+import firebase from 'firebase'
 
 Vue.use(VueRouter);
 Vue.use(MdButton);
@@ -18,14 +20,17 @@ Vue.use(MdToolbar);
 Vue.use(MdField);
 Vue.use(MdLayout);
 
+firebase.initializeApp(firebaseConfig);
+
 Vue.config.productionTip = false;
+
 const router = new VueRouter({
   routes
 });
 
-let wikimiki = new Vue({
+let vm = new Vue({
   store,
   render: h => h(App),
   router,
 }).$mount('#app');
-global.vm = wikimiki;
+export const wikimiki = vm;
