@@ -23,8 +23,9 @@ const router = new VueRouter({
   routes
 });
 
-new Vue({
+let wikimiki = new Vue({
   store,
   render: h => h(App),
   router,
 }).$mount('#app');
+global.vm = wikimiki;

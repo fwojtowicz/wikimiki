@@ -25,6 +25,8 @@ export const store = new Vuex.Store({
         currentCategoryName: "",
         currentCategoryID: Number,
         pageArray: [],
+        pageStart: 0,
+        pageEnd: 0,
         pageCounter: 1,
 
     },
@@ -101,7 +103,7 @@ export const store = new Vuex.Store({
             JSON.stringify(response.data)
             state.wikiResults = {}
             state.categoriesArray = []
-            for (state.categoryCounter = 0; state.categoryCounter < 10; state.categoryCounter++) {
+            for (state.categoryCounter = 0; state.categoryCounter < 20; state.categoryCounter++) {
                 state.wikiResults[state.categoryCounter] = ({
                     categoryCard: {
                         key: response.data.query.allcategories[state.categoryCounter]['*'],
@@ -113,16 +115,26 @@ export const store = new Vuex.Store({
             }
             state.categoriesArray = Object.values(state.wikiResults)
             state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
-            console.log(state.categoriesArray)
-            state.pageArray = state.categoriesArray;
+            // console.log(state.categoriesArray)
+            state.pageArray = state.categoriesArray.map(element => element)
+            state.pageStart = 0
+            // state.pageEnd = response.data.query.allcategories.length;
+            state.pageEnd = 19
+            console.log(state.pageStart)
+            console.log(state.pageEnd)
             console.log(state.pageArray)
+
 
 
         },
 
         appendSearchResultsValue(state, response) {
+            state.pageStart = state.pageEnd + 1;
+            state.pageEnd = state.pageStart + 19;
+            console.log(state.pageStart)
+            console.log(state.pageEnd)
             JSON.stringify(response.data)
-            for (state.categoryCounter = 0; state.categoryCounter < 10; state.categoryCounter++) {
+            for (state.categoryCounter = 0; state.categoryCounter < 21; state.categoryCounter++) {
                 state.wikiResults[state.categoryCounter] = ({
                     categoryCard: {
                         key: response.data.query.allcategories[state.categoryCounter]['*'],
@@ -138,12 +150,14 @@ export const store = new Vuex.Store({
             // console.log(state.newArray)
             // state.categoriesArray = state.newArray
             state.categoriesArray.push(...state.newArray);
-            state.pageArray = state.newArray;
-            console.log(state.pageArray)
-            console.log(state.categoriesArray)
+            state.pageArray = state.newArray.map(element => element)
+            // console.log(state.pageStart)
+            // console.log(state.pageEnd)
+            // console.log(state.categoriesArray)
 
             state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
             // console.log(state.categoriesArray)
+            console.log(state.pageArray)
 
 
         },
@@ -189,14 +203,51 @@ export const store = new Vuex.Store({
 
         },
         getPreviousPage(state) {
-            console.log('previous page')
-            for (state.categoryCounter = 9; state.categoryCounter >= 0; state.categoryCounter++) {
-                state.pageArray[state.categoryCounter] = state.categoriesArray[state.categoryCounter]
-                console.log(state.pageArray[state.categoryCounter])
-
+            state.pageArray = []
+            // state.pageArray = []
+            console.log(state.categoriesArray.length)
+            console.log(state.pageStart)
+            console.log(state.pageEnd)
+            if (state.pageStart > 0 && state.pageEnd > 0) {
+                state.pageStart = state.pageStart - 20
+                state.pageEnd = state.pageEnd - 20
             }
+            else { state.pageStart = 0; state.pageEnd = 19 }
+
+
+            // if (state.pageStart - 12 >= 0)
+            //     state.dataAppended = false;
+            // console.log('previous page')
+
+            // state.pageStart = (state.categoriesArray.length - 20);
+            // console.log(state.pageStart)
+            // state.pageEnd = state.pageStart - 20;
+            // if (state.pageStart - 20 >= 0) {
+            //     state.pageEnd = state.pageStart - 20
+            // }
+            // else state.pageEnd = 0;
+
+            state.pageArray = state.categoriesArray.slice(state.pageStart, state.pageEnd).map(element => element);
+            // state.lastElement = state.pageArray[state.pageArray.length - 1].categoryCard.title;
+            console.log(state.pageArray)
+            console.log(state.pageStart)
+            console.log(state.pageEnd)
+
+            // console.log(state.lastElement)
+
+            // // state.pageStart = state.pageEnd;
+            // console.log(state.pageArray)
+            // console.log(state.pageEnd)
+
+            // console.log(state.pageStart)
+            state.pageArray = []
+
+
+
+
 
         }
+
     },
     actions: {
         getCategoriesHandler: ({ commit, state }) => {
