@@ -19,7 +19,7 @@
     <div class="md-layout">
       <app-item
         class="md-layout-item"
-        v-for="category in categoriesArray"
+        v-for="category in pageArray"
         :key="category.categoryCard.title"
         :category="category"
       ></app-item>
@@ -73,9 +73,9 @@ export default {
         return this.$store.getters.isChosenGetter;
       }
     },
-    categoriesArray: {
+    pageArray: {
       get() {
-        return this.$store.getters.categoriesArrayGetter;
+        return this.$store.getters.pageArrayGetter;
       }
     },
     currentCategory: {

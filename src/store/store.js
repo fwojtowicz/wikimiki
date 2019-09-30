@@ -7,6 +7,8 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
+        dataDownloaded: false,
+        dataAppended: false,
         searchTerm: "",
         lastElement: "",
         searchURL: "https://en.wikipedia.org/w/api.php?action=query&list=allcategories&aclimit=max&format=json&accontinue&acprefix=",
@@ -21,7 +23,9 @@ export const store = new Vuex.Store({
         selectedCatCounter: 0,
         indexOfToBeDeleted: 0,
         currentCategoryName: "",
-        currentCategoryID: Number
+        currentCategoryID: Number,
+        pageArray: [],
+        pageCounter: 1,
 
     },
     getters: {
@@ -69,6 +73,15 @@ export const store = new Vuex.Store({
         indexOfToBeDeletedGetter: state => {
             return state.indexOfToBeDeleted;
         },
+        pageArrayGetter: state => {
+            return state.pageArray;
+        },
+        dataDownloadedGetter: state => {
+            return state.dataDownloaded;
+        },
+        dataAppendedGetter: state => {
+            return state.dataAppended;
+        }
     },
     mutations: {
         updateSearchTerm(state, payload) {
@@ -101,6 +114,10 @@ export const store = new Vuex.Store({
             state.categoriesArray = Object.values(state.wikiResults)
             state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
             console.log(state.categoriesArray)
+            state.pageArray = state.categoriesArray;
+            console.log(state.pageArray)
+
+
         },
 
         appendSearchResultsValue(state, response) {
@@ -117,12 +134,16 @@ export const store = new Vuex.Store({
             state.newArray = Object.values(state.wikiResults)
             // console.log(state.newArray)
             state.newArray.splice(0, 1);
-            console.log(state.selectedCatCounter)
+            // console.log(state.selectedCatCounter)
             // console.log(state.newArray)
+            // state.categoriesArray = state.newArray
             state.categoriesArray.push(...state.newArray);
-            state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title
+            state.pageArray = state.newArray;
+            console.log(state.pageArray)
             console.log(state.categoriesArray)
-            console.log(state.categoriesArray[1])
+
+            state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
+            // console.log(state.categoriesArray)
 
 
         },
@@ -166,10 +187,20 @@ export const store = new Vuex.Store({
                 state.userCategories.splice(state.indexOfToBeDeleted, 1);
             }
 
+        },
+        getPreviousPage(state) {
+            console.log('previous page')
+            for (state.categoryCounter = 9; state.categoryCounter >= 0; state.categoryCounter++) {
+                state.pageArray[state.categoryCounter] = state.categoriesArray[state.categoryCounter]
+                console.log(state.pageArray[state.categoryCounter])
+
+            }
+
         }
     },
     actions: {
         getCategoriesHandler: ({ commit, state }) => {
+            state.dataDownloaded = true;
             state.filteredResults = []
             state.categoryInput = ""
             console.log("getting categories");
@@ -183,6 +214,8 @@ export const store = new Vuex.Store({
                 .catch(error => console.log(error));
         },
         getNextPageHandler: ({ commit, state }) => {
+            state.dataAppended = true;
+
             console.log("appending categories");
             axios
                 .get(state.nextURL)
@@ -191,6 +224,13 @@ export const store = new Vuex.Store({
                     console.log(state.lastElement);
                 })
                 .catch(error => console.log(error));
+        },
+
+        getPreviousPageHandler: ({ commit, state }) => {
+            console.log("previous categoriesPage");
+            commit('getPreviousPage')
+
+
         },
         updateSearchTerm: ({ commit }, payload) => {
             console.log("updating searchTerm");

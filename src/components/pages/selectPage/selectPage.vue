@@ -7,12 +7,16 @@
         <md-input v-model="searchTerm"></md-input>
       </md-field>
       <md-button class="md-dense md-raised md-primary" @click="submitTerm">Search</md-button>
-
       <p>fullURL {{fullURL}}</p>
       <p>lastElement {{lastElement}}</p>
       <p>next url {{nextURL}}</p>
       <searchResults></searchResults>
       <hr />
+      <md-button
+        class="md-dense md-raised md-primary"
+        @click="getPreviousPage"
+        v-show=" dataAppended"
+      >Previous page</md-button>
       <md-button
         class="md-dense md-raised md-primary"
         @click="getNextPage"
@@ -30,7 +34,6 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      dataDownloaded: false,
       title: "Select categories"
     };
   },
@@ -62,21 +65,36 @@ export default {
       get() {
         return this.$store.getters.searchResultGetter;
       }
+    },
+    dataAppended: {
+      get() {
+        return this.$store.getters.dataAppendedGetter;
+      }
+    },
+    dataDownloaded: {
+      get() {
+        return this.$store.getters.dataDownloadedGetter;
+      }
     }
   },
-
   components: {
     appHeader,
     searchResults
   },
   methods: {
-    ...mapActions(["getCategoriesHandler", "getNextPageHandler"]),
+    ...mapActions([
+      "getCategoriesHandler",
+      "getNextPageHandler",
+      "getPreviousPageHandler"
+    ]),
     submitTerm() {
-      this.dataDownloaded = true;
       this.$store.dispatch("getCategoriesHandler");
     },
     getNextPage() {
       this.$store.dispatch("getNextPageHandler");
+    },
+    getPreviousPage() {
+      this.$store.dispatch("getPreviousPageHandler");
     }
   }
 };
