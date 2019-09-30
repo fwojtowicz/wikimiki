@@ -129,7 +129,7 @@ export const store = new Vuex.Store({
         },
 
         appendSearchResultsValue(state, response) {
-            state.pageStart = state.pageEnd + 1;
+            state.pageStart = state.pageEnd + 1
             state.pageEnd = state.pageStart + 19;
             console.log(state.pageStart)
             console.log(state.pageEnd)
@@ -203,16 +203,15 @@ export const store = new Vuex.Store({
 
         },
         getPreviousPage(state) {
-            state.pageArray = []
             // state.pageArray = []
             console.log(state.categoriesArray.length)
             console.log(state.pageStart)
             console.log(state.pageEnd)
-            if (state.pageStart > 0 && state.pageEnd > 0) {
+            if (state.pageStart - 19 > 0 && state.pageEnd - 19 > 0) {
                 state.pageStart = state.pageStart - 20
                 state.pageEnd = state.pageEnd - 20
             }
-            else { state.pageStart = 0; state.pageEnd = 19 }
+            else { state.pageStart = 0; state.pageEnd = 19; state.dataAppended = 0 }
 
 
             // if (state.pageStart - 12 >= 0)
@@ -226,9 +225,10 @@ export const store = new Vuex.Store({
             //     state.pageEnd = state.pageStart - 20
             // }
             // else state.pageEnd = 0;
+            state.pageArray = []
 
-            state.pageArray = state.categoriesArray.slice(state.pageStart, state.pageEnd).map(element => element);
-            // state.lastElement = state.pageArray[state.pageArray.length - 1].categoryCard.title;
+            state.pageArray = state.categoriesArray.slice(state.pageStart, state.pageEnd + 1).map(element => element);
+            state.lastElement = state.pageArray[state.pageArray.length - 1].categoryCard.title;
             console.log(state.pageArray)
             console.log(state.pageStart)
             console.log(state.pageEnd)
@@ -240,7 +240,6 @@ export const store = new Vuex.Store({
             // console.log(state.pageEnd)
 
             // console.log(state.pageStart)
-            state.pageArray = []
 
 
 
