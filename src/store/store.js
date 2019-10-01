@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from "axios";
 import { Number } from 'core-js';
+const fb = require("../firebase")
 
 Vue.use(Vuex);
 
@@ -29,7 +30,11 @@ export const store = new Vuex.Store({
         pageEnd: 0,
         pageCounter: 1,
         email: "",
-        password: ""
+        password: "",
+        currentUser: null,
+        userProfile: {},
+        name: ""
+
 
     },
     getters: {
@@ -90,11 +95,17 @@ export const store = new Vuex.Store({
             return state.email;
         },
         passwordGetter: state => {
-            return state.pasword;
+            return state.password;
         },
+        nameGetter: state => {
+            return state.name
+        }
 
     },
     mutations: {
+        updateName(state, payload) {
+            state.name = payload
+        },
         updateSearchTerm(state, payload) {
             state.searchTerm = payload;
         },
@@ -111,7 +122,14 @@ export const store = new Vuex.Store({
             state.email = payload
         },
         updatePassword(state, payload) {
-            state.pasword = payload
+            state.password = payload
+        },
+        setCurrentUser(state, response) {
+            state.currentUser = response
+        },
+        setUserProfile(state, response) {
+            state.userProfile = response
+            console.log('userProfileCreated')
         },
 
         setSearchResultsValue(state, response) {
@@ -260,10 +278,21 @@ export const store = new Vuex.Store({
 
 
 
-        }
+        },
+
 
     },
     actions: {
+
+        fetchUserProfile({ commit, state }) {
+            fb.usersCollection.doc(state.currentUser.user.uid).get().then(response => {
+                commit('setUserProfile', response.data())
+            }).catch(err => {
+                console.log(err)
+            })
+            console.log('AFTERfetchUserProfile')
+
+        },
         getCategoriesHandler: ({ commit, state }) => {
             state.dataDownloaded = true;
             state.filteredResults = []
@@ -334,7 +363,11 @@ export const store = new Vuex.Store({
         },
         updatePassword: ({ commit }, payload) => {
             commit('updatePassword', payload)
-        }
+        },
+        updateName: ({ commit }, payload) => {
+            commit('updateName', payload)
+        },
+
     }
 
 });

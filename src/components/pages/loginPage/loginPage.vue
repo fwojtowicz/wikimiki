@@ -5,7 +5,7 @@
       <input type="text" v-model="email" placeholder="email" />
       <br />
       <input type="password" v-model="password" placeholder="password" />
-      <button>Sign in</button>
+      <button @click="login">Sign in</button>
       <div>
         Go to
         <router-link to="/signup">signup</router-link>
@@ -15,6 +15,8 @@
 </template>
 
 <script>
+const fb = require("../../../firebase");
+
 export default {
   computed: {
     email: {
@@ -32,6 +34,20 @@ export default {
       set(password) {
         this.$store.dispatch("updatePassword", password);
       }
+    }
+  },
+  methods: {
+    login() {
+      fb.auth
+        .signInWithEmailAndPassword(this.email, this.password)
+        .then(user => {
+          this.$store.commit("setCurrentUser", user);
+          this.$store.dispatch("fetchUserProfile");
+          this.wikimiki.$router.push("/home");
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };

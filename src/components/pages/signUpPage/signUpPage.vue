@@ -1,10 +1,14 @@
 <template>
   <div>
     <h1>Sign Up</h1>
+
+    <input type="text" v-model="name" placeholder="name" />
+    <br />
     <input type="text" v-model="email" placeholder="email" />
     <br />
     <input type="password" v-model="password" placeholder="password" />
-    <button>Sign up</button>
+
+    <button @click="signUp">Sign up</button>
     <div>
       Go back to
       <router-link to="/login">login</router-link>
@@ -13,6 +17,7 @@
 </template>
 
 <script>
+const fb = require("../../../firebase");
 export default {
   computed: {
     email: {
@@ -30,6 +35,45 @@ export default {
       set(password) {
         this.$store.dispatch("updatePassword", password);
       }
+    },
+    name: {
+      get() {
+        return this.$store.getters.nameGetter;
+      },
+      set(name) {
+        this.$store.dispatch("updateName", name);
+      }
+    }
+  },
+  methods: {
+    signUp() {
+      console.log(this.email);
+      console.log(this.password);
+      fb.auth
+        .createUserWithEmailAndPassword(this.email, this.password)
+        .then(user => {
+          console.log("userCreated");
+          this.$store.commit("setCurrentUser", user);
+          console.log(user);
+          console.log(user.user.uid);
+
+          fb.usersCollection
+            .doc(user.user.uid)
+            .set({
+              name: this.name
+            })
+            .then(() => {
+              console.log("didUsersCollection");
+              this.$store.dispatch("fetchUserProfile");
+              this.wikimiki.$router.push("/home");
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };
