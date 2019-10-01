@@ -129,7 +129,6 @@ export const store = new Vuex.Store({
         },
         setUserProfile(state, response) {
             state.userProfile = response
-            console.log('userProfileCreated')
         },
 
         setSearchResultsValue(state, response) {
@@ -288,10 +287,12 @@ export const store = new Vuex.Store({
             fb.usersCollection.doc(state.currentUser.user.uid).get().then(response => {
                 commit('setUserProfile', response.data())
             }).catch(err => {
-                console.log(err)
-            })
-            console.log('AFTERfetchUserProfile')
-
+                console.log(err);
+            });
+        },
+        clearData: ({ commit }) => {
+            commit('setCurrentUser', null)
+            commit('setUserProfile', {})
         },
         getCategoriesHandler: ({ commit, state }) => {
             state.dataDownloaded = true;

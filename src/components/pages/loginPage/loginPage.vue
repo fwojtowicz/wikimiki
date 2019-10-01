@@ -16,6 +16,7 @@
 
 <script>
 const fb = require("../../../firebase");
+import router from "../../../router/index";
 
 export default {
   computed: {
@@ -43,7 +44,7 @@ export default {
         .then(user => {
           this.$store.commit("setCurrentUser", user);
           this.$store.dispatch("fetchUserProfile");
-          this.wikimiki.$router.push("/home");
+          router.push("/home");
         })
         .catch(err => {
           console.log(err);
