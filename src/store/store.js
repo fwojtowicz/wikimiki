@@ -28,6 +28,8 @@ export const store = new Vuex.Store({
         pageStart: 0,
         pageEnd: 0,
         pageCounter: 1,
+        email: "",
+        password: ""
 
     },
     getters: {
@@ -83,7 +85,14 @@ export const store = new Vuex.Store({
         },
         dataAppendedGetter: state => {
             return state.dataAppended;
-        }
+        },
+        emailGetter: state => {
+            return state.email;
+        },
+        passwordGetter: state => {
+            return state.pasword;
+        },
+
     },
     mutations: {
         updateSearchTerm(state, payload) {
@@ -97,6 +106,12 @@ export const store = new Vuex.Store({
         },
         updatecurrentCategoryName(state, payload) {
             state.currentCategoryName = payload
+        },
+        updateEmail(state, payload) {
+            state.email = payload
+        },
+        updatePassword(state, payload) {
+            state.pasword = payload
         },
 
         setSearchResultsValue(state, response) {
@@ -314,6 +329,12 @@ export const store = new Vuex.Store({
             // console.log(" updateUserCategory");
             commit('updateUserCategory', payload);
         },
+        updateEmail: ({ commit }, payload) => {
+            commit('updateEmail', payload)
+        },
+        updatePassword: ({ commit }, payload) => {
+            commit('updatePassword', payload)
+        }
     }
 
 });

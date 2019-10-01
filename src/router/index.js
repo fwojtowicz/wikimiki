@@ -2,6 +2,7 @@ import Home from '../components/pages/homePage/homePage';
 import selectPage from '../components/pages/selectPage/selectPage';
 import articlesPage from '../components/pages/articlesPage/articlesPage';
 import loginPage from '../components/pages/loginPage/loginPage'
+import signUpPage from '../components/pages/signUpPage/signUpPage'
 import firebase from 'firebase'
 import VueRouter from 'vue-router';
 
@@ -41,6 +42,9 @@ const router = new VueRouter({
         {
             path: '/login', name: 'login', component: loginPage
 
+        },
+        {
+            path: '/signup', name: 'signup', component: signUpPage
         },
         {
             path: '*', redirect: '/home'
