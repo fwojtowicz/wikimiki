@@ -22,7 +22,9 @@ import itemComponent from "../selectPage/itemComponent";
 
 export default {
   data() {
-    return { title: "Home" };
+    return {
+      title: "Home"
+    };
   },
   components: {
     appHeader,
@@ -37,6 +39,14 @@ export default {
         this.$store.dispatch("chooseCategory", userCategories);
       }
     }
+  },
+
+  mounted() {
+    // this.$store.dispatch("fetchUserProfile");
+    console.log(this.$store.state.currentUser);
+    // this.$store
+    //   .dispatch("fetchUserCategories")
+    //   .then(console.log("shots fired"));
   }
 };
 </script>

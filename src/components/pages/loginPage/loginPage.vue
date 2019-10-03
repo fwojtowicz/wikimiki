@@ -44,6 +44,8 @@ export default {
         .then(user => {
           this.$store.commit("setCurrentUser", user);
           this.$store.dispatch("fetchUserProfile");
+          this.$store.dispatch("fetchUserCategories");
+
           router.push("/home");
         })
         .catch(err => {

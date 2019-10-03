@@ -99,7 +99,9 @@ export const store = new Vuex.Store({
         },
         nameGetter: state => {
             return state.name
-        }
+        },
+
+
 
     },
     mutations: {
@@ -129,6 +131,10 @@ export const store = new Vuex.Store({
         },
         setUserProfile(state, response) {
             state.userProfile = response
+            // console.log(state.userProfile)
+        },
+        setUserCategories(state, response) {
+            store.userCategories = response
         },
 
         setSearchResultsValue(state, response) {
@@ -217,12 +223,26 @@ export const store = new Vuex.Store({
 
             if (state.categoriesArray[state.currentCategoryID].categoryCard.isChosen) {
                 state.userCategories.push(state.categoriesArray[state.currentCategoryID]);
-                console.log(state.currentCategoryID)
+                let userCategoriesFB = state.userCategories
+                let user = fb.auth.currentUser
+                console.log(user)
+                console.log(userCategoriesFB)
+                fb.userCategoriesCollection
+                    .doc(user.uid)
+                    .set({
+                        userCategoriesFB
+                    })
+                store.dispatch('fetchUserCategories')
+
+
+                // console.log(state.currentCategoryID)
                 // console.log(state.selectedCatCounter)
                 // state.selectedCatCounter++;
-                console.log(state.userCategories)
+                // console.log(state.userCategories)
             }
             else {
+                let userCategoriesFB = state.userCategories
+                let user = fb.auth.currentUser
                 state.indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
                 // if (state.userCategories.length == 0) {
                 //     // state.selectedCatCounter = 0;
@@ -231,6 +251,13 @@ export const store = new Vuex.Store({
                 console.log(state.userCategories)
 
                 state.userCategories.splice(state.indexOfToBeDeleted, 1);
+                fb.userCategoriesCollection
+                    .doc(user.uid)
+                    .set({
+                        userCategoriesFB
+                    })
+                store.dispatch('fetchUserCategories')
+                // console.log
             }
 
         },
@@ -272,23 +299,41 @@ export const store = new Vuex.Store({
             // console.log(state.pageEnd)
 
             // console.log(state.pageStart)
-
-
-
-
-
         },
 
 
     },
     actions: {
+        setCurrentlyLoggedInUser({ commit }) {
+            commit('setCurrentUser', fb.auth.currentUser)
+            console.log(fb.auth.currentUser)
+        },
 
         fetchUserProfile({ commit, state }) {
-            fb.usersCollection.doc(state.currentUser.user.uid).get().then(response => {
-                commit('setUserProfile', response.data())
-            }).catch(err => {
-                console.log(err);
-            });
+            // fb.usersCollection.doc(state.currentUser.user.uid).get().then(response => {
+            //     commit('setUserProfile', response.data())
+            commit('setCurrentUser', fb.auth.currentUser)
+
+            // }).catch(err => {
+            //     console.log(err);
+        }
+
+
+
+        ,
+        fetchUserCategories({ commit, state }) {
+            fb.auth.onAuthStateChanged(() => {
+                if (state.currentUser) {
+                    fb.userCategoriesCollection.doc(state.currentUser.uid).get().then(response => {
+                        console.log(response)
+                        commit('setUserCategories', response)
+                        console.log('CATEGORIES FETCHED')
+                    }).catch(err => {
+                        console.log(err);
+                    });
+                }
+            })
+
         },
         clearData: ({ commit }) => {
             commit('setCurrentUser', null)

@@ -15,12 +15,9 @@ firebase.initializeApp(firebaseConfig)
 const db = firebase.firestore()
 const auth = firebase.auth()
 const currentUser = auth.currentUser
-
 const usersCollection = db.collection('users')
-const categoriesArrayCollection = db.collection('categoriesArray')
 const userCategoriesCollection = db.collection('userCategories')
-const pageArrayCollection = db.collection('pageArray')
 export {
-    db, auth, currentUser, usersCollection, categoriesArrayCollection, userCategoriesCollection, pageArrayCollection
+    db, auth, currentUser, usersCollection, userCategoriesCollection,
 
 }
