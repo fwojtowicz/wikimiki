@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from "axios";
 import { Number } from 'core-js';
+const fb = require("../firebase")
 
 Vue.use(Vuex);
 
@@ -28,6 +29,12 @@ export const store = new Vuex.Store({
         pageStart: 0,
         pageEnd: 0,
         pageCounter: 1,
+        email: "",
+        password: "",
+        currentUser: null,
+        userProfile: {},
+        name: ""
+
 
     },
     getters: {
@@ -83,9 +90,24 @@ export const store = new Vuex.Store({
         },
         dataAppendedGetter: state => {
             return state.dataAppended;
-        }
+        },
+        emailGetter: state => {
+            return state.email;
+        },
+        passwordGetter: state => {
+            return state.password;
+        },
+        nameGetter: state => {
+            return state.name
+        },
+
+
+
     },
     mutations: {
+        updateName(state, payload) {
+            state.name = payload
+        },
         updateSearchTerm(state, payload) {
             state.searchTerm = payload;
         },
@@ -97,6 +119,23 @@ export const store = new Vuex.Store({
         },
         updatecurrentCategoryName(state, payload) {
             state.currentCategoryName = payload
+        },
+        updateEmail(state, payload) {
+            state.email = payload
+        },
+        updatePassword(state, payload) {
+            state.password = payload
+        },
+        setCurrentUser(state, response) {
+            state.currentUser = response
+        },
+        setUserProfile(state, response) {
+            state.userProfile = response
+            // console.log(state.userProfile)
+        },
+        setUserCategories(state, response) {
+            state.userCategories = response
+
         },
 
         setSearchResultsValue(state, response) {
@@ -116,7 +155,11 @@ export const store = new Vuex.Store({
             state.categoriesArray = Object.values(state.wikiResults)
             state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
             // console.log(state.categoriesArray)
-            state.pageArray = state.categoriesArray.map(element => element)
+            console.log(state.userCategories)
+            state.pageArray = state.categoriesArray.map(element => {
+                element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.key === element.categoryCard.key);
+                return element;
+            })
             state.pageStart = 0
             // state.pageEnd = response.data.query.allcategories.length;
             state.pageEnd = 19
@@ -185,21 +228,44 @@ export const store = new Vuex.Store({
 
             if (state.categoriesArray[state.currentCategoryID].categoryCard.isChosen) {
                 state.userCategories.push(state.categoriesArray[state.currentCategoryID]);
-                console.log(state.currentCategoryID)
+                let userCategoriesFB = state.userCategories
+                let user = fb.auth.currentUser
+                // console.log(user)
+                // console.log(userCategoriesFB)
+                fb.userCategoriesCollection
+                    .doc(user.uid)
+                    .set({
+                        userCategoriesFB
+                    })
+                store.dispatch('fetchUserCategories')
+
+
+                // console.log(state.currentCategoryID)
                 // console.log(state.selectedCatCounter)
                 // state.selectedCatCounter++;
-                console.log(state.userCategories)
+                // console.log(state.userCategories)
             }
             else {
+                let userCategoriesFB = state.userCategories
+                let user = fb.auth.currentUser
                 state.indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
                 // if (state.userCategories.length == 0) {
                 //     // state.selectedCatCounter = 0;
                 // }
 
-                console.log(state.userCategories)
+                // console.log(state.userCategories)
 
                 state.userCategories.splice(state.indexOfToBeDeleted, 1);
+                fb.userCategoriesCollection
+                    .doc(user.uid)
+                    .set({
+                        userCategoriesFB
+                    })
+                store.dispatch('fetchUserCategories')
+                // console.log
             }
+            console.log(state.userCategories)
+
 
         },
         getPreviousPage(state) {
@@ -240,15 +306,38 @@ export const store = new Vuex.Store({
             // console.log(state.pageEnd)
 
             // console.log(state.pageStart)
+        },
 
-
-
-
-
-        }
 
     },
     actions: {
+        setCurrentlyLoggedInUser({ commit }) {
+            commit('setCurrentUser', fb.auth.currentUser)
+        },
+
+        fetchUserProfile({ commit }) {
+            commit('setCurrentUser', fb.auth.currentUser)
+        }
+
+
+
+        ,
+        fetchUserCategories({ commit, state }) {
+            fb.auth.onAuthStateChanged(() => {
+                if (state.currentUser) {
+                    fb.userCategoriesCollection.doc(state.currentUser.uid).get().then(response => {
+                        console.log(response.data().userCategoriesFB)
+                        commit('setUserCategories', response.data().userCategoriesFB)
+                        console.log('state:', state.userCategories)
+                    })
+                }
+            })
+        },
+
+        clearData: ({ commit }) => {
+            commit('setCurrentUser', null)
+            commit('setUserProfile', {})
+        },
         getCategoriesHandler: ({ commit, state }) => {
             state.dataDownloaded = true;
             state.filteredResults = []
@@ -314,6 +403,16 @@ export const store = new Vuex.Store({
             // console.log(" updateUserCategory");
             commit('updateUserCategory', payload);
         },
+        updateEmail: ({ commit }, payload) => {
+            commit('updateEmail', payload)
+        },
+        updatePassword: ({ commit }, payload) => {
+            commit('updatePassword', payload)
+        },
+        updateName: ({ commit }, payload) => {
+            commit('updateName', payload)
+        },
+
     }
 
 });
