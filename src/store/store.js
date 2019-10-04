@@ -134,7 +134,8 @@ export const store = new Vuex.Store({
             // console.log(state.userProfile)
         },
         setUserCategories(state, response) {
-            store.userCategories = response
+            state.userCategories = response
+
         },
 
         setSearchResultsValue(state, response) {
@@ -225,8 +226,8 @@ export const store = new Vuex.Store({
                 state.userCategories.push(state.categoriesArray[state.currentCategoryID]);
                 let userCategoriesFB = state.userCategories
                 let user = fb.auth.currentUser
-                console.log(user)
-                console.log(userCategoriesFB)
+                // console.log(user)
+                // console.log(userCategoriesFB)
                 fb.userCategoriesCollection
                     .doc(user.uid)
                     .set({
@@ -248,7 +249,7 @@ export const store = new Vuex.Store({
                 //     // state.selectedCatCounter = 0;
                 // }
 
-                console.log(state.userCategories)
+                // console.log(state.userCategories)
 
                 state.userCategories.splice(state.indexOfToBeDeleted, 1);
                 fb.userCategoriesCollection
@@ -259,6 +260,8 @@ export const store = new Vuex.Store({
                 store.dispatch('fetchUserCategories')
                 // console.log
             }
+            console.log(state.userCategories)
+
 
         },
         getPreviousPage(state) {
@@ -306,16 +309,10 @@ export const store = new Vuex.Store({
     actions: {
         setCurrentlyLoggedInUser({ commit }) {
             commit('setCurrentUser', fb.auth.currentUser)
-            // console.log(fb.auth.currentUser)
         },
 
         fetchUserProfile({ commit }) {
-            // fb.usersCollection.doc(state.currentUser.user.uid).get().then(response => {
-            //     commit('setUserProfile', response.data())
             commit('setCurrentUser', fb.auth.currentUser)
-
-            // }).catch(err => {
-            //     console.log(err);
         }
 
 
@@ -324,16 +321,10 @@ export const store = new Vuex.Store({
         fetchUserCategories({ commit, state }) {
             fb.auth.onAuthStateChanged(() => {
                 if (state.currentUser) {
-                    console.log(state.currentUser.uid)
                     fb.userCategoriesCollection.doc(state.currentUser.uid).get().then(response => {
-                        // let data = response.data();
-                        // console.log(response.data().userCategoriesFB);
-
-                        // response.forEach(doc => {
-                        //     console.log(doc.id, "=>", doc.data())
-                        // })
+                        console.log(response.data().userCategoriesFB)
                         commit('setUserCategories', response.data().userCategoriesFB)
-                        console.log(store.userCategories)
+                        console.log('state:', state.userCategories)
                     })
                 }
             })
