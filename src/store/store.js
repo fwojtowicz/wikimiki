@@ -306,10 +306,10 @@ export const store = new Vuex.Store({
     actions: {
         setCurrentlyLoggedInUser({ commit }) {
             commit('setCurrentUser', fb.auth.currentUser)
-            console.log(fb.auth.currentUser)
+            // console.log(fb.auth.currentUser)
         },
 
-        fetchUserProfile({ commit, state }) {
+        fetchUserProfile({ commit }) {
             // fb.usersCollection.doc(state.currentUser.user.uid).get().then(response => {
             //     commit('setUserProfile', response.data())
             commit('setCurrentUser', fb.auth.currentUser)
@@ -324,17 +324,21 @@ export const store = new Vuex.Store({
         fetchUserCategories({ commit, state }) {
             fb.auth.onAuthStateChanged(() => {
                 if (state.currentUser) {
+                    console.log(state.currentUser.uid)
                     fb.userCategoriesCollection.doc(state.currentUser.uid).get().then(response => {
-                        console.log(response)
-                        commit('setUserCategories', response)
-                        console.log('CATEGORIES FETCHED')
-                    }).catch(err => {
-                        console.log(err);
-                    });
+                        // let data = response.data();
+                        // console.log(response.data().userCategoriesFB);
+
+                        // response.forEach(doc => {
+                        //     console.log(doc.id, "=>", doc.data())
+                        // })
+                        commit('setUserCategories', response.data().userCategoriesFB)
+                        console.log(store.userCategories)
+                    })
                 }
             })
-
         },
+
         clearData: ({ commit }) => {
             commit('setCurrentUser', null)
             commit('setUserProfile', {})

@@ -58,7 +58,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     const requiresAuth = to.matched.some(x => x.meta.requiresAuth)
     store.dispatch('setCurrentlyLoggedInUser')
-    console.log(store.state.currentUser)
+    // console.log(store.state.currentUser)
     // debugger
     // if (to.matched.some(x => x.meta.requiresAuth)) {
     //     firebase.auth().onAuthStateChanged(user => {

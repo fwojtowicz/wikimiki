@@ -43,9 +43,9 @@ export default {
 
   mounted() {
     // this.$store.dispatch("fetchUserProfile");
-    console.log(this.$store.state.currentUser);
+    // console.log(this.$store.state.currentUser);
     // this.$store
-    //   .dispatch("fetchUserCategories")
+    this.$store.dispatch("fetchUserCategories");
     //   .then(console.log("shots fired"));
   }
 };
