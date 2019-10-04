@@ -155,7 +155,11 @@ export const store = new Vuex.Store({
             state.categoriesArray = Object.values(state.wikiResults)
             state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
             // console.log(state.categoriesArray)
-            state.pageArray = state.categoriesArray.map(element => element)
+            console.log(state.userCategories)
+            state.pageArray = state.categoriesArray.map(element => {
+                element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.key === element.categoryCard.key);
+                return element;
+            })
             state.pageStart = 0
             // state.pageEnd = response.data.query.allcategories.length;
             state.pageEnd = 19
