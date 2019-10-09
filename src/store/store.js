@@ -28,11 +28,11 @@ export const store = new Vuex.Store({
         pageStart: 0,
         pageEnd: 0,
         pageCounter: 1,
+        userProfile: {},
         email: "",
         password: "",
-        currentUser: null,
-        userProfile: {},
         name: "",
+        currentUser: null,
         path: ""
     },
     getters: {
@@ -209,19 +209,11 @@ export const store = new Vuex.Store({
                 state.userCategories[state.currentCategoryID].categoryCard.isChosen = !state.userCategories[state.currentCategoryID].categoryCard.isChosen;
 
             }
-            // console.log(whichTable)
             store.dispatch('updateUserCategory', whichTable)
-
-
-
-
         },
 
         updateUserCategory(state, payload) {
-            console.log('updatin')
             state.path = payload
-            console.log(state.path)
-            // console.log('above')
             if (state[state.path][state.currentCategoryID].categoryCard.isChosen) {
                 state.userCategories.push(state.categoriesArray[state.currentCategoryID])
                 let userCategoriesFB = state.userCategories
@@ -258,9 +250,6 @@ export const store = new Vuex.Store({
 
                 }
 
-
-
-
                 fb.userCategoriesCollection
                     .doc(user.uid)
                     .set({
@@ -289,6 +278,10 @@ export const store = new Vuex.Store({
             console.log(state.pageArray)
             console.log(state.pageStart)
             console.log(state.pageEnd)
+        },
+
+        getRandomArticle(state, { commit }) {
+
         },
 
 
@@ -333,6 +326,18 @@ export const store = new Vuex.Store({
                 .catch(error => console.log(error));
         },
         getNextPageHandler: ({ commit, state }) => {
+            state.dataAppended = true;
+
+            console.log("appending categories");
+            axios
+                .get(state.nextURL)
+                .then(response => {
+                    commit('appendSearchResultsValue', response);
+                    console.log(state.lastElement);
+                })
+                .catch(error => console.log(error));
+        },
+        getRandomArticleHandler: ({ commit, state }) => {
             state.dataAppended = true;
 
             console.log("appending categories");
