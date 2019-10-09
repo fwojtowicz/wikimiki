@@ -103,8 +103,8 @@ export default {
     chooseCategory() {
       this.currentCategoryName = this.category.categoryCard.title;
       this.currentCategoryID = this.category.categoryCard.key;
-      // console.log(this.currentCategoryName);
-      // console.log(this.currentCategoryID);
+      console.log(this.currentCategoryName);
+      console.log(this.currentCategoryID);
 
       this.$store.dispatch("chooseCategory", this.componentRoute);
     }

@@ -199,7 +199,7 @@ export const store = new Vuex.Store({
 
         chooseCategory(state, payload) {
             let whichTable = ""
-            console.log(payload)
+            // console.log(payload)
 
 
             if (payload == 'selectPage') {
@@ -213,10 +213,8 @@ export const store = new Vuex.Store({
                 console.log(state.currentCategoryID)
                 whichTable = 'userCategories'
                 state.userCategories[state.currentCategoryID].categoryCard.isChosen = !state.userCategories[state.currentCategoryID].categoryCard.isChosen;
-
             }
-            console.log(whichTable)
-            // store.dispatch('updateUserCategory', whichTable)
+            store.dispatch('updateUserCategory', whichTable)
 
 
 
@@ -224,10 +222,12 @@ export const store = new Vuex.Store({
         },
 
         updateUserCategory(state, payload) {
-            state['stringaskey']
-            console.log(payload)
-            if (state[payload][state.currentCategoryID].categoryCard.isChosen) {
-                state.userCategories.push(state[payload][state.currentCategoryID])
+            console.log('updatin')
+            state.path = payload
+            console.log(state.path)
+            // console.log('above')
+            if (state.categoriesArray[state.currentCategoryID].categoryCard.isChosen) {
+                state.userCategories.push(state.categoriesArray[state.currentCategoryID])
                 let userCategoriesFB = state.userCategories
                 let user = fb.auth.currentUser
 
@@ -241,10 +241,12 @@ export const store = new Vuex.Store({
             else {
                 let userCategoriesFB = state.userCategories
                 let user = fb.auth.currentUser
-                const indexOfToBeDeleted = (state[payload].findIndex(element => element.categoryCard.title === state.currentCategoryName))
+                let indexOfToBeDeleted = (state.categoriesArray.findIndex(element => element.categoryCard.title === state.currentCategoryName))
                 console.log(indexOfToBeDeleted)
                 if (indexOfToBeDeleted !== -1) {
-                    state[payload].splice(indexOfToBeDeleted, 1);
+                    state.categoriesArray.splice(indexOfToBeDeleted, 1);
+                    indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
+                    state.userCategories.splice(indexOfToBeDeleted, 1);
                     fb.userCategoriesCollection
                         .doc(user.uid)
                         .set({
