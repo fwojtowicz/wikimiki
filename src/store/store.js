@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from "axios";
 import { Number } from 'core-js';
-import { app } from 'firebase';
 const fb = require("../firebase")
 
 Vue.use(Vuex);
@@ -128,13 +127,10 @@ export const store = new Vuex.Store({
         },
         setUserProfile(state, response) {
             state.userProfile = response
-            // console.log(state.userProfile)
         },
         setUserCategories(state, response) {
             state.userCategories = response
-
         },
-
 
         setSearchResultsValue(state, response) {
             JSON.stringify(response.data)
@@ -199,8 +195,6 @@ export const store = new Vuex.Store({
 
         chooseCategory(state, payload) {
             let whichTable = ""
-            // console.log(payload)
-
 
             if (payload == 'selectPage') {
                 state.currentCategoryID = state.categoriesArray.map(e => e.categoryCard.title).indexOf(state.currentCategoryName);
@@ -213,7 +207,9 @@ export const store = new Vuex.Store({
                 console.log(state.currentCategoryID)
                 whichTable = 'userCategories'
                 state.userCategories[state.currentCategoryID].categoryCard.isChosen = !state.userCategories[state.currentCategoryID].categoryCard.isChosen;
+
             }
+            // console.log(whichTable)
             store.dispatch('updateUserCategory', whichTable)
 
 
@@ -226,7 +222,7 @@ export const store = new Vuex.Store({
             state.path = payload
             console.log(state.path)
             // console.log('above')
-            if (state.categoriesArray[state.currentCategoryID].categoryCard.isChosen) {
+            if (state[state.path][state.currentCategoryID].categoryCard.isChosen) {
                 state.userCategories.push(state.categoriesArray[state.currentCategoryID])
                 let userCategoriesFB = state.userCategories
                 let user = fb.auth.currentUser
@@ -241,23 +237,40 @@ export const store = new Vuex.Store({
             else {
                 let userCategoriesFB = state.userCategories
                 let user = fb.auth.currentUser
-                let indexOfToBeDeleted = (state.categoriesArray.findIndex(element => element.categoryCard.title === state.currentCategoryName))
-                console.log(indexOfToBeDeleted)
-                if (indexOfToBeDeleted !== -1) {
-                    state.categoriesArray.splice(indexOfToBeDeleted, 1);
+                let indexOfToBeDeleted = 0
+                console.log(payload)
+                if (payload == 'categoriesArray') {
+                    // state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
                     indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
-                    state.userCategories.splice(indexOfToBeDeleted, 1);
-                    fb.userCategoriesCollection
-                        .doc(user.uid)
-                        .set({
-                            userCategoriesFB
-                        })
-                    store.dispatch('fetchUserCategories')
+                    console.log(indexOfToBeDeleted)
+                    if (indexOfToBeDeleted !== -1) {
+                        state.userCategories.splice(indexOfToBeDeleted, 1);
+                    }
+                } else if (payload == 'userCategories') {
+                    indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
+                    console.log(indexOfToBeDeleted)
+                    if (indexOfToBeDeleted !== -1) {
+                        state.userCategories.splice(indexOfToBeDeleted, 1);
+                    }
+                    indexOfToBeDeleted = (state.categoriesArray.findIndex(element => element.categoryCard.title === state.currentCategoryName))
+                    console.log(indexOfToBeDeleted)
+                    state.categoriesArray[indexOfToBeDeleted].categoryCard.isChosen = false
+
                 }
+
+
+
+
+                fb.userCategoriesCollection
+                    .doc(user.uid)
+                    .set({
+                        userCategoriesFB
+                    })
+                store.dispatch('fetchUserCategories')
+
+                console.log(state.userCategories)
+
             }
-            console.log(state.userCategories)
-
-
         },
         getPreviousPage(state) {
             console.log(state.categoriesArray.length)
@@ -271,7 +284,6 @@ export const store = new Vuex.Store({
                 state.pageStart = 0; state.pageEnd = 19; state.dataAppended = 0
             }
             state.pageArray = []
-
             state.pageArray = state.categoriesArray.slice(state.pageStart, state.pageEnd + 1).map(element => element);
             state.lastElement = state.pageArray[state.pageArray.length - 1].categoryCard.title;
             console.log(state.pageArray)
