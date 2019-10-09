@@ -26,7 +26,8 @@ export default {
   props: ["category"],
   data() {
     return {
-      isTypying: false
+      isTypying: false,
+      componentRoute: this.$route.name
     };
   },
   computed: {
@@ -74,15 +75,15 @@ export default {
         return this.$store.getters.currentCategoryIDGetter;
       },
       set(currentCategoryID) {
-        this.$store.dispatch("updatecurrentCategoryID", currentCategoryID);
+        this.$store.dispatch("updateCurrentCategoryID", currentCategoryID);
       }
     },
     currentCategoryName: {
       get() {
-        return this.$store.getters.current.CategoryNameGetter;
+        return this.$store.getters.currentCategoryNameGetter;
       },
       set(currentCategoryName) {
-        this.$store.dispatch("updatecurrentCategoryName", currentCategoryName);
+        this.$store.dispatch("updateCurrentCategoryName", currentCategoryName);
       }
     }
   },
@@ -91,7 +92,7 @@ export default {
     ...mapActions([
       "updateFilteredResults",
       "chooseCategory",
-      "updatecurrentCategoryID"
+      "updateCurrentCategoryID"
     ]),
 
     onChange() {
@@ -100,11 +101,17 @@ export default {
     },
 
     chooseCategory() {
-      // console.log(this.category.categoryCard.title);
       this.currentCategoryName = this.category.categoryCard.title;
-      // this.currentCategoryID = this.category.categoryCard.title;
-      this.$store.dispatch("chooseCategory");
+      this.currentCategoryID = this.category.categoryCard.key;
+      console.log(this.currentCategoryName);
+      console.log(this.currentCategoryID);
+
+      this.$store.dispatch("chooseCategory", this.componentRoute);
     }
+  },
+
+  mounted() {
+    console.log(this.$route.name);
   }
 };
 </script>

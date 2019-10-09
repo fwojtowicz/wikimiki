@@ -22,7 +22,6 @@ export const store = new Vuex.Store({
         userCategories: [],
         categoryCounter: 0,
         selectedCatCounter: 0,
-        indexOfToBeDeleted: 0,
         currentCategoryName: "",
         currentCategoryID: Number,
         pageArray: [],
@@ -33,9 +32,8 @@ export const store = new Vuex.Store({
         password: "",
         currentUser: null,
         userProfile: {},
-        name: ""
-
-
+        name: "",
+        path: ""
     },
     getters: {
         searchTermGetter: state => {
@@ -101,8 +99,6 @@ export const store = new Vuex.Store({
             return state.name
         },
 
-
-
     },
     mutations: {
         updateName(state, payload) {
@@ -114,10 +110,10 @@ export const store = new Vuex.Store({
         updateCategoryInput(state, payload) {
             state.categoryInput = payload;
         },
-        updatecurrentCategoryID(state, payload) {
+        updateCurrentCategoryID(state, payload) {
             state.currentCategoryID = payload
         },
-        updatecurrentCategoryName(state, payload) {
+        updateCurrentCategoryName(state, payload) {
             state.currentCategoryName = payload
         },
         updateEmail(state, payload) {
@@ -131,11 +127,9 @@ export const store = new Vuex.Store({
         },
         setUserProfile(state, response) {
             state.userProfile = response
-            // console.log(state.userProfile)
         },
         setUserCategories(state, response) {
             state.userCategories = response
-
         },
 
         setSearchResultsValue(state, response) {
@@ -154,21 +148,16 @@ export const store = new Vuex.Store({
             }
             state.categoriesArray = Object.values(state.wikiResults)
             state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
-            // console.log(state.categoriesArray)
             console.log(state.userCategories)
             state.pageArray = state.categoriesArray.map(element => {
                 element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.key === element.categoryCard.key);
                 return element;
             })
             state.pageStart = 0
-            // state.pageEnd = response.data.query.allcategories.length;
             state.pageEnd = 19
             console.log(state.pageStart)
             console.log(state.pageEnd)
             console.log(state.pageArray)
-
-
-
         },
 
         appendSearchResultsValue(state, response) {
@@ -187,22 +176,11 @@ export const store = new Vuex.Store({
                 })
             }
             state.newArray = Object.values(state.wikiResults)
-            // console.log(state.newArray)
             state.newArray.splice(0, 1);
-            // console.log(state.selectedCatCounter)
-            // console.log(state.newArray)
-            // state.categoriesArray = state.newArray
             state.categoriesArray.push(...state.newArray);
             state.pageArray = state.newArray.map(element => element)
-            // console.log(state.pageStart)
-            // console.log(state.pageEnd)
-            // console.log(state.categoriesArray)
-
             state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
-            // console.log(state.categoriesArray)
             console.log(state.pageArray)
-
-
         },
 
         updateFilteredResults(state) {
@@ -215,61 +193,86 @@ export const store = new Vuex.Store({
             }
         },
 
-        chooseCategory(state) {
-            console.log(state.currentCategoryName)
-            state.currentCategoryID = state.categoriesArray.map(e => e.categoryCard.title).indexOf(state.currentCategoryName);
-            console.log(state.currentCategoryID)
-            state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
-            store.dispatch('updateUserCategory')
+        chooseCategory(state, payload) {
+            let whichTable = ""
+
+            if (payload == 'selectPage') {
+                state.currentCategoryID = state.categoriesArray.map(e => e.categoryCard.title).indexOf(state.currentCategoryName);
+                console.log(state.currentCategoryID)
+                state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
+                whichTable = 'categoriesArray'
+            }
+            else if (payload == 'home') {
+                state.currentCategoryID = state.userCategories.map(e => e.categoryCard.title).indexOf(state.currentCategoryName);
+                console.log(state.currentCategoryID)
+                whichTable = 'userCategories'
+                state.userCategories[state.currentCategoryID].categoryCard.isChosen = !state.userCategories[state.currentCategoryID].categoryCard.isChosen;
+
+            }
+            // console.log(whichTable)
+            store.dispatch('updateUserCategory', whichTable)
+
+
+
+
         },
 
-        updateUserCategory(state) {
-            console.log(state.currentCategoryID)
-
-            if (state.categoriesArray[state.currentCategoryID].categoryCard.isChosen) {
-                state.userCategories.push(state.categoriesArray[state.currentCategoryID]);
+        updateUserCategory(state, payload) {
+            console.log('updatin')
+            state.path = payload
+            console.log(state.path)
+            // console.log('above')
+            if (state[state.path][state.currentCategoryID].categoryCard.isChosen) {
+                state.userCategories.push(state.categoriesArray[state.currentCategoryID])
                 let userCategoriesFB = state.userCategories
                 let user = fb.auth.currentUser
-                // console.log(user)
-                // console.log(userCategoriesFB)
+
                 fb.userCategoriesCollection
                     .doc(user.uid)
                     .set({
                         userCategoriesFB
                     })
-                store.dispatch('fetchUserCategories')
 
-
-                // console.log(state.currentCategoryID)
-                // console.log(state.selectedCatCounter)
-                // state.selectedCatCounter++;
-                // console.log(state.userCategories)
             }
             else {
                 let userCategoriesFB = state.userCategories
                 let user = fb.auth.currentUser
-                state.indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
-                // if (state.userCategories.length == 0) {
-                //     // state.selectedCatCounter = 0;
-                // }
+                let indexOfToBeDeleted = 0
+                console.log(payload)
+                if (payload == 'categoriesArray') {
+                    // state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
+                    indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
+                    console.log(indexOfToBeDeleted)
+                    if (indexOfToBeDeleted !== -1) {
+                        state.userCategories.splice(indexOfToBeDeleted, 1);
+                    }
+                } else if (payload == 'userCategories') {
+                    indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
+                    console.log(indexOfToBeDeleted)
+                    if (indexOfToBeDeleted !== -1) {
+                        state.userCategories.splice(indexOfToBeDeleted, 1);
+                    }
+                    indexOfToBeDeleted = (state.categoriesArray.findIndex(element => element.categoryCard.title === state.currentCategoryName))
+                    console.log(indexOfToBeDeleted)
+                    state.categoriesArray[indexOfToBeDeleted].categoryCard.isChosen = false
 
-                // console.log(state.userCategories)
+                }
 
-                state.userCategories.splice(state.indexOfToBeDeleted, 1);
+
+
+
                 fb.userCategoriesCollection
                     .doc(user.uid)
                     .set({
                         userCategoriesFB
                     })
                 store.dispatch('fetchUserCategories')
-                // console.log
+
+                console.log(state.userCategories)
+
             }
-            console.log(state.userCategories)
-
-
         },
         getPreviousPage(state) {
-            // state.pageArray = []
             console.log(state.categoriesArray.length)
             console.log(state.pageStart)
             console.log(state.pageEnd)
@@ -277,35 +280,15 @@ export const store = new Vuex.Store({
                 state.pageStart = state.pageStart - 20
                 state.pageEnd = state.pageEnd - 20
             }
-            else { state.pageStart = 0; state.pageEnd = 19; state.dataAppended = 0 }
-
-
-            // if (state.pageStart - 12 >= 0)
-            //     state.dataAppended = false;
-            // console.log('previous page')
-
-            // state.pageStart = (state.categoriesArray.length - 20);
-            // console.log(state.pageStart)
-            // state.pageEnd = state.pageStart - 20;
-            // if (state.pageStart - 20 >= 0) {
-            //     state.pageEnd = state.pageStart - 20
-            // }
-            // else state.pageEnd = 0;
+            else {
+                state.pageStart = 0; state.pageEnd = 19; state.dataAppended = 0
+            }
             state.pageArray = []
-
             state.pageArray = state.categoriesArray.slice(state.pageStart, state.pageEnd + 1).map(element => element);
             state.lastElement = state.pageArray[state.pageArray.length - 1].categoryCard.title;
             console.log(state.pageArray)
             console.log(state.pageStart)
             console.log(state.pageEnd)
-
-            // console.log(state.lastElement)
-
-            // // state.pageStart = state.pageEnd;
-            // console.log(state.pageArray)
-            // console.log(state.pageEnd)
-
-            // console.log(state.pageStart)
         },
 
 
@@ -317,11 +300,8 @@ export const store = new Vuex.Store({
 
         fetchUserProfile({ commit }) {
             commit('setCurrentUser', fb.auth.currentUser)
-        }
+        },
 
-
-
-        ,
         fetchUserCategories({ commit, state }) {
             fb.auth.onAuthStateChanged(() => {
                 if (state.currentUser) {
@@ -365,11 +345,9 @@ export const store = new Vuex.Store({
                 .catch(error => console.log(error));
         },
 
-        getPreviousPageHandler: ({ commit, state }) => {
+        getPreviousPageHandler: ({ commit }) => {
             console.log("previous categoriesPage");
             commit('getPreviousPage')
-
-
         },
         updateSearchTerm: ({ commit }, payload) => {
             console.log("updating searchTerm");
@@ -387,20 +365,13 @@ export const store = new Vuex.Store({
             console.log(" setResult");
             commit('setResult', payload);
         },
-        updatecurrentCategoryID: ({ commit }, payload) => {
-            // console.log(" updatecurrentCategoryID");
-            commit('updatecurrentCategoryID', payload);
+        updateCurrentCategoryID: ({ commit }, payload) => {
+            commit('updateCurrentCategoryID', payload);
         },
-        updatecurrentCategoryName: ({ commit }, payload) => {
-            // console.log(" updatecurrentCategoryName");
-            commit('updatecurrentCategoryName', payload);
-        },
-        chooseCategory: ({ commit }, payload) => {
-            // console.log(" chooseCategory");
-            commit('chooseCategory', payload);
+        updateCurrentCategoryName: ({ commit }, payload) => {
+            commit('updateCurrentCategoryName', payload);
         },
         updateUserCategory: ({ commit }, payload) => {
-            // console.log(" updateUserCategory");
             commit('updateUserCategory', payload);
         },
         updateEmail: ({ commit }, payload) => {
@@ -412,7 +383,9 @@ export const store = new Vuex.Store({
         updateName: ({ commit }, payload) => {
             commit('updateName', payload)
         },
-
+        chooseCategory: ({ commit }, payload) => {
+            commit('chooseCategory', payload);
+        },
     }
 
 });
