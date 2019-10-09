@@ -12,7 +12,9 @@ export const store = new Vuex.Store({
         dataAppended: false,
         searchTerm: "",
         lastElement: "",
-        searchURL: "https://en.wikipedia.org/w/api.php?action=query&list=allcategories&aclimit=max&format=json&accontinue&acprefix=",
+        searchURL: "https://en.wikipedia.org/w/api.php?action=query&list=allcategories&aclimit=max&format=json&acmin=1&accontinue&acprefix=",
+        articlesSubcategoriesURL: "https://en.wikipedia.org/w/api.php?action=query&format=json&list=categorymembers&cmtype=subcat&cmlimit=500&cmtitle=",
+        articlesURL: "https://en.wikipedia.org/w/api.php?action=query&format=json&list=categorymembers&cmtype=page&cmlimit=500&cmtitle=Category:",
         fullURL: "",
         nextURL: "",
         categoryInput: "",
@@ -280,7 +282,8 @@ export const store = new Vuex.Store({
             console.log(state.pageEnd)
         },
 
-        getRandomArticle(state, { commit }) {
+        getRandomSubcategoriesHandler(state, { commit }) {
+
 
         },
 
@@ -337,19 +340,45 @@ export const store = new Vuex.Store({
                 })
                 .catch(error => console.log(error));
         },
-        getRandomArticleHandler: ({ commit, state }) => {
-            state.dataAppended = true;
-
-            console.log("appending categories");
+        getRandomSubcategoriesHandler: ({ commit, state, dispatch }) => {
+            console.log("getting articles");
+            let randomCategory = state.userCategories[Math.floor(Math.random() * state.userCategories.length)].categoryCard.title
             axios
-                .get(state.nextURL)
+                .get(state.articlesSubcategoriesURL + 'Category:' + randomCategory + "&origin=*")
+
                 .then(response => {
-                    commit('appendSearchResultsValue', response);
-                    console.log(state.lastElement);
+                    console.log(response);
+                    if (response.data.query.categorymembers.length > 1) {
+                        // commit('getRandomSubcategories', response)
+                        // console.log(randomCategory);
+                        let subCatsArray = response.data.query.categorymembers
+                        console.log(subCatsArray)
+                        console.log('randpmSubCat')
+                        let randomsubCat = subCatsArray[Math.floor(Math.random() * subCatsArray.length)].title
+                        console.log(randomsubCat)
+
+                    }
+                    else if (response.data.query.categorymembers.length != 0) {
+                        dispatch('getRandomArticlesHandler', randomCategory)
+
+                    }
+
+
                 })
                 .catch(error => console.log(error));
         },
+        getRandomArticlesHandler: ({ commit, state }, payload) => {
+            console.log('randomArticle')
+            // console.log(payload)
+            axios.get(state.articlesURL + payload + "&origin=*").then(response => {
+                console.log(response)
+                // console.log(response.data.query.categorymembers)
+                let randomArticleID = response.data.query.categorymembers[Math.floor(Math.random() * response.data.query.categorymembers.length)].pageid
+                console.log(randomArticleID)
 
+            })
+
+        },
         getPreviousPageHandler: ({ commit }) => {
             console.log("previous categoriesPage");
             commit('getPreviousPage')
