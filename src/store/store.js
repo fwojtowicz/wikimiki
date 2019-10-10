@@ -104,6 +104,10 @@ export const store = new Vuex.Store({
 
     },
     mutations: {
+        saveArticlesID(state, payload) {
+            state.randomArticlesID.push(payload)
+            console.log(state.randomArticlesID)
+        },
         updateName(state, payload) {
             state.name = payload
         },
@@ -297,12 +301,6 @@ export const store = new Vuex.Store({
             console.log(state.pageEnd)
         },
 
-        getRandomSubcategoriesHandler(state, { commit }) {
-
-
-        },
-
-
     },
     actions: {
         setCurrentlyLoggedInUser({ commit }) {
@@ -400,6 +398,7 @@ export const store = new Vuex.Store({
 
                 let randomArticleID = response.data.query.categorymembers[Math.floor(Math.random() * response.data.query.categorymembers.length)].pageid
                 console.log(randomArticleID)
+                commit('saveArticlesID', randomArticleID)
 
             })
 
