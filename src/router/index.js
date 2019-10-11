@@ -6,53 +6,55 @@ import signUpPage from '../components/pages/signUpPage/signUpPage'
 import firebase from 'firebase'
 import VueRouter from 'vue-router';
 import { store } from '../store/store';
+import { routes } from '../router/routes'
 
 
 
 const router = new VueRouter({
     mode: 'history',
-    routes: [
-        {
-            path: '/home', name: 'home', components: {
-                default: Home,
-            },
-            meta: {
-                requiresAuth: true
+    routes: routes
+    // routes: [
+    //     {
+    //         path: '/home', name: 'home', components: {
+    //             default: Home,
+    //         },
+    //         meta: {
+    //             requiresAuth: true
 
-            }
-        },
-        {
-            path: '/selectPage', name: 'selectPage', components:
-            {
-                default: selectPage,
+    //         }
+    //     },
+    //     {
+    //         path: '/selectPage', name: 'selectPage', components:
+    //         {
+    //             default: selectPage,
 
-            }, meta: {
-                requiresAuth: true
+    //         }, meta: {
+    //             requiresAuth: true
 
-            }
+    //         }
 
-        },
-        {
-            path: '/articlesPage', name: 'articlesPage', components: {
-                default: articlesPage
-            }, meta: {
-                requiresAuth: true
+    //     },
+    //     {
+    //         path: '/articlesPage', name: 'articlesPage', components: {
+    //             default: articlesPage
+    //         }, meta: {
+    //             requiresAuth: true
 
-            }
-        },
-        {
-            path: '/login', name: 'login', component: loginPage
+    //         }
+    //     },
+    //     {
+    //         path: '/login', name: 'login', component: loginPage
 
-        },
-        {
-            path: '/signup', name: 'signup', component: signUpPage
-        },
-        {
-            path: '*', redirect: '/home'
-        }
+    //     },
+    //     {
+    //         path: '/signup', name: 'signup', component: signUpPage
+    //     },
+    //     {
+    //         path: '*', redirect: '/home'
+    //     }
 
 
-    ]
+    // ]
 });
 
 router.beforeEach((to, from, next) => {
