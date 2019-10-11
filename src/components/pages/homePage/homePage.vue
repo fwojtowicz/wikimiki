@@ -18,7 +18,7 @@
 </template>
 <script>
 import appHeader from "../../Header";
-import itemComponent from "../selectPage/itemComponent";
+import categoryComponent from "../selectPage/categoryComponent";
 
 export default {
   data() {
@@ -28,7 +28,7 @@ export default {
   },
   components: {
     appHeader,
-    appItem: itemComponent
+    appItem: categoryComponent
   },
   computed: {
     userCategories: {
