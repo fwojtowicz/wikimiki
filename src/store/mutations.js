@@ -1,9 +1,9 @@
 const fb = require("../firebase")
 export const mutations = {
 
-    saveArticlesID(state, payload) {
-        state.randomArticlesID.push(payload)
-        console.log(state.randomArticlesID)
+    saveArticleContent(state, payload) {
+        state.randomArticles.push(payload)
+        console.log(state.randomArticles)
     },
     updateName(state, payload) {
         state.name = payload
@@ -67,6 +67,8 @@ export const mutations = {
     getNextPage(state, response) {
         state.pageStart = state.pageEnd + 1
         state.pageEnd = state.pageStart + 19;
+        state.pageCounter++;
+        state.currentPageNumber++
         console.log(state.pageStart)
         console.log(state.pageEnd)
         JSON.stringify(response.data)
@@ -180,6 +182,7 @@ export const mutations = {
 
     },
     getPreviousPage(state) {
+        state.currentPageNumber--
         console.log(state.categoriesArray.length)
         console.log(state.pageStart)
         console.log(state.pageEnd)

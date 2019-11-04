@@ -63,5 +63,14 @@ export const getters = {
     nameGetter: state => {
         return state.name
     },
+    pageCounterGetter: state => {
+        return state.pageCounter
+    },
+    currentPageNumberGetter: state => {
+        return state.currentPageNumber
+    },
+    randomArticlesGetter: state => {
+        return state.randomArticles
+    }
 
 }

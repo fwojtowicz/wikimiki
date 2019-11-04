@@ -22,6 +22,7 @@
         @click="getNextPage"
         v-show="dataDownloaded"
       >Next page</md-button>
+      <p>page {{currentPageNumber}} of {{pageCounter}} downloaded</p>
     </md-content>
   </div>
 </template>
@@ -74,6 +75,16 @@ export default {
     dataDownloaded: {
       get() {
         return this.$store.getters.dataDownloadedGetter;
+      }
+    },
+    pageCounter: {
+      get() {
+        return this.$store.getters.pageCounterGetter;
+      }
+    },
+    currentPageNumber: {
+      get() {
+        return this.$store.getters.currentPageNumberGetter;
       }
     }
   },

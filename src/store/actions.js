@@ -90,7 +90,7 @@ export const actions = {
             })
             .catch(error => console.log(error));
     },
-    getRandomArticlesHandler: ({ commit, state }, payload) => {
+    getRandomArticlesHandler: ({ commit, state, dispatch }, payload) => {
         console.log('randomArticleHere')
         axios.get(state.articlesURL + payload + "&origin=*").then(response => {
             console.log(response)
@@ -98,8 +98,19 @@ export const actions = {
             let randomArticleID = response.data.query.categorymembers[Math.floor(Math.random() * response.data.query.categorymembers.length)].pageid
             let randomArticleTitle = response.data.query.categorymembers[Math.floor(Math.random() * response.data.query.categorymembers.length)].title
             console.log(randomArticleID)
-            commit('saveArticlesID', { randomArticleTitle, randomArticleID })
+            //commit('saveArticlesID', { randomArticleTitle, randomArticleID })
+            dispatch('getRandomArticleContent', randomArticleTitle)
 
+
+        })
+
+    },
+    getRandomArticleContent: ({ commit, state }, payload) => {
+        console.log('gettingContent')
+
+        axios.get(state.articleContentURL + payload + "&origin=*").then(response => {
+            console.log()
+            commit('saveArticleContent', Object.values(response.data.query.pages)[0])
         })
 
     },
