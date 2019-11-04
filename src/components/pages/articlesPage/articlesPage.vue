@@ -3,11 +3,15 @@
     <div>
       <appHeader :title="title"></appHeader>
       <md-button class="md-dense md-raised md-primary" @click="getRandomSubcategories">GET</md-button>
-      <ul>
-        <li v-for="(randomArticle, i) in randomArticles" :key="i">
-          <div v-html="randomArticle.extract"></div>
-        </li>
-      </ul>
+      <div class="md-layout">
+        <div class="md-layout-item">
+          <article-item
+            v-for="(randomArticle, i) in randomArticles"
+            :key="i"
+            :randomArticle="randomArticle"
+          ></article-item>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -15,11 +19,13 @@
 <script>
 import appHeader from "../../Header";
 import { mapActions } from "vuex";
+import articleComponent from "./articleComponent";
 
 export default {
   data() {
     return { title: "Your articles" };
   },
+
   computed: {
     randomArticles: {
       get() {
@@ -28,6 +34,7 @@ export default {
     }
   },
   components: {
+    articleItem: articleComponent,
     appHeader
   },
 
