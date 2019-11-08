@@ -7,6 +7,9 @@
       <md-card-actions>
         <div>
           <md-button class="md-icon-button">
+            <md-icon>launch</md-icon>
+          </md-button>
+          <md-button class="md-icon-button">
             <md-icon>favorite</md-icon>
           </md-button>
           <md-card-expand-trigger>
