@@ -6,7 +6,7 @@
     <md-card-expand>
       <md-card-actions>
         <div>
-          <md-button class="md-icon-button">
+          <md-button class="md-icon-button" @click="openArticle">
             <md-icon>launch</md-icon>
           </md-button>
           <md-button class="md-icon-button">
@@ -28,14 +28,28 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   props: ["randomArticle"],
-
+  data() {
+    return {
+      wikiURL: "https://en.wikipedia.org/wiki/" + this.randomArticle.title
+    };
+  },
   computed: {
     randomArticles: {
       get() {
         return this.$store.getters.randomArticlesGetter;
       }
+    }
+  },
+  methods: {
+    // ...mapActions(["openArticleHandler"]),
+    openArticle() {
+      // console.log(this.wikiURL);
+      window.open(this.wikiURL, "_blank");
+      //this.$store.dispatch("openArticleHandler", this.wikiURL);
     }
   }
 };

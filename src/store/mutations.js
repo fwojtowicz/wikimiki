@@ -2,9 +2,15 @@ const fb = require("../firebase")
 export const mutations = {
 
     saveArticleContent(state, payload) {
-        state.randomArticles.push(payload)
+        let articleCard = {
+            key: payload.pageid,
+            title: payload.title,
+            content: payload.extract,
+            isChosen: false
+        }
+        state.randomArticles.push(articleCard)
         sessionStorage.setItem('randomArticlesArray', JSON.stringify(state.randomArticles))
-        console.log('saving articles to localstorage')
+        console.log('saving articles to sessionStorage')
         console.log(state.randomArticles)
     },
     readArticleContent(state) {

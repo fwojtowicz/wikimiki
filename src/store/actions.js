@@ -109,7 +109,7 @@ export const actions = {
         console.log('gettingContent')
 
         axios.get(state.articleContentURL + payload + "&origin=*").then(response => {
-            console.log()
+            console.log(response)
             commit('saveArticleContent', Object.values(response.data.query.pages)[0])
         })
 
@@ -159,7 +159,12 @@ export const actions = {
     },
     readArticleContent: ({ commit }) => {
         commit('readArticleContent')
-    }
+    },
+    // openArticleHandler: () => {
+    //     console.log(payload)
+    //     window.open("https://en.wikipedia.org/wiki/Anton_Giulio_Bragaglia", "_blank")
+
+    // }
 
 
 
