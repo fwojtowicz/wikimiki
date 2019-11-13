@@ -44,8 +44,11 @@ export default {
       this.$store.dispatch("getRandomSubcategoriesHandler");
     }
   },
-  mounted() {
+  created() {
     this.$store.dispatch("fetchUserCategories");
+  },
+  mounted() {
+    this.$store.dispatch("readArticleContent");
   }
 };
 </script>

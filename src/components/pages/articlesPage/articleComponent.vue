@@ -22,6 +22,7 @@
       <md-card-expand-content>
         <md-card-content v-html="randomArticle.extract"></md-card-content>
       </md-card-expand-content>
+      <div></div>
     </md-card-expand>
   </md-card>
 </template>

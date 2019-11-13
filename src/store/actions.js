@@ -97,7 +97,7 @@ export const actions = {
 
             let randomArticleID = response.data.query.categorymembers[Math.floor(Math.random() * response.data.query.categorymembers.length)].pageid
             let randomArticleTitle = response.data.query.categorymembers[Math.floor(Math.random() * response.data.query.categorymembers.length)].title
-            console.log(randomArticleID)
+            // console.log(randomArticleID)
             //commit('saveArticlesID', { randomArticleTitle, randomArticleID })
             dispatch('getRandomArticleContent', randomArticleTitle)
 
@@ -157,6 +157,9 @@ export const actions = {
     chooseCategory: ({ commit }, payload) => {
         commit('chooseCategory', payload);
     },
+    readArticleContent: ({ commit }) => {
+        commit('readArticleContent')
+    }
 
 
 

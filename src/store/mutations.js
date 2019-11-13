@@ -3,10 +3,17 @@ export const mutations = {
 
     saveArticleContent(state, payload) {
         state.randomArticles.push(payload)
+        localStorage.setItem('randomArticlesArray', JSON.stringify(state.randomArticles))
+        console.log('saving articles to localstorage')
         console.log(state.randomArticles)
     },
+    readArticleContent(state) {
+        state.randomArticles = JSON.parse(localStorage.getItem('randomArticlesArray'))
+        console.log(state.randomArticles)
+
+    },
     updateName(state, payload) {
-        state.name = payload
+        state.name = payload;
     },
     updateSearchTerm(state, payload) {
         state.searchTerm = payload;
@@ -200,4 +207,8 @@ export const mutations = {
         console.log(state.pageStart)
         console.log(state.pageEnd)
     }
+
+    // saveRandomArticles(state) {
+
+    // }
 }
