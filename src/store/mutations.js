@@ -3,12 +3,13 @@ export const mutations = {
 
     saveArticleContent(state, payload) {
         state.randomArticles.push(payload)
-        localStorage.setItem('randomArticlesArray', JSON.stringify(state.randomArticles))
+        sessionStorage.setItem('randomArticlesArray', JSON.stringify(state.randomArticles))
         console.log('saving articles to localstorage')
         console.log(state.randomArticles)
     },
     readArticleContent(state) {
-        state.randomArticles = JSON.parse(localStorage.getItem('randomArticlesArray'))
+        if (sessionStorage.getItem('randomArticlesArray'))
+            state.randomArticles = JSON.parse(sessionStorage.getItem('randomArticlesArray'))
         console.log(state.randomArticles)
 
     },
