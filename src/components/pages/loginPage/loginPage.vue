@@ -42,10 +42,10 @@ export default {
       fb.auth
         .signInWithEmailAndPassword(this.email, this.password)
         .then(user => {
-          this.$store.commit("initializeArray");
           this.$store.commit("setCurrentUser", user);
           this.$store.dispatch("fetchUserProfile");
-          this.$store.dispatch("fetchUserCategories");
+          if (this.$store.state.userCategoriesFB != null)
+            this.$store.dispatch("fetchUserCategories");
 
           router.push("/home");
         })

@@ -46,7 +46,6 @@ export default {
   },
   created() {
     this.$store.dispatch("fetchUserCategories");
-    this.$store.dispatch("checkifChosen");
   },
   mounted() {
     this.$store.dispatch("readArticleContent");

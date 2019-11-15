@@ -20,7 +20,7 @@
         </div>
       </md-card-actions>
       <md-card-expand-content>
-        <md-card-content v-html="randomArticle.extract"></md-card-content>
+        <md-card-content v-html="randomArticle.content"></md-card-content>
       </md-card-expand-content>
       <div></div>
     </md-card-expand>
@@ -28,8 +28,6 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-
 export default {
   props: ["randomArticle"],
   data() {
@@ -45,11 +43,8 @@ export default {
     }
   },
   methods: {
-    // ...mapActions(["openArticleHandler"]),
     openArticle() {
-      // console.log(this.wikiURL);
       window.open(this.wikiURL, "_blank");
-      //this.$store.dispatch("openArticleHandler", this.wikiURL);
     }
   }
 };

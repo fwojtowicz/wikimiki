@@ -107,6 +107,10 @@ export default {
     getPreviousPage() {
       this.$store.dispatch("getPreviousPageHandler");
     }
+  },
+  created() {
+    this.$store.dispatch("fetchUserCategories");
+    this.$store.dispatch("checkIfChosen");
   }
 };
 </script>

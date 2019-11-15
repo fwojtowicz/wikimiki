@@ -200,7 +200,7 @@ export const mutations = {
         }
     },
 
-    checkifChosen(state) {
+    checkIfChosen(state) {
         console.log('just checking')
         state.categoriesArray = state.categoriesArray.map(element => {
             element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
@@ -227,9 +227,11 @@ export const mutations = {
         console.log(state.pageArray)
         console.log(state.pageStart)
         console.log(state.pageEnd)
+    },
+    refreshArticlesPage(state) {
+        state.randomArticles = []
+    },
+    refreshCategoriesPage(state) {
+        state.pageArray = []
     }
-
-    // saveRandomArticles(state) {
-
-    // }
 }

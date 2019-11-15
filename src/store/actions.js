@@ -9,12 +9,14 @@ export const actions = {
     fetchUserProfile({ commit }) {
         commit('setCurrentUser', fb.auth.currentUser)
     },
-    checkifChosen({ commit }) {
-        commit('checkifChosen')
+    checkIfChosen({ commit }) {
+        commit('checkIfChosen')
 
     },
 
     fetchUserCategories({ commit, state }) {
+        console.log('fetched')
+        state.userCategories = []
         fb.auth.onAuthStateChanged(() => {
             if (state.currentUser) {
                 fb.userCategoriesCollection.doc(state.currentUser.uid).get().then(response => {
@@ -24,11 +26,15 @@ export const actions = {
                 })
             }
         })
+
     },
 
     clearData: ({ commit }) => {
         commit('setCurrentUser', null)
         commit('setUserProfile', {})
+        commit("refreshArticlesPage");
+        commit('refreshCategoriesPage')
+
         sessionStorage.clear();
 
     },
@@ -50,7 +56,7 @@ export const actions = {
         //     return element;
         // })
         if (state.pageArray && state.userCategories != null)
-            commit('checkifChosen')
+            commit('checkIfChosen')
     },
     getNextPageHandler: ({ commit, state }) => {
         state.dataAppended = true;
@@ -62,7 +68,7 @@ export const actions = {
                 commit('getNextPage', response);
                 console.log(state.lastElement);
                 if (state.pageArray)
-                    commit('checkifChosen')
+                    commit('checkIfChosen')
             })
             .catch(error => console.log(error));
 
@@ -96,12 +102,12 @@ export const actions = {
             })
             .catch(error => console.log(error));
     },
-    getRandomArticlesHandler: ({ commit, state, dispatch }, payload) => {
+    getRandomArticlesHandler: ({ state, dispatch }, payload) => {
         console.log('randomArticleHere')
         axios.get(state.articlesURL + payload + "&origin=*").then(response => {
             console.log(response)
 
-            let randomArticleID = response.data.query.categorymembers[Math.floor(Math.random() * response.data.query.categorymembers.length)].pageid
+            // let randomArticleID = response.data.query.categorymembers[Math.floor(Math.random() * response.data.query.categorymembers.length)].pageid
             let randomArticleTitle = response.data.query.categorymembers[Math.floor(Math.random() * response.data.query.categorymembers.length)].title
             // console.log(randomArticleID)
             //commit('saveArticlesID', { randomArticleTitle, randomArticleID })
@@ -123,7 +129,7 @@ export const actions = {
     getPreviousPageHandler: ({ commit }) => {
         console.log("previous categoriesPage");
         commit('getPreviousPage')
-        commit('checkifChosen')
+        commit('checkIfChosen')
     },
     updateSearchTerm: ({ commit }, payload) => {
         console.log("updating searchTerm");
@@ -166,11 +172,7 @@ export const actions = {
     readArticleContent: ({ commit }) => {
         commit('readArticleContent')
     },
-    // openArticleHandler: () => {
-    //     console.log(payload)
-    //     window.open("https://en.wikipedia.org/wiki/Anton_Giulio_Bragaglia", "_blank")
 
-    // }
 
 
 

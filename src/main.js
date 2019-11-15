@@ -9,7 +9,6 @@ import 'vue-material/dist/theme/default.css';
 import '../node_modules/material-icons-font/material-icons-font.css'
 const fb = require("./firebase")
 
-
 Vue.use(VueRouter);
 Vue.use(MdButton);
 Vue.use(MdContent);
