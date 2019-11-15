@@ -9,6 +9,10 @@ export const actions = {
     fetchUserProfile({ commit }) {
         commit('setCurrentUser', fb.auth.currentUser)
     },
+    checkifChosen({ commit }) {
+        commit('checkifChosen')
+
+    },
 
     fetchUserCategories({ commit, state }) {
         fb.auth.onAuthStateChanged(() => {
@@ -25,6 +29,8 @@ export const actions = {
     clearData: ({ commit }) => {
         commit('setCurrentUser', null)
         commit('setUserProfile', {})
+        sessionStorage.clear();
+
     },
     getCategoriesHandler: ({ commit, state }) => {
         state.dataDownloaded = true;
@@ -39,11 +45,11 @@ export const actions = {
 
             })
             .catch(error => console.log(error));
-        state.categoriesArray = state.categoriesArray.map(element => {
-            element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
-            return element;
-        })
-        if (state.pageArray)
+        // state.categoriesArray = state.categoriesArray.map(element => {
+        //     element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
+        //     return element;
+        // })
+        if (state.pageArray && state.userCategories != null)
             commit('checkifChosen')
     },
     getNextPageHandler: ({ commit, state }) => {

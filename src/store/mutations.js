@@ -1,5 +1,15 @@
 const fb = require("../firebase")
 export const mutations = {
+    initializeArray(state) {
+        let categoryCard = {
+
+            key: "",
+            title: "",
+            isChosen: false,
+        }
+        console.log("ARRAY INITIALIZED")
+        state.categoriesArray.push(categoryCard)
+    },
 
     saveArticleContent(state, payload) {
         let articleCard = {
@@ -67,10 +77,14 @@ export const mutations = {
         state.categoriesArray = Object.values(state.wikiResults)
         state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
         console.log(state.userCategories)
-        state.pageArray = state.categoriesArray.map(element => {
-            element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.key === element.categoryCard.key);
-            return element;
-        })
+        console.log(state.pageArray)
+        if (state.userCategories != null) {
+            state.pageArray = state.categoriesArray.map(element => {
+                element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.key === element.categoryCard.key);
+                return element;
+            })
+        }
+        else { state.pageArray = Object.values(state.wikiResults) }
         state.pageStart = 0
         state.pageEnd = 19
         console.log(state.pageStart)
@@ -137,8 +151,8 @@ export const mutations = {
         state.path = payload
         if (state[state.path][state.currentCategoryID].categoryCard.isChosen) {
             state.userCategories.push(state.categoriesArray[state.currentCategoryID])
-            let userCategoriesFB = state.userCategories
-            let user = fb.auth.currentUser
+            let userCategoriesFB = state.userCategories;
+            let user = fb.auth.currentUser;
 
             fb.userCategoriesCollection
                 .doc(user.uid)
@@ -148,8 +162,8 @@ export const mutations = {
 
         }
         else {
-            let userCategoriesFB = state.userCategories
-            let user = fb.auth.currentUser
+            let userCategoriesFB = state.userCategories;
+            let user = fb.auth.currentUser;
             let indexOfToBeDeleted = 0
             console.log(payload)
             if (payload == 'categoriesArray') {
