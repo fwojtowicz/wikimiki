@@ -2,7 +2,11 @@
   <div>
     <div>
       <appHeader :title="title"></appHeader>
-      <md-button class="md-dense md-raised md-primary" @click="getRandomSubcategories">GET</md-button>
+      <md-button
+        class="md-dense md-raised md-primary"
+        v-show="(this.$store.state.userCategories.length)!=0"
+        @click="getRandomSubcategories"
+      >GET</md-button>
       <div class="md-layout">
         <div class="md-layout-item">
           <article-item
