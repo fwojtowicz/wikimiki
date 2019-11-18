@@ -38,16 +38,19 @@ export const actions = {
         sessionStorage.clear();
 
     },
-    getCategoriesHandler: ({ commit, state }) => {
+    getCategoriesHandler: ({ commit, dispatch, state }) => {
         state.dataDownloaded = true;
         state.filteredResults = []
         state.categoryInput = ""
         console.log("getting categories");
+        console.log(state.fullURL)
         axios
             .get(state.fullURL)
             .then(response => {
                 commit('setSearchResultsValue', response);
                 console.log(state.lastElement);
+                dispatch("checkIfChosen");
+
 
             })
             .catch(error => console.log(error));
@@ -55,8 +58,7 @@ export const actions = {
         //     element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
         //     return element;
         // })
-        if (state.pageArray && state.userCategories != null)
-            commit('checkIfChosen')
+
     },
     getNextPageHandler: ({ commit, state }) => {
         state.dataAppended = true;

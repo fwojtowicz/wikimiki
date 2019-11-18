@@ -11,14 +11,12 @@ export const getters = {
         return state.searchURL;
     },
     fullURLGetter: state => {
-        state.fullURL = state.searchURL + state.searchTerm + "&origin=*"
         return state.fullURL;
     },
     lastElementGetter: state => {
         return state.lastElement;
     },
     nextURLGetter: state => {
-        state.nextURL = state.searchURL + state.searchTerm + "&acfrom=" + state.lastElement + "&origin=*";
         return state.nextURL;
     },
     categoryInputGetter: state => {

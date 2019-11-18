@@ -7,9 +7,8 @@
         <md-input v-model="searchTerm"></md-input>
       </md-field>
       <md-button class="md-dense md-raised md-primary" @click="submitTerm">Search</md-button>
-      <p>fullURL {{fullURL}}</p>
-      <p>lastElement {{lastElement}}</p>
-      <p>next url {{nextURL}}</p>
+      <!-- <p>fullURL {{fullURL}}</p> -->
+      <!-- <p>next url {{nextURL}}</p> -->
       <searchResults></searchResults>
       <hr />
       <md-button
@@ -99,9 +98,15 @@ export default {
       "getPreviousPageHandler"
     ]),
     submitTerm() {
-      this.$store.dispatch("getCategoriesHandler");
+      // console.log(this.$store.state.searchTerm);
+      this.$store.commit("updateFullURL");
+      this.$store.dispatch(
+        "getCategoriesHandler",
+        this.$store.state.searchTerm
+      );
     },
     getNextPage() {
+      this.$store.commit("updateNextURL");
       this.$store.dispatch("getNextPageHandler");
     },
     getPreviousPage() {

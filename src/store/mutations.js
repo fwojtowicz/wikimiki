@@ -35,6 +35,16 @@ export const mutations = {
     updateSearchTerm(state, payload) {
         state.searchTerm = payload;
     },
+    updateFullURL(state, payload) {
+        state.fullURL = state.searchURL + state.searchTerm + "&origin=*"
+
+
+    },
+    updateNextURL(state, payload) {
+        state.nextURL = state.searchURL + state.searchTerm + "&acfrom=" + state.lastElement + "&origin=*";
+
+
+    },
     updateCategoryInput(state, payload) {
         state.categoryInput = payload;
     },
@@ -158,7 +168,7 @@ export const mutations = {
                 .doc(user.uid)
                 .set({
                     userCategoriesFB
-                })
+                });
 
         }
         else {
