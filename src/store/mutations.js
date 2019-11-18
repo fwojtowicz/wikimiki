@@ -35,39 +35,35 @@ export const mutations = {
     updateSearchTerm(state, payload) {
         state.searchTerm = payload;
     },
-    updateFullURL(state, payload) {
+    updateFullURL(state) {
         state.fullURL = state.searchURL + state.searchTerm + "&origin=*"
-
-
     },
-    updateNextURL(state, payload) {
+    updateNextURL(state) {
         state.nextURL = state.searchURL + state.searchTerm + "&acfrom=" + state.lastElement + "&origin=*";
-
-
     },
     updateCategoryInput(state, payload) {
         state.categoryInput = payload;
     },
     updateCurrentCategoryID(state, payload) {
-        state.currentCategoryID = payload
+        state.currentCategoryID = payload;
     },
     updateCurrentCategoryName(state, payload) {
-        state.currentCategoryName = payload
+        state.currentCategoryName = payload;
     },
     updateEmail(state, payload) {
-        state.email = payload
+        state.email = payload;
     },
     updatePassword(state, payload) {
-        state.password = payload
+        state.password = payload;
     },
     setCurrentUser(state, response) {
-        state.currentUser = response
+        state.currentUser = response;
     },
     setUserProfile(state, response) {
-        state.userProfile = response
+        state.userProfile = response;
     },
     setUserCategories(state, response) {
-        state.userCategories = response
+        state.userCategories = response;
     },
 
     setSearchResultsValue(state, response) {
@@ -100,32 +96,6 @@ export const mutations = {
         console.log(state.pageStart)
         console.log(state.pageEnd)
         console.log(state.pageArray)
-    },
-
-    getNextPage(state, response) {
-        state.pageStart = state.pageEnd + 1
-        state.pageEnd = state.pageStart + 19;
-        state.pageCounter++;
-        state.currentPageNumber++
-        console.log(state.pageStart)
-        console.log(state.pageEnd)
-        JSON.stringify(response.data)
-        for (state.categoryCounter = 0; state.categoryCounter < 21; state.categoryCounter++) {
-            state.wikiResults[state.categoryCounter] = ({
-                categoryCard: {
-                    key: response.data.query.allcategories[state.categoryCounter]['*'],
-                    title: response.data.query.allcategories[state.categoryCounter]['*'],
-                    isChosen: false,
-                }
-            })
-        }
-        state.newArray = Object.values(state.wikiResults)
-        state.newArray.splice(0, 1);
-        state.categoriesArray.push(...state.newArray);
-        state.pageArray = state.newArray.map(element => element)
-        state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
-        console.log(state.pageArray)
-
     },
 
     updateFilteredResults(state) {
@@ -219,7 +189,33 @@ export const mutations = {
 
 
     },
+    getNextPage(state, response) {
+        state.pageStart = state.pageEnd + 1
+        state.pageEnd = state.pageStart + 19;
+        state.currentPageNumber++
+        if (state.pageCounter < state.currentPageNumber) { state.pageCounter++ }
+        console.log(state.pageStart)
+        console.log(state.pageEnd)
+        JSON.stringify(response.data)
+        for (state.categoryCounter = 0; state.categoryCounter < 21; state.categoryCounter++) {
+            state.wikiResults[state.categoryCounter] = ({
+                categoryCard: {
+                    key: response.data.query.allcategories[state.categoryCounter]['*'],
+                    title: response.data.query.allcategories[state.categoryCounter]['*'],
+                    isChosen: false,
+                }
+            })
+        }
+        state.newArray = Object.values(state.wikiResults)
+        state.newArray.splice(0, 1);
+        state.categoriesArray.push(...state.newArray);
+        state.pageArray = state.newArray.map(element => element)
+        state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
+        console.log(state.pageArray)
+
+    },
     getPreviousPage(state) {
+        state.lastPageNumber = state.currentPageNumber
         state.currentPageNumber--
         console.log(state.categoriesArray.length)
         console.log(state.pageStart)

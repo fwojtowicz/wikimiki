@@ -14,7 +14,7 @@
       <md-button
         class="md-dense md-raised md-primary"
         @click="getPreviousPage"
-        v-show=" dataAppended"
+        v-show=" dataAppended && this.$store.state.currentPageNumber > 1"
       >Previous page</md-button>
       <md-button
         class="md-dense md-raised md-primary"
@@ -98,7 +98,6 @@ export default {
       "getPreviousPageHandler"
     ]),
     submitTerm() {
-      // console.log(this.$store.state.searchTerm);
       this.$store.commit("updateFullURL");
       this.$store.dispatch(
         "getCategoriesHandler",

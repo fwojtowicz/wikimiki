@@ -23,6 +23,7 @@ export const state = {
     pageEnd: 0,
     pageCounter: 1,
     currentPageNumber: 1,
+    lastPageNumber: 1,
     userProfile: {},
     email: "",
     password: "",
