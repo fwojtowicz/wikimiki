@@ -10,9 +10,12 @@
             <md-icon>launch</md-icon>
           </md-button>
           <md-button class="md-icon-button">
-            <md-icon>favorite</md-icon>
+            <md-icon>bookmark</md-icon>
           </md-button>
-          <md-card-expand-trigger>
+          <md-button class="md-icon-button">
+            <md-icon>delete</md-icon>
+          </md-button>
+          <md-card-expand-trigger v-show="randomArticle.content">
             <md-button class="md-icon-button">
               <md-icon>keyboard_arrow_down</md-icon>
             </md-button>
