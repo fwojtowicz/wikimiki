@@ -9,7 +9,7 @@
           <md-button
             v-bind:class="{'md-accent': category.categoryCard.isChosen}"
             class="md-icon-button"
-            @click="chooseCategory"
+            @click="chooseCategoryHandler"
           >
             <md-icon>favorite</md-icon>
           </md-button>
@@ -100,13 +100,14 @@ export default {
       this.$store.dispatch("updateFilteredResults");
     },
 
-    chooseCategory() {
+    chooseCategoryHandler() {
       this.currentCategoryName = this.category.categoryCard.title;
       this.currentCategoryID = this.category.categoryCard.key;
       console.log(this.currentCategoryName);
       console.log(this.currentCategoryID);
 
-      this.$store.dispatch("chooseCategory", this.componentRoute);
+      //this.$store.dispatch("chooseCategory", this.componentRoute);
+      this.chooseCategory(this.componentRoute);
     }
   },
 

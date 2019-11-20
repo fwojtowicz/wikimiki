@@ -185,9 +185,7 @@ export const mutations = {
         state.categoriesArray = state.categoriesArray.map(element => {
             element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
             return element;
-        })
-
-
+        });
     },
     getNextPage(state, response) {
         state.pageStart = state.pageEnd + 1

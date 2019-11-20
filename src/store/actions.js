@@ -54,10 +54,10 @@ export const actions = {
 
             })
             .catch(error => console.log(error));
-        // state.categoriesArray = state.categoriesArray.map(element => {
-        //     element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
-        //     return element;
-        // })
+        state.categoriesArray = state.categoriesArray.map(element => {
+            element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
+            return element;
+        })
 
     },
     getNextPageHandler: ({ commit, state }) => {

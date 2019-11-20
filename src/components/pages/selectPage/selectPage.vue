@@ -7,8 +7,6 @@
         <md-input v-model="searchTerm"></md-input>
       </md-field>
       <md-button class="md-dense md-raised md-primary" @click="submitTerm">Search</md-button>
-      <!-- <p>fullURL {{fullURL}}</p> -->
-      <!-- <p>next url {{nextURL}}</p> -->
       <searchResults></searchResults>
       <hr />
       <md-button
@@ -21,7 +19,7 @@
         @click="getNextPage"
         v-show="dataDownloaded"
       >Next page</md-button>
-      <p>page {{currentPageNumber}} of {{pageCounter}} downloaded</p>
+      <h3>page {{currentPageNumber}} of {{pageCounter}} downloaded</h3>
     </md-content>
   </div>
 </template>
@@ -114,7 +112,6 @@ export default {
   },
   created() {
     this.$store.dispatch("fetchUserCategories");
-    this.$store.dispatch("checkIfChosen");
   }
 };
 </script>
