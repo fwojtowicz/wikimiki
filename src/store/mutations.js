@@ -1,9 +1,9 @@
 const fb = require("../firebase")
+import Vue from 'vue'
 export const mutations = {
     initializeArray(state) {
         let categoryCard = {
 
-            key: "",
             title: "",
             isChosen: false,
         }
@@ -73,7 +73,7 @@ export const mutations = {
         for (state.categoryCounter = 0; state.categoryCounter < 20; state.categoryCounter++) {
             state.wikiResults[state.categoryCounter] = ({
                 categoryCard: {
-                    key: response.data.query.allcategories[state.categoryCounter]['*'],
+                    // key: response.data.query.allcategories[state.categoryCounter]['*'],
                     title: response.data.query.allcategories[state.categoryCounter]['*'],
                     isChosen: false,
                 }
@@ -86,7 +86,7 @@ export const mutations = {
         console.log(state.pageArray)
         if (state.userCategories != null) {
             state.pageArray = state.categoriesArray.map(element => {
-                element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.key === element.categoryCard.key);
+                element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
                 return element;
             })
         }
@@ -108,76 +108,96 @@ export const mutations = {
         }
     },
 
-    chooseCategory(state, payload) {
-        let whichTable = ""
+    chooseCategory(state, { categoryCard }) {
+        console.log(categoryCard)
+        console.log(categoryCard.isChosen)
+        categoryCard.isChosen = !categoryCard.isChosen
+        console.log(categoryCard.isChosen)
 
-        if (payload == 'selectPage') {
-            state.currentCategoryID = state.categoriesArray.map(e => e.categoryCard.title).indexOf(state.currentCategoryName);
-            console.log(state.currentCategoryID)
-            state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
-            whichTable = 'categoriesArray'
-        }
-        else if (payload == 'home') {
-            state.currentCategoryID = state.userCategories.map(e => e.categoryCard.title).indexOf(state.currentCategoryName);
-            console.log(state.currentCategoryID)
-            whichTable = 'userCategories'
-            state.userCategories[state.currentCategoryID].categoryCard.isChosen = !state.userCategories[state.currentCategoryID].categoryCard.isChosen;
+        Vue.set(state.userCategories, categoryCard.title, categoryCard)
+        let userCategoriesFB = state.userCategories
+        let user = fb.auth.currentUser
+        console.log(user)
+        console.log(userCategoriesFB)
+        fb.userCategoriesCollection
+            .doc(user.uid)
+            .set({
+                userCategoriesFB
+            });
 
-        }
-        this.dispatch('updateUserCategory', whichTable)
+
+
+
+
+        // let whichTable = ""
+
+        // if (payload == 'selectPage') {
+        //     state.currentCategoryID = state.categoriesArray.map(e => e.categoryCard.title).indexOf(state.currentCategoryName);
+        //     console.log(state.currentCategoryID)
+        //     state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
+        //     whichTable = 'categoriesArray'
+        // }
+        // else if (payload == 'home') {
+        //     state.currentCategoryID = state.userCategories.map(e => e.categoryCard.title).indexOf(state.currentCategoryName);
+        //     console.log(state.currentCategoryID)
+        //     whichTable = 'userCategories'
+        //     state.userCategories[state.currentCategoryID].categoryCard.isChosen = !state.userCategories[state.currentCategoryID].categoryCard.isChosen;
+
+        // }
+        // this.dispatch('updateUserCategory', whichTable)
     },
 
     updateUserCategory(state, payload) {
-        state.path = payload
-        if (state[state.path][state.currentCategoryID].categoryCard.isChosen) {
-            state.userCategories.push(state.categoriesArray[state.currentCategoryID])
-            let userCategoriesFB = state.userCategories;
-            let user = fb.auth.currentUser;
+        // state.path = payload
+        // if (state[state.path][state.currentCategoryID].categoryCard.isChosen) {
+        //     state.userCategories.push(state.categoriesArray[state.currentCategoryID])
+        //     let userCategoriesFB = state.userCategories;
+        //     let user = fb.auth.currentUser;
 
-            fb.userCategoriesCollection
-                .doc(user.uid)
-                .set({
-                    userCategoriesFB
-                });
+        // fb.userCategoriesCollection
+        //     .doc(user.uid)
+        //     .set({
+        //         userCategoriesFB
+        //     });
 
-        }
-        else {
-            let userCategoriesFB = state.userCategories;
-            let user = fb.auth.currentUser;
-            let indexOfToBeDeleted = 0
-            console.log(payload)
-            if (payload == 'categoriesArray') {
-                // state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
-                indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
-                console.log(indexOfToBeDeleted)
-                if (indexOfToBeDeleted !== -1) {
-                    state.userCategories.splice(indexOfToBeDeleted, 1);
-                }
-            } else if (payload == 'userCategories') {
-                indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
-                console.log(indexOfToBeDeleted)
-                if (indexOfToBeDeleted !== -1) {
-                    state.userCategories.splice(indexOfToBeDeleted, 1);
-                }
-                // if (state.categoriesArray) {
-                //     indexOfToBeDeleted = (state.categoriesArray.findIndex(element => element.categoryCard.title === state.currentCategoryName))
-                //     console.log(indexOfToBeDeleted)
-                //     state.categoriesArray[indexOfToBeDeleted].categoryCard.isChosen = false
-                // }
+        // }
+        // else {
+        //     let userCategoriesFB = state.userCategories;
+        //     let user = fb.auth.currentUser;
+        //     let indexOfToBeDeleted = 0
+        //     console.log(payload)
+        //     if (payload == 'categoriesArray') {
+        //         // state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
+        //         indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
+        //         console.log(indexOfToBeDeleted)
+        //         if (indexOfToBeDeleted !== -1) {
+        //             state.userCategories.splice(indexOfToBeDeleted, 1);
+        //         }
+        //     } else if (payload == 'userCategories') {
+        //         indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
+        //         console.log(indexOfToBeDeleted)
+        //         if (indexOfToBeDeleted !== -1) {
+        //             state.userCategories.splice(indexOfToBeDeleted, 1);
+        //         }
+        //         // if (state.categoriesArray) {
+        //         //     indexOfToBeDeleted = (state.categoriesArray.findIndex(element => element.categoryCard.title === state.currentCategoryName))
+        //         //     console.log(indexOfToBeDeleted)
+        //         //     state.categoriesArray[indexOfToBeDeleted].categoryCard.isChosen = false
+        //         // }
 
 
-            }
+        //     }
 
-            fb.userCategoriesCollection
-                .doc(user.uid)
-                .set({
-                    userCategoriesFB
-                })
-            this.dispatch('fetchUserCategories')
+        //     fb.userCategoriesCollection
+        //         .doc(user.uid)
+        //         .set({
+        //             userCategoriesFB
+        //         })
+        //     this.dispatch('fetchUserCategories')
 
-            console.log(state.userCategories)
+        //     console.log(state.userCategories)
 
-        }
+        // }
     },
 
     checkIfChosen(state) {
@@ -198,7 +218,7 @@ export const mutations = {
         for (state.categoryCounter = 0; state.categoryCounter < 21; state.categoryCounter++) {
             state.wikiResults[state.categoryCounter] = ({
                 categoryCard: {
-                    key: response.data.query.allcategories[state.categoryCounter]['*'],
+                    // key: response.data.query.allcategories[state.categoryCounter]['*'],
                     title: response.data.query.allcategories[state.categoryCounter]['*'],
                     isChosen: false,
                 }

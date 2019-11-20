@@ -101,13 +101,16 @@ export default {
     },
 
     chooseCategoryHandler() {
-      this.currentCategoryName = this.category.categoryCard.title;
-      this.currentCategoryID = this.category.categoryCard.key;
-      console.log(this.currentCategoryName);
-      console.log(this.currentCategoryID);
+      this.$store.dispatch("chooseCategory", {
+        categoryCard: this.category.categoryCard
+      });
+      // this.currentCategoryName = this.category.categoryCard.title;
+      // this.currentCategoryID = this.category.categoryCard.key;
+      // console.log(this.currentCategoryName);
+      // console.log(this.currentCategoryID);
 
-      //this.$store.dispatch("chooseCategory", this.componentRoute);
-      this.chooseCategory(this.componentRoute);
+      // //this.$store.dispatch("chooseCategory", this.componentRoute);
+      // this.chooseCategory(this.componentRoute);
     }
   },
 

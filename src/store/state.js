@@ -13,7 +13,7 @@ export const state = {
     wikiResults: {},
     categoriesArray: [],
     filteredResults: [],
-    userCategories: [],
+    userCategories: {},
     categoryCounter: 0,
     selectedCatCounter: 0,
     currentCategoryName: "",

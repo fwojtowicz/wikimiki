@@ -168,8 +168,9 @@ export const actions = {
     updateName: ({ commit }, payload) => {
         commit('updateName', payload)
     },
-    chooseCategory: ({ commit }, payload) => {
-        commit('chooseCategory', payload);
+    chooseCategory: ({ commit }, { categoryCard }) => {
+        console.log(categoryCard)
+        commit('chooseCategory', { categoryCard });
     },
     readArticleContent: ({ commit }) => {
         commit('readArticleContent')
