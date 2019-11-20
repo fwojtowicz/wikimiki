@@ -113,17 +113,24 @@ export const mutations = {
         console.log(categoryCard.isChosen)
         categoryCard.isChosen = !categoryCard.isChosen
         console.log(categoryCard.isChosen)
+        if (categoryCard.isChosen) {
+            Vue.set(state.userCategories, categoryCard.title, categoryCard)
+            console.log(state.userCategories)
+        }
+        else {
+            Vue.delete(state.userCategories, categoryCard.title, categoryCard)
+            console.log(state.userCategories)
 
-        Vue.set(state.userCategories, categoryCard.title, categoryCard)
-        let userCategoriesFB = state.userCategories
-        let user = fb.auth.currentUser
-        console.log(user)
-        console.log(userCategoriesFB)
-        fb.userCategoriesCollection
-            .doc(user.uid)
-            .set({
-                userCategoriesFB
-            });
+        }
+        // let userCategoriesFB = state.userCategories
+        // let user = fb.auth.currentUser
+        // console.log(user)
+        // console.log(userCategoriesFB)
+        // fb.userCategoriesCollection
+        //     .doc(user.uid)
+        //     .set({
+        //         userCategoriesFB
+        //     });
 
 
 
