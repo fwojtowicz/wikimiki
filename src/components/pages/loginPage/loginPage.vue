@@ -44,8 +44,8 @@ export default {
         .then(user => {
           this.$store.commit("setCurrentUser", user);
           this.$store.dispatch("fetchUserProfile");
-          if (this.$store.state.userCategoriesFB != null)
-            this.$store.dispatch("fetchUserCategories");
+          // if (this.$store.state.userCategoriesFB != null)
+          //   this.$store.dispatch("fetchUserCategories");
 
           router.push("/home");
         })

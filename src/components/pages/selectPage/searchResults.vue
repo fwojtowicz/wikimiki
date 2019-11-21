@@ -20,7 +20,7 @@
       <app-item
         class="md-layout-item"
         v-for="category in pageArray"
-        :key="category.categoryCard.title"
+        :key="category.title"
         :category="category"
       ></app-item>
     </div>
@@ -99,10 +99,10 @@ export default {
     chooseCategory() {
       this.$store.dispatch("chooseCategory");
     }
-  },
-  mounted() {
-    this.$store.dispatch("fetchUserCategories");
   }
+  // mounted() {
+  //   this.$store.dispatch("fetchUserCategories");
+  // }
 };
 </script>
 

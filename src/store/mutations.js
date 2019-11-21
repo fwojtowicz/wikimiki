@@ -68,25 +68,32 @@ export const mutations = {
 
     setSearchResultsValue(state, response) {
         JSON.stringify(response.data)
-        state.wikiResults = {}
+        state.wikiResults = []
         state.categoriesArray = []
+
+
         for (state.categoryCounter = 0; state.categoryCounter < 20; state.categoryCounter++) {
-            state.wikiResults[state.categoryCounter] = ({
-                categoryCard: {
-                    // key: response.data.query.allcategories[state.categoryCounter]['*'],
-                    title: response.data.query.allcategories[state.categoryCounter]['*'],
-                    isChosen: false,
-                }
-            })
+            let categoryCard = {
+                title: response.data.query.allcategories[state.categoryCounter]['*'],
+                isChosen: false,
+            }
+            state.wikiResults.push(categoryCard)
+
+            // key: response.data.query.allcategories[state.categoryCounter]['*'],
+
+
+
 
         }
+        console.log('wiki', state.wikiResults)
+
         state.categoriesArray = Object.values(state.wikiResults)
-        state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
+        state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].title;
         console.log(state.userCategories)
         console.log(state.pageArray)
         if (state.userCategories != null) {
             state.pageArray = state.categoriesArray.map(element => {
-                element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
+                element.isChosen = state.userCategories && state.userCategories.some(category => category.title === element.title);
                 return element;
             })
         }
@@ -99,7 +106,7 @@ export const mutations = {
     },
 
     updateFilteredResults(state) {
-        state.filteredResults = state.categoriesArray.filter(categoriesArray => categoriesArray.categoryCard.title
+        state.filteredResults = state.categoriesArray.filter(categoriesArray => categoriesArray.title
             .toLowerCase()
             .indexOf(state.categoryInput.toLowerCase()) > -1
         );
@@ -113,24 +120,34 @@ export const mutations = {
         console.log(categoryCard.isChosen)
         categoryCard.isChosen = !categoryCard.isChosen
         console.log(categoryCard.isChosen)
+        const userCategoriesToSend = state.userCategories;
+        const user = fb.auth.currentUser;
         if (categoryCard.isChosen) {
-            Vue.set(state.userCategories, categoryCard.title, categoryCard)
-            console.log(state.userCategories)
-        }
-        else {
-            Vue.delete(state.userCategories, categoryCard.title, categoryCard)
-            console.log(state.userCategories)
+            state.userCategories.push(categoryCard);
+            console.log('STATE:', state.userCategories)
+
+            console.log(user)
+            console.log("send data to firebase", userCategoriesToSend)
+            fb.userCategoriesCollection
+                .doc(user.uid)
+                .set({
+                    categories: userCategoriesToSend
+                });
 
         }
-        // let userCategoriesFB = state.userCategories
-        // let user = fb.auth.currentUser
-        // console.log(user)
-        // console.log(userCategoriesFB)
-        // fb.userCategoriesCollection
-        //     .doc(user.uid)
-        //     .set({
-        //         userCategoriesFB
-        //     });
+        else {
+            state.userCategories.splice((state.userCategories.indexOf(categoryCard)), 1)
+            console.log('STATE:', state.userCategories)
+            console.log(user)
+            console.log("send data to firebase", userCategoriesToSend)
+            fb.userCategoriesCollection
+                .doc(user.uid)
+                .set({
+                    categories: userCategoriesToSend
+                });
+
+        }
+
 
 
 
@@ -210,7 +227,7 @@ export const mutations = {
     checkIfChosen(state) {
         console.log('just checking')
         state.categoriesArray = state.categoriesArray.map(element => {
-            element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
+            element.categoryCard.isChosen = state.userCategories && state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
             return element;
         });
     },

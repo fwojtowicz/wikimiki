@@ -109,10 +109,11 @@ export default {
     getPreviousPage() {
       this.$store.dispatch("getPreviousPageHandler");
     }
-  },
-  created() {
-    this.$store.dispatch("fetchUserCategories");
   }
+  // mounted() {
+  //   if (this.userCategories != null)
+  //     this.$store.dispatch("fetchUserCategories");
+  // }
 };
 </script>
  <style>

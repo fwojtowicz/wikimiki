@@ -34,6 +34,11 @@ export default {
     randomArticles: {
       get() {
         return this.$store.getters.randomArticlesGetter;
+      },
+      userCategories: {
+        get() {
+          return this.$store.getters.userCategoriesGetter;
+        }
       }
     }
   },
@@ -48,11 +53,10 @@ export default {
       this.$store.dispatch("getRandomSubcategoriesHandler");
     }
   },
-  created() {
-    this.$store.dispatch("fetchUserCategories");
-  },
+
   mounted() {
-    this.$store.dispatch("readArticleContent");
+    console.log(this.userCategories);
+    if (this.userCategories != null) this.$store.dispatch("readArticleContent");
   }
 };
 </script>

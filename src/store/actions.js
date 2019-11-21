@@ -2,28 +2,20 @@ const fb = require("../firebase")
 import axios from "axios";
 export const actions = {
 
-    setCurrentlyLoggedInUser({ commit }) {
-        commit('setCurrentUser', fb.auth.currentUser)
-    },
-
-    fetchUserProfile({ commit }) {
-        commit('setCurrentUser', fb.auth.currentUser)
-    },
-    checkIfChosen({ commit }) {
-        commit('checkIfChosen')
-
-    },
-
     fetchUserCategories({ commit, state }) {
-        console.log('fetched')
+        console.log('fetching user categories from firebase')
         state.userCategories = []
         fb.auth.onAuthStateChanged(() => {
             if (state.currentUser) {
-                fb.userCategoriesCollection.doc(state.currentUser.uid).get().then(response => {
-                    console.log(response.data().userCategoriesFB)
-                    commit('setUserCategories', response.data().userCategoriesFB)
-                    console.log('state:', state.userCategories)
-                })
+                if (state.userCategoriesFB != null) {
+                    fb.userCategoriesCollection.doc(state.currentUser.uid).get().then(response => {
+                        console.log(response.data().userCategoriesFB)
+                        commit('setUserCategories', response.data().userCategoriesFB)
+                        console.log('state:', state.userCategories)
+                    })
+                }
+
+
             }
         })
 
@@ -49,15 +41,18 @@ export const actions = {
             .then(response => {
                 commit('setSearchResultsValue', response);
                 console.log(state.lastElement);
-                dispatch("checkIfChosen");
+                // dispatch("checkIfChosen", state.categoriesArray);
 
 
             })
             .catch(error => console.log(error));
-        state.categoriesArray = state.categoriesArray.map(element => {
-            element.categoryCard.isChosen = state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
+        const newCategoriesArray = state.categoriesArray && state.categoriesArray.length && state.categoriesArray.map(element => {
+            element.categoryCard.isChosen = state.userCategories && state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
             return element;
         })
+        console.log('newArr', newCategoriesArray);
+        if (newCategoriesArray) state.categoriesArray = newCategoriesArray;
+
 
     },
     getNextPageHandler: ({ commit, state }) => {
@@ -70,7 +65,7 @@ export const actions = {
                 commit('getNextPage', response);
                 console.log(state.lastElement);
                 if (state.pageArray)
-                    commit('checkIfChosen')
+                    commit('checkIfChosen', state.categoriesArray)
             })
             .catch(error => console.log(error));
 
@@ -131,7 +126,7 @@ export const actions = {
     getPreviousPageHandler: ({ commit }) => {
         console.log("previous categoriesPage");
         commit('getPreviousPage')
-        commit('checkIfChosen')
+        commit('checkIfChosen', this.$store.state.categoriesArray)
     },
     updateSearchTerm: ({ commit }, payload) => {
         console.log("updating searchTerm");
@@ -174,6 +169,17 @@ export const actions = {
     },
     readArticleContent: ({ commit }) => {
         commit('readArticleContent')
+    },
+    setCurrentlyLoggedInUser({ commit }) {
+        commit('setCurrentUser', fb.auth.currentUser)
+    },
+
+    fetchUserProfile({ commit }) {
+        commit('setCurrentUser', fb.auth.currentUser)
+    },
+    checkIfChosen({ commit }, payload) {
+        commit('checkIfChosen', payload)
+
     },
 
 

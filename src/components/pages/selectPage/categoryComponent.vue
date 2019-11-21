@@ -3,11 +3,11 @@
     <div class="md-layout md-gutter">
       <md-card>
         <md-card-header>
-          <div class="md-title">{{ category.categoryCard.title }}</div>
+          <div class="md-title">{{ category.title }}</div>
         </md-card-header>
         <md-card-actions>
           <md-button
-            v-bind:class="{'md-accent': category.categoryCard.isChosen}"
+            v-bind:class="{'md-accent': category.isChosen}"
             class="md-icon-button"
             @click="chooseCategoryHandler"
           >
@@ -102,7 +102,7 @@ export default {
 
     chooseCategoryHandler() {
       this.$store.dispatch("chooseCategory", {
-        categoryCard: this.category.categoryCard
+        categoryCard: this.category
       });
       // this.currentCategoryName = this.category.categoryCard.title;
       // this.currentCategoryID = this.category.categoryCard.key;
