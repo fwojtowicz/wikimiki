@@ -65,8 +65,8 @@ export default {
             })
             .then(() => {
               console.log("didUsersCollection");
-              if (this.$store.state.userCategoriesFB != null)
-                this.$store.dispatch("fetchUserCategories");
+              // if (this.$store.state.userCategoriesFB != null)
+              // this.$store.dispatch("fetchUserCategories");
               router.push("/home");
             })
             .catch(err => {

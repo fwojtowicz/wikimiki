@@ -5,17 +5,14 @@ export const actions = {
     fetchUserCategories({ commit, state }) {
         console.log('fetching user categories from firebase')
         state.userCategories = []
+        console.log(state.currentUser)
         fb.auth.onAuthStateChanged(() => {
             if (state.currentUser) {
-                if (state.userCategoriesFB != null) {
-                    fb.userCategoriesCollection.doc(state.currentUser.uid).get().then(response => {
-                        console.log(response.data().userCategoriesFB)
-                        commit('setUserCategories', response.data().userCategoriesFB)
-                        console.log('state:', state.userCategories)
-                    })
-                }
-
-
+                fb.userCategoriesCollection.doc(state.currentUser.uid).get().then(response => {
+                    console.log(response.data().categories)
+                    commit('setUserCategories', response.data().categories)
+                    console.log('state:', state.userCategories)
+                })
             }
         })
 
@@ -41,17 +38,16 @@ export const actions = {
             .then(response => {
                 commit('setSearchResultsValue', response);
                 console.log(state.lastElement);
-                // dispatch("checkIfChosen", state.categoriesArray);
 
 
             })
             .catch(error => console.log(error));
-        const newCategoriesArray = state.categoriesArray && state.categoriesArray.length && state.categoriesArray.map(element => {
-            element.categoryCard.isChosen = state.userCategories && state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
-            return element;
-        })
-        console.log('newArr', newCategoriesArray);
-        if (newCategoriesArray) state.categoriesArray = newCategoriesArray;
+        // const newCategoriesArray = state.categoriesArray && state.categoriesArray.length && state.categoriesArray.map(element => {
+        //     element.categoryCard.isChosen = state.userCategories && state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
+        //     return element;
+        // })
+        // console.log('newArr', newCategoriesArray);
+        // if (newCategoriesArray) state.categoriesArray = newCategoriesArray;
 
 
     },
@@ -72,57 +68,40 @@ export const actions = {
     },
     getRandomSubcategoriesHandler: ({ state, dispatch }) => {
         console.log("getting articles");
-        let randomCategory = state.userCategories[Math.floor(Math.random() * state.userCategories.length)].categoryCard.title
+        let randomCategory = state.userCategories[Math.floor(Math.random() * state.userCategories.length)].title
         axios
             .get(state.articlesSubcategoriesURL + 'Category:' + randomCategory + "&origin=*")
-
             .then(response => {
                 if (response.data.query.categorymembers.length > 1) {
                     let subCatsArray = response.data.query.categorymembers
-                    console.log('randomSubCat')
-                    console.log(response)
                     let randomSubCat = subCatsArray[Math.floor(Math.random() * subCatsArray.length)].title
-                    console.log(randomSubCat)
-                    dispatch('getRandomArticlesHandler', randomSubCat)
+                    console.log('randomsubcat', randomSubCat)
+                    dispatch('getRandomArticleHandler', randomSubCat)
 
                 }
                 else if (response.data.query.categorymembers.length == 0) {
-                    console.log('emptyArraOfSubcats')
-                    console.log(response)
                     randomCategory = "Category:" + randomCategory
-                    console.log(randomCategory)
-                    dispatch('getRandomArticlesHandler', randomCategory)
+                    console.log('emptyArraOfSubcats', randomCategory)
+                    dispatch('getRandomArticleHandler', randomCategory)
 
                 }
-
-
             })
             .catch(error => console.log(error));
     },
-    getRandomArticlesHandler: ({ state, dispatch }, payload) => {
-        console.log('randomArticleHere')
+
+    getRandomArticleHandler: ({ state, commit }, payload) => {
         axios.get(state.articlesURL + payload + "&origin=*").then(response => {
-            console.log(response)
-
-            // let randomArticleID = response.data.query.categorymembers[Math.floor(Math.random() * response.data.query.categorymembers.length)].pageid
+            console.log('categoryMembers', response)
             let randomArticleTitle = response.data.query.categorymembers[Math.floor(Math.random() * response.data.query.categorymembers.length)].title
-            // console.log(randomArticleID)
-            //commit('saveArticlesID', { randomArticleTitle, randomArticleID })
-            dispatch('getRandomArticleContent', randomArticleTitle)
-
+            axios.get(state.articleContentURL + randomArticleTitle + "&origin=*").then(response => {
+                console.log('articleContent', response)
+                commit('saveArticleContent', Object.values(response.data.query.pages)[0])
+            })
 
         })
 
     },
-    getRandomArticleContent: ({ commit, state }, payload) => {
-        console.log('gettingContent')
 
-        axios.get(state.articleContentURL + payload + "&origin=*").then(response => {
-            console.log(response)
-            commit('saveArticleContent', Object.values(response.data.query.pages)[0])
-        })
-
-    },
     getPreviousPageHandler: ({ commit }) => {
         console.log("previous categoriesPage");
         commit('getPreviousPage')

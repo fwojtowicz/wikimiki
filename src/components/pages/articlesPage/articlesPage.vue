@@ -56,7 +56,8 @@ export default {
 
   mounted() {
     console.log(this.userCategories);
-    if (this.userCategories != null) this.$store.dispatch("readArticleContent");
+    this.$store.dispatch("fetchUserCategories");
+    this.$store.dispatch("readArticleContent");
   }
 };
 </script>

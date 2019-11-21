@@ -42,9 +42,9 @@ export default {
   },
 
   mounted() {
-    console.log(this.userCategories);
-    // if (this.userCategories != null)
-    //   this.$store.dispatch("fetchUserCategories");
+    // console.log(this.userCategories);
+    if (this.userCategories != null)
+      this.$store.dispatch("fetchUserCategories");
   }
 };
 </script>

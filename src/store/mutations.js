@@ -70,8 +70,6 @@ export const mutations = {
         JSON.stringify(response.data)
         state.wikiResults = []
         state.categoriesArray = []
-
-
         for (state.categoryCounter = 0; state.categoryCounter < 20; state.categoryCounter++) {
             let categoryCard = {
                 title: response.data.query.allcategories[state.categoryCounter]['*'],
@@ -80,13 +78,9 @@ export const mutations = {
             state.wikiResults.push(categoryCard)
 
             // key: response.data.query.allcategories[state.categoryCounter]['*'],
-
-
-
-
         }
         console.log('wiki', state.wikiResults)
-
+        state.pageArray = Object.values(state.wikiResults)
         state.categoriesArray = Object.values(state.wikiResults)
         state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].title;
         console.log(state.userCategories)
@@ -239,20 +233,18 @@ export const mutations = {
         console.log(state.pageStart)
         console.log(state.pageEnd)
         JSON.stringify(response.data)
-        for (state.categoryCounter = 0; state.categoryCounter < 21; state.categoryCounter++) {
-            state.wikiResults[state.categoryCounter] = ({
-                categoryCard: {
-                    // key: response.data.query.allcategories[state.categoryCounter]['*'],
-                    title: response.data.query.allcategories[state.categoryCounter]['*'],
-                    isChosen: false,
-                }
-            })
+        for (state.categoryCounter = 0; state.categoryCounter < 10; state.categoryCounter++) {
+            let categoryCard = {
+                title: response.data.query.allcategories[state.categoryCounter]['*'],
+                isChosen: false,
+            }
+            state.wikiResults.push(categoryCard)
         }
         state.newArray = Object.values(state.wikiResults)
         state.newArray.splice(0, 1);
         state.categoriesArray.push(...state.newArray);
         state.pageArray = state.newArray.map(element => element)
-        state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].categoryCard.title;
+        state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].title;
         console.log(state.pageArray)
 
     },
