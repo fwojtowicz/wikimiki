@@ -7,21 +7,19 @@
         <md-input v-model="searchTerm"></md-input>
       </md-field>
       <md-button class="md-dense md-raised md-primary" @click="submitTerm">Search</md-button>
-      <p>fullURL {{fullURL}}</p>
-      <p>lastElement {{lastElement}}</p>
-      <p>next url {{nextURL}}</p>
       <searchResults></searchResults>
       <hr />
       <md-button
         class="md-dense md-raised md-primary"
         @click="getPreviousPage"
-        v-show=" dataAppended"
+        v-show=" dataAppended && this.$store.state.currentPageNumber > 1"
       >Previous page</md-button>
       <md-button
         class="md-dense md-raised md-primary"
         @click="getNextPage"
         v-show="dataDownloaded"
       >Next page</md-button>
+      <h3>page {{currentPageNumber}} of {{pageCounter}} downloaded</h3>
     </md-content>
   </div>
 </template>
@@ -75,6 +73,16 @@ export default {
       get() {
         return this.$store.getters.dataDownloadedGetter;
       }
+    },
+    pageCounter: {
+      get() {
+        return this.$store.getters.pageCounterGetter;
+      }
+    },
+    currentPageNumber: {
+      get() {
+        return this.$store.getters.currentPageNumberGetter;
+      }
     }
   },
   components: {
@@ -88,15 +96,24 @@ export default {
       "getPreviousPageHandler"
     ]),
     submitTerm() {
-      this.$store.dispatch("getCategoriesHandler");
+      this.$store.commit("updateFullURL");
+      this.$store.dispatch(
+        "getCategoriesHandler",
+        this.$store.state.searchTerm
+      );
     },
     getNextPage() {
+      this.$store.commit("updateNextURL");
       this.$store.dispatch("getNextPageHandler");
     },
     getPreviousPage() {
       this.$store.dispatch("getPreviousPageHandler");
     }
   }
+  // mounted() {
+  //   if (this.userCategories != null)
+  //     this.$store.dispatch("fetchUserCategories");
+  // }
 };
 </script>
  <style>

@@ -16,6 +16,7 @@
 <script>
 const fb = require("../firebase");
 import router from "../router/index";
+import { store } from "../store/store";
 export default {
   props: ["title"],
   methods: {

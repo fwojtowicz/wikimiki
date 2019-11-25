@@ -7,9 +7,9 @@
         <div class="md-layout">
           <app-item
             class="md-layout-item"
-            v-for="(userCategories) in userCategories"
-            :key="userCategories.categoryCard.title"
+            v-for="(userCategories, key) in userCategories"
             :category="userCategories"
+            :key="key"
           ></app-item>
         </div>
       </md-content>
@@ -18,7 +18,7 @@
 </template>
 <script>
 import appHeader from "../../Header";
-import itemComponent from "../selectPage/itemComponent";
+import categoryComponent from "../selectPage/categoryComponent";
 
 export default {
   data() {
@@ -28,21 +28,23 @@ export default {
   },
   components: {
     appHeader,
-    appItem: itemComponent
+    appItem: categoryComponent
   },
   computed: {
     userCategories: {
       get() {
         return this.$store.getters.userCategoriesGetter;
-      },
-      set(userCategories) {
-        this.$store.dispatch("chooseCategory", userCategories);
       }
+      // set(userCategories) {
+      //   this.$store.dispatch("chooseCategory", userCategories);
+      // }
     }
   },
 
   mounted() {
-    this.$store.dispatch("fetchUserCategories");
+    // console.log(this.userCategories);
+    if (this.userCategories != null)
+      this.$store.dispatch("fetchUserCategories");
   }
 };
 </script>

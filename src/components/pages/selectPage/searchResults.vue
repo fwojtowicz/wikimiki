@@ -20,7 +20,7 @@
       <app-item
         class="md-layout-item"
         v-for="category in pageArray"
-        :key="category.categoryCard.title"
+        :key="category.title"
         :category="category"
       ></app-item>
     </div>
@@ -29,10 +29,10 @@
 
 <script>
 import { mapActions } from "vuex";
-import itemComponent from "./itemComponent";
+import categoryComponent from "./categoryComponent";
 
 export default {
-  components: { appItem: itemComponent },
+  components: { appItem: categoryComponent },
   data() {
     return {
       isTypying: false
@@ -99,6 +99,9 @@ export default {
     chooseCategory() {
       this.$store.dispatch("chooseCategory");
     }
+  },
+  mounted() {
+    this.$store.dispatch("fetchUserCategories");
   }
 };
 </script>
