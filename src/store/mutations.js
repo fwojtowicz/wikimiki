@@ -1,9 +1,7 @@
 const fb = require("../firebase")
-import Vue from 'vue'
 export const mutations = {
     initializeArray(state) {
         let categoryCard = {
-
             title: "",
             isChosen: false,
         }
@@ -119,7 +117,6 @@ export const mutations = {
         if (categoryCard.isChosen) {
             state.userCategories.push(categoryCard);
             console.log('STATE:', state.userCategories)
-
             console.log(user)
             console.log("send data to firebase", userCategoriesToSend)
             fb.userCategoriesCollection
@@ -132,7 +129,6 @@ export const mutations = {
         else {
             state.userCategories.splice((state.userCategories.indexOf(categoryCard)), 1)
             console.log('STATE:', state.userCategories)
-            console.log(user)
             console.log("send data to firebase", userCategoriesToSend)
             fb.userCategoriesCollection
                 .doc(user.uid)
@@ -220,8 +216,8 @@ export const mutations = {
 
     checkIfChosen(state) {
         console.log('just checking')
-        state.categoriesArray = state.categoriesArray.map(element => {
-            element.categoryCard.isChosen = state.userCategories && state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
+        state.pageArray = state.pageArray.map(element => {
+            element.isChosen = state.userCategories && state.userCategories.some(category => category.title === element.title);
             return element;
         });
     },
