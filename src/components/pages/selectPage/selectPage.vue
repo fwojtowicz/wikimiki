@@ -109,11 +109,11 @@ export default {
     getPreviousPage() {
       this.$store.dispatch("getPreviousPageHandler");
     }
+  },
+  mounted() {
+    // console.log(this.userCategories);
+    this.$store.dispatch("checkIfChosen");
   }
-  // mounted() {
-  //   if (this.userCategories != null)
-  //     this.$store.dispatch("fetchUserCategories");
-  // }
 };
 </script>
  <style>

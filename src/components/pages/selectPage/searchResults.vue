@@ -99,10 +99,10 @@ export default {
     chooseCategory() {
       this.$store.dispatch("chooseCategory");
     }
-  },
-  mounted() {
-    this.$store.dispatch("fetchUserCategories");
   }
+  // mounted() {
+  //   this.$store.dispatch("fetchUserCategories");
+  // }
 };
 </script>
 
