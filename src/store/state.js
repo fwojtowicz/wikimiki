@@ -5,7 +5,7 @@ export const state = {
     lastElement: "",
     searchURL: "https://en.wikipedia.org/w/api.php?action=query&list=allcategories&aclimit=max&format=json&acmin=1&accontinue&acprefix=",
     articlesSubcategoriesURL: "https://en.wikipedia.org/w/api.php?action=query&format=json&list=categorymembers&cmtype=subcat&cmlimit=500&cmtitle=",
-    articlesURL: "https://en.wikipedia.org/w/api.php?action=query&format=json&list=categorymembers&cmtype=page&cmlimit=500&cmtitle=",
+    articlesURL: "https://en.wikipedia.org/w/api.php?action=query&format=json&list=categorymembers&cmtype=page&cmlimit=20&cmtitle=",
     articleContentURL: "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=",
     fullURL: "",
     nextURL: "",

@@ -27,7 +27,7 @@ export const actions = {
         sessionStorage.clear();
 
     },
-    getCategoriesHandler: ({ commit, dispatch, state }) => {
+    getCategoriesHandler: ({ commit, state }) => {
         state.dataDownloaded = true;
         state.filteredResults = []
         state.categoryInput = ""
@@ -37,7 +37,6 @@ export const actions = {
             .get(state.fullURL)
             .then(response => {
                 commit('setSearchResultsValue', response);
-                console.log(state.lastElement);
 
 
             })
@@ -53,18 +52,23 @@ export const actions = {
     },
     getNextPageHandler: ({ commit, state }) => {
         state.dataAppended = true;
-
         console.log("appending categories");
+        console.log(state.nextURL)
         axios
             .get(state.nextURL)
             .then(response => {
                 commit('getNextPage', response);
-                console.log(state.lastElement);
                 if (state.pageArray)
                     commit('checkIfChosen', state.categoriesArray)
             })
             .catch(error => console.log(error));
 
+    },
+    getPreviousPageHandler: ({ commit, state }) => {
+        console.log("previous categoriesPage");
+        commit('getPreviousPage')
+        if (state.pageArray)
+            commit('checkIfChosen', state.categoriesArray)
     },
     getRandomSubcategoriesHandler: ({ state, dispatch }) => {
         console.log("getting articles");
@@ -100,12 +104,6 @@ export const actions = {
 
         })
 
-    },
-
-    getPreviousPageHandler: ({ commit }) => {
-        console.log("previous categoriesPage");
-        commit('getPreviousPage')
-        commit('checkIfChosen', this.$store.state.categoriesArray)
     },
     updateSearchTerm: ({ commit }, payload) => {
         console.log("updating searchTerm");

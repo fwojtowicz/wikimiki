@@ -66,34 +66,35 @@ export const mutations = {
 
     setSearchResultsValue(state, response) {
         JSON.stringify(response.data)
-        state.wikiResults = []
+        console.log(response.data)
+        // state.wikiResults = []
         state.categoriesArray = []
         for (let categoryCounter = 0; categoryCounter < 20; categoryCounter++) {
             let categoryCard = {
                 title: response.data.query.allcategories[categoryCounter]['*'],
                 isChosen: false,
             }
-            state.wikiResults.push(categoryCard)
-
+            state.categoriesArray.push(categoryCard)
         }
-        console.log('wiki', state.wikiResults)
-        state.pageArray = Object.values(state.wikiResults)
-        state.categoriesArray = Object.values(state.wikiResults)
+        console.log('categoriesArray', state.categoriesArray)
+        state.pageArray = Object.values(state.categoriesArray)
         state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].title;
-        console.log(state.userCategories)
-        console.log(state.pageArray)
+        console.log(state.lastElement);
+
+        // console.log(state.userCategories)
+        console.log('pageArray', state.pageArray)
         if (state.userCategories != null) {
             state.pageArray = state.categoriesArray.map(element => {
                 element.isChosen = state.userCategories && state.userCategories.some(category => category.title === element.title);
                 return element;
             })
         }
-        else { state.pageArray = Object.values(state.wikiResults) }
+        // else { state.pageArray = Object.values(state.categoriesArray) }
         state.pageStart = 0
         state.pageEnd = 19
-        console.log(state.pageStart)
-        console.log(state.pageEnd)
-        console.log(state.pageArray)
+        // console.log(state.pageStart)
+        // console.log(state.pageEnd)
+        // console.log(state.pageArray)
     },
 
     updateFilteredResults(state) {
@@ -228,27 +229,38 @@ export const mutations = {
         console.log(state.pageStart)
         console.log(state.pageEnd)
         JSON.stringify(response.data)
-        for (let categoryCounter = 0; categoryCounter < 10; categoryCounter++) {
+        response.data.query.allcategories.splice(0, 1)
+        for (let categoryCounter = 0; categoryCounter < 21; categoryCounter++) {
             let categoryCard = {
                 title: response.data.query.allcategories[categoryCounter]['*'],
                 isChosen: false,
             }
             state.wikiResults.push(categoryCard)
         }
-        state.newArray = Object.values(state.wikiResults)
-        state.newArray.splice(0, 1);
-        state.categoriesArray.push(...state.newArray);
-        state.pageArray = state.newArray.map(element => element)
+        state.wikiResults.splice(0, 1)
+        console.log('wiki', state.wikiResults)
+
+
+        // console.log(state.categoriesArray)
+        // state.newArray = Object.values(state.wikiResults)
+        // console.log(state.newArray)
+        // console.log(state.categoriesArray)
+
+        state.categoriesArray.push(...state.wikiResults);
+        state.pageArray = state.wikiResults.map(element => element)
         state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].title;
-        console.log(state.pageArray)
+        // console.log(state.pageArray)
+        console.log(state.lastElement);
+        state.wikiResults = []
+
 
     },
     getPreviousPage(state) {
-        state.lastPageNumber = state.currentPageNumber
+        state.lastPageNumber = state.currentPageNumber;
         state.currentPageNumber--
-        console.log(state.categoriesArray.length)
-        console.log(state.pageStart)
-        console.log(state.pageEnd)
+        // console.log(state.categoriesArray.length)
+        // console.log(state.pageStart)
+        // console.log(state.pageEnd)
         if (state.pageStart - 19 > 0 && state.pageEnd - 19 > 0) {
             state.pageStart = state.pageStart - 20
             state.pageEnd = state.pageEnd - 20
@@ -258,7 +270,7 @@ export const mutations = {
         }
         state.pageArray = []
         state.pageArray = state.categoriesArray.slice(state.pageStart, state.pageEnd + 1).map(element => element);
-        state.lastElement = state.pageArray[state.pageArray.length - 1].categoryCard.title;
+        state.lastElement = state.pageArray[state.pageArray.length - 1].title;
         console.log(state.pageArray)
         console.log(state.pageStart)
         console.log(state.pageEnd)

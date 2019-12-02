@@ -111,7 +111,6 @@ export default {
     }
   },
   mounted() {
-    // console.log(this.userCategories);
     this.$store.dispatch("checkIfChosen");
   }
 };
