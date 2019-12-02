@@ -27,7 +27,7 @@ export const actions = {
         sessionStorage.clear();
 
     },
-    getCategoriesHandler: ({ commit, dispatch, state }) => {
+    getCategoriesHandler: ({ commit, state }) => {
         state.dataDownloaded = true;
         state.filteredResults = []
         state.categoryInput = ""
@@ -37,7 +37,6 @@ export const actions = {
             .get(state.fullURL)
             .then(response => {
                 commit('setSearchResultsValue', response);
-                console.log(state.lastElement);
 
 
             })
@@ -53,18 +52,23 @@ export const actions = {
     },
     getNextPageHandler: ({ commit, state }) => {
         state.dataAppended = true;
-
         console.log("appending categories");
+        console.log(state.nextURL)
         axios
             .get(state.nextURL)
             .then(response => {
                 commit('getNextPage', response);
-                console.log(state.lastElement);
                 if (state.pageArray)
                     commit('checkIfChosen', state.categoriesArray)
             })
             .catch(error => console.log(error));
 
+    },
+    getPreviousPageHandler: ({ commit, state }) => {
+        console.log("previous categoriesPage");
+        commit('getPreviousPage')
+        if (state.pageArray)
+            commit('checkIfChosen', state.categoriesArray)
     },
     getRandomSubcategoriesHandler: ({ state, dispatch }) => {
         console.log("getting articles");
@@ -89,23 +93,33 @@ export const actions = {
             .catch(error => console.log(error));
     },
 
-    getRandomArticleHandler: ({ state, commit }, payload) => {
+    getRandomArticleHandler: ({ state, dispatch, commit }, payload) => {
         axios.get(state.articlesURL + payload + "&origin=*").then(response => {
             console.log('categoryMembers', response)
-            let randomArticleTitle = response.data.query.categorymembers[Math.floor(Math.random() * response.data.query.categorymembers.length)].title
+            let randomArticleTitle = ""
+            if (response.data.query.categorymembers.length != 0) {
+                randomArticleTitle = response.data.query.categorymembers[Math.floor(Math.random() * response.data.query.categorymembers.length)].title
+            }
+            else randomArticleTitle = payload
+
             axios.get(state.articleContentURL + randomArticleTitle + "&origin=*").then(response => {
                 console.log('articleContent', response)
-                commit('saveArticleContent', Object.values(response.data.query.pages)[0])
+                const exists = (element) => {
+                    return element.title == randomArticleTitle
+                }
+                if (state.randomArticles.find(exists)) {
+                    console.log('it is here')
+                    dispatch("getRandomSubcategoriesHandler")
+                }
+                else {
+                    commit('saveArticleContent', Object.values(response.data.query.pages)[0])
+                }
+
+
             })
 
         })
 
-    },
-
-    getPreviousPageHandler: ({ commit }) => {
-        console.log("previous categoriesPage");
-        commit('getPreviousPage')
-        commit('checkIfChosen', this.$store.state.categoriesArray)
     },
     updateSearchTerm: ({ commit }, payload) => {
         console.log("updating searchTerm");
@@ -124,12 +138,12 @@ export const actions = {
         commit('setResult', payload);
 
     },
-    updateCurrentCategoryID: ({ commit }, payload) => {
-        commit('updateCurrentCategoryID', payload);
-    },
-    updateCurrentCategoryName: ({ commit }, payload) => {
-        commit('updateCurrentCategoryName', payload);
-    },
+    // updateCurrentCategoryID: ({ commit }, payload) => {
+    //     commit('updateCurrentCategoryID', payload);
+    // },
+    // updateCurrentCategoryName: ({ commit }, payload) => {
+    //     commit('updateCurrentCategoryName', payload);
+    // },
     updateUserCategory: ({ commit }, payload) => {
         commit('updateUserCategory', payload);
     },

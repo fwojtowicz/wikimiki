@@ -69,23 +69,23 @@ export default {
       get() {
         return this.$store.getters.categoriesArrayGetter;
       }
-    },
-    currentCategoryID: {
-      get() {
-        return this.$store.getters.currentCategoryIDGetter;
-      },
-      set(currentCategoryID) {
-        this.$store.dispatch("updateCurrentCategoryID", currentCategoryID);
-      }
-    },
-    currentCategoryName: {
-      get() {
-        return this.$store.getters.currentCategoryNameGetter;
-      },
-      set(currentCategoryName) {
-        this.$store.dispatch("updateCurrentCategoryName", currentCategoryName);
-      }
     }
+    // currentCategoryID: {
+    //   get() {
+    //     return this.$store.getters.currentCategoryIDGetter;
+    //   },
+    //   set(currentCategoryID) {
+    //     this.$store.dispatch("updateCurrentCategoryID", currentCategoryID);
+    //   }
+    // },
+    // currentCategoryName: {
+    //   get() {
+    //     return this.$store.getters.currentCategoryNameGetter;
+    //   },
+    //   set(currentCategoryName) {
+    //     this.$store.dispatch("updateCurrentCategoryName", currentCategoryName);
+    //   }
+    // }
   },
 
   methods: {
