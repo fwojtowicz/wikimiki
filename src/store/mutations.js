@@ -30,6 +30,11 @@ export const mutations = {
         console.log(state.randomArticles)
 
     },
+    deleteArticle(state, { articleCard }) {
+        state.randomArticles.splice((state.randomArticles.indexOf(articleCard)), 1)
+
+
+    },
     updateName(state, payload) {
         state.name = payload;
     },

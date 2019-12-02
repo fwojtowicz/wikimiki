@@ -174,6 +174,10 @@ export const actions = {
         commit('checkIfChosen', payload)
 
     },
+    deleteArticleHandler({ commit }, payload) {
+        commit('deleteArticle', payload)
+
+    },
 
 
 
