@@ -93,7 +93,7 @@ export const actions = {
             .catch(error => console.log(error));
     },
 
-    getRandomArticleHandler: ({ state, commit }, payload) => {
+    getRandomArticleHandler: ({ state, dispatch, commit }, payload) => {
         axios.get(state.articlesURL + payload + "&origin=*").then(response => {
             console.log('categoryMembers', response)
             let randomArticleTitle = ""
@@ -101,9 +101,20 @@ export const actions = {
                 randomArticleTitle = response.data.query.categorymembers[Math.floor(Math.random() * response.data.query.categorymembers.length)].title
             }
             else randomArticleTitle = payload
+
             axios.get(state.articleContentURL + randomArticleTitle + "&origin=*").then(response => {
                 console.log('articleContent', response)
-                commit('saveArticleContent', Object.values(response.data.query.pages)[0])
+                const exists = (element) => {
+                    return element.title == randomArticleTitle
+                }
+                if (state.randomArticles.find(exists)) {
+                    console.log('it is here')
+                    dispatch("getRandomSubcategoriesHandler")
+                }
+                else {
+                    commit('saveArticleContent', Object.values(response.data.query.pages)[0])
+                }
+
 
             })
 

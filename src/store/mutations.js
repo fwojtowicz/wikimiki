@@ -16,18 +16,12 @@ export const mutations = {
             content: payload.extract,
             isChosen: false
         }
-        const exists = (element) => {
-            return element.title == articleCard.title
-        }
-        if (state.randomArticles.find(exists)) {
-            console.log('it is here')
-        }
-        else {
-            state.randomArticles.push(articleCard)
-            sessionStorage.setItem('randomArticlesArray', JSON.stringify(state.randomArticles))
-            console.log('saving articles to sessionStorage')
-            console.log(state.randomArticles)
-        }
+
+        state.randomArticles.push(articleCard)
+        sessionStorage.setItem('randomArticlesArray', JSON.stringify(state.randomArticles))
+        console.log('saving articles to sessionStorage')
+        console.log(state.randomArticles)
+
 
     },
     readArticleContent(state) {
