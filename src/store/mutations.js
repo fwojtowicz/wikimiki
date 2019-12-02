@@ -32,6 +32,9 @@ export const mutations = {
     },
     deleteArticle(state, { articleCard }) {
         state.randomArticles.splice((state.randomArticles.indexOf(articleCard)), 1)
+        sessionStorage.setItem('randomArticlesArray', JSON.stringify(state.randomArticles))
+        console.log('saving articles to sessionStorage')
+        console.log(state.randomArticles)
 
 
     },
