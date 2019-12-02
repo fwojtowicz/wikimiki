@@ -124,12 +124,12 @@ export const actions = {
         commit('setResult', payload);
 
     },
-    updateCurrentCategoryID: ({ commit }, payload) => {
-        commit('updateCurrentCategoryID', payload);
-    },
-    updateCurrentCategoryName: ({ commit }, payload) => {
-        commit('updateCurrentCategoryName', payload);
-    },
+    // updateCurrentCategoryID: ({ commit }, payload) => {
+    //     commit('updateCurrentCategoryID', payload);
+    // },
+    // updateCurrentCategoryName: ({ commit }, payload) => {
+    //     commit('updateCurrentCategoryName', payload);
+    // },
     updateUserCategory: ({ commit }, payload) => {
         commit('updateUserCategory', payload);
     },

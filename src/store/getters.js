@@ -34,12 +34,12 @@ export const getters = {
     categoriesArrayGetter: state => {
         return state.categoriesArray;
     },
-    currentCategoryIDGetter: state => {
-        return state.currentCategoryID;
-    },
-    currentCategoryNameGetter: state => {
-        return state.currentCategoryName;
-    },
+    // currentCategoryIDGetter: state => {
+    //     return state.currentCategoryID;
+    // },
+    // currentCategoryNameGetter: state => {
+    //     return state.currentCategoryName;
+    // },
     indexOfToBeDeletedGetter: state => {
         return state.indexOfToBeDeleted;
     },

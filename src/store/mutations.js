@@ -42,12 +42,12 @@ export const mutations = {
     updateCategoryInput(state, payload) {
         state.categoryInput = payload;
     },
-    updateCurrentCategoryID(state, payload) {
-        state.currentCategoryID = payload;
-    },
-    updateCurrentCategoryName(state, payload) {
-        state.currentCategoryName = payload;
-    },
+    // updateCurrentCategoryID(state, payload) {
+    //     state.currentCategoryID = payload;
+    // },
+    // updateCurrentCategoryName(state, payload) {
+    //     state.currentCategoryName = payload;
+    // },
     updateEmail(state, payload) {
         state.email = payload;
     },
@@ -68,14 +68,13 @@ export const mutations = {
         JSON.stringify(response.data)
         state.wikiResults = []
         state.categoriesArray = []
-        for (state.categoryCounter = 0; state.categoryCounter < 20; state.categoryCounter++) {
+        for (let categoryCounter = 0; categoryCounter < 20; categoryCounter++) {
             let categoryCard = {
-                title: response.data.query.allcategories[state.categoryCounter]['*'],
+                title: response.data.query.allcategories[categoryCounter]['*'],
                 isChosen: false,
             }
             state.wikiResults.push(categoryCard)
 
-            // key: response.data.query.allcategories[state.categoryCounter]['*'],
         }
         console.log('wiki', state.wikiResults)
         state.pageArray = Object.values(state.wikiResults)
@@ -229,9 +228,9 @@ export const mutations = {
         console.log(state.pageStart)
         console.log(state.pageEnd)
         JSON.stringify(response.data)
-        for (state.categoryCounter = 0; state.categoryCounter < 10; state.categoryCounter++) {
+        for (let categoryCounter = 0; categoryCounter < 10; categoryCounter++) {
             let categoryCard = {
-                title: response.data.query.allcategories[state.categoryCounter]['*'],
+                title: response.data.query.allcategories[categoryCounter]['*'],
                 isChosen: false,
             }
             state.wikiResults.push(categoryCard)
