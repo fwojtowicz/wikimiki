@@ -12,7 +12,7 @@
           <md-button class="md-icon-button">
             <md-icon>bookmark</md-icon>
           </md-button>
-          <md-button class="md-icon-button">
+          <md-button class="md-icon-button" @click="deleteArticleHandler">
             <md-icon>delete</md-icon>
           </md-button>
           <md-card-expand-trigger v-show="randomArticle.content">
@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   props: ["randomArticle"],
   data() {
@@ -46,6 +48,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["deleteArticle"]),
+
+    deleteArticleHandler() {
+      this.$store.dispatch("deleteArticleHandler", {
+        articleCard: this.randomArticle
+      });
+    },
+
     openArticle() {
       window.open(this.wikiURL, "_blank");
     }
