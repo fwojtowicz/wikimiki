@@ -18,6 +18,10 @@ export const actions = {
 
     },
 
+    fetchUserArticlesHandler({ commit, state }) {
+
+    },
+
     clearData: ({ commit }) => {
         commit('setCurrentUser', null)
         commit('setUserProfile', {})
@@ -177,6 +181,10 @@ export const actions = {
     deleteArticleHandler({ commit }, payload) {
         commit('deleteArticle', payload)
 
+    },
+    saveUserArticlesHandler: ({ commit }, { articleCard }) => {
+        console.log(articleCard)
+        commit('saveUserArticles', { articleCard });
     },
 
 

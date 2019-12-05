@@ -30,4 +30,5 @@ export const state = {
     currentUser: null,
     path: "",
     randomArticles: [],
+    userArticles: []
 }

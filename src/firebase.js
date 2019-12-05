@@ -17,7 +17,8 @@ const auth = firebase.auth()
 const currentUser = auth.currentUser
 const usersCollection = db.collection('users')
 const userCategoriesCollection = db.collection('userCategories')
+const userArticlesCollecion = db.collection('userArticles')
 export {
-    db, auth, currentUser, usersCollection, userCategoriesCollection,
+    db, auth, currentUser, usersCollection, userCategoriesCollection, userArticlesCollecion
 
 }

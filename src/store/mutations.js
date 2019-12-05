@@ -148,29 +148,56 @@ export const mutations = {
                 });
 
         }
-
-
-
-
-
-
-        // let whichTable = ""
-
-        // if (payload == 'selectPage') {
-        //     state.currentCategoryID = state.categoriesArray.map(e => e.categoryCard.title).indexOf(state.currentCategoryName);
-        //     console.log(state.currentCategoryID)
-        //     state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
-        //     whichTable = 'categoriesArray'
-        // }
-        // else if (payload == 'home') {
-        //     state.currentCategoryID = state.userCategories.map(e => e.categoryCard.title).indexOf(state.currentCategoryName);
-        //     console.log(state.currentCategoryID)
-        //     whichTable = 'userCategories'
-        //     state.userCategories[state.currentCategoryID].categoryCard.isChosen = !state.userCategories[state.currentCategoryID].categoryCard.isChosen;
-
-        // }
-        // this.dispatch('updateUserCategory', whichTable)
     },
+
+    saveUserArticles(state, { articleCard }) {
+        console.log(articleCard)
+        console.log(articleCard.isChosen)
+        articleCard.isChosen = !articleCard.isChosen
+
+        const userArticlesToSend = state.userArticles;
+        const user = fb.auth.currentUser;
+        if (articleCard.isChosen) {
+            state.userArticles.push(articleCard)
+            console.log('ARTICLE CARDS', state.userArticles)
+            console.log("send data to firebase", userArticlesToSend)
+            fb.userArticlesCollecion
+                .doc(user.uid)
+                .set({
+                    articles: userArticlesToSend
+                });
+        }
+        else {
+            state.userArticles.splice((state.userArticles.indexOf(articleCard)), 1)
+            console.log('ARTICLE CARDS', state.userArticles)
+            console.log("send data to firebase", userArticlesToSend)
+            fb.userArticlesCollecion
+                .doc(user.uid)
+                .set({
+                    articles: userArticlesToSend
+                });
+        }
+
+    },
+
+
+    // let whichTable = ""
+
+    // if (payload == 'selectPage') {
+    //     state.currentCategoryID = state.categoriesArray.map(e => e.categoryCard.title).indexOf(state.currentCategoryName);
+    //     console.log(state.currentCategoryID)
+    //     state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
+    //     whichTable = 'categoriesArray'
+    // }
+    // else if (payload == 'home') {
+    //     state.currentCategoryID = state.userCategories.map(e => e.categoryCard.title).indexOf(state.currentCategoryName);
+    //     console.log(state.currentCategoryID)
+    //     whichTable = 'userCategories'
+    //     state.userCategories[state.currentCategoryID].categoryCard.isChosen = !state.userCategories[state.currentCategoryID].categoryCard.isChosen;
+
+    // }
+    // this.dispatch('updateUserCategory', whichTable)
+
 
     updateUserCategory(state, payload) {
         // state.path = payload

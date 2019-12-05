@@ -9,7 +9,11 @@
           <md-button class="md-icon-button" @click="openArticle">
             <md-icon>launch</md-icon>
           </md-button>
-          <md-button class="md-icon-button">
+          <md-button
+            class="md-icon-button"
+            v-bind:class="{'md-accent': randomArticle.isChosen}"
+            @click="saveUserArticlesHandler"
+          >
             <md-icon>bookmark</md-icon>
           </md-button>
           <md-button class="md-icon-button" @click="deleteArticleHandler">
@@ -48,10 +52,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["deleteArticle"]),
+    ...mapActions(["deleteArticle", "saveUserArticlesHandler"]),
 
     deleteArticleHandler() {
       this.$store.dispatch("deleteArticleHandler", {
+        articleCard: this.randomArticle
+      });
+    },
+
+    saveUserArticlesHandler() {
+      this.$store.dispatch("saveUserArticlesHandler", {
         articleCard: this.randomArticle
       });
     },
