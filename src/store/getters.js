@@ -69,6 +69,9 @@ export const getters = {
     },
     randomArticlesGetter: state => {
         return state.randomArticles
+    },
+    userArticlesGetter: state => {
+        return state.userArticles
     }
 
 }

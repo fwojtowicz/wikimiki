@@ -75,10 +75,14 @@ export const mutations = {
         state.userCategories = response;
     },
 
+    setUserArticles(state, response) {
+        state.userArticles = response;
+        console.log('STATE OF ARTICLES', state.userArticles)
+    },
+
     setSearchResultsValue(state, response) {
         JSON.stringify(response.data)
         console.log(response.data)
-        // state.wikiResults = []
         state.categoriesArray = []
         for (let categoryCounter = 0; categoryCounter < 20; categoryCounter++) {
             let categoryCard = {
@@ -252,12 +256,19 @@ export const mutations = {
         // }
     },
 
-    checkIfChosen(state) {
+    checkIfCategoryChosen(state) {
         console.log('just checking')
         state.pageArray = state.pageArray.map(element => {
             element.isChosen = state.userCategories && state.userCategories.some(category => category.title === element.title);
             return element;
         });
+    }, checkIfArticleChosen(state) {
+        console.log('just checking articles')
+        state.randomArticles = state.randomArticles.map(element => {
+            element.isChosen = state.userArticles && state.userArticles.some(article => article.title === element.title);
+            return element;
+        });
+
     },
     getNextPage(state, response) {
         state.pageStart = state.pageEnd + 1

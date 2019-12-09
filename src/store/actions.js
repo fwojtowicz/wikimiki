@@ -18,7 +18,22 @@ export const actions = {
 
     },
 
-    fetchUserArticlesHandler({ commit, state }) {
+    fetchUserArticlesHandler({ commit, state, dispatch }) {
+        console.log('fetching user articles from firebase')
+        fb.auth.onAuthStateChanged(() => {
+            if (state.currentUser) {
+                fb.userArticlesCollecion.doc(state.currentUser.uid).get().then(response => {
+                    console.log('articlesResponse', response.data().articles)
+                    commit('setUserArticles', response.data().articles)
+                    console.log('randomArticles', state.randomArticles)
+                    dispatch("checkIfArticleChosenHandler")
+
+
+                }
+                )
+            }
+        })
+
 
     },
 
@@ -63,7 +78,7 @@ export const actions = {
             .then(response => {
                 commit('getNextPage', response);
                 if (state.pageArray)
-                    commit('checkIfChosen', state.categoriesArray)
+                    commit('checkIfCategoryChosen', state.categoriesArray)
             })
             .catch(error => console.log(error));
 
@@ -72,7 +87,7 @@ export const actions = {
         console.log("previous categoriesPage");
         commit('getPreviousPage')
         if (state.pageArray)
-            commit('checkIfChosen', state.categoriesArray)
+            commit('checkIfCategoryChosen', state.categoriesArray)
     },
     getRandomSubcategoriesHandler: ({ state, dispatch }) => {
         console.log("getting articles");
@@ -174,8 +189,12 @@ export const actions = {
     fetchUserProfile({ commit }) {
         commit('setCurrentUser', fb.auth.currentUser)
     },
-    checkIfChosen({ commit }, payload) {
-        commit('checkIfChosen', payload)
+    checkIfCategoryChosen({ commit }, payload) {
+        commit('checkIfCategoryChosen', payload)
+
+    },
+    checkIfArticleChosenHandler({ commit }, payload) {
+        commit('checkIfArticleChosen', payload)
 
     },
     deleteArticleHandler({ commit }, payload) {

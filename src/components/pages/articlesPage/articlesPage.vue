@@ -5,8 +5,18 @@
       <md-button
         class="md-dense md-raised md-primary"
         v-show="(this.$store.state.userCategories.length)!=0"
-        @click="getRandomSubcategories"
+        @click="getRandomSubcategoriesHandler"
       >GET</md-button>
+      <div class="md-layout">
+        <div class="md-layout-item">
+          <article-item
+            v-for="(userArticle, i) in userArticles"
+            :key="i"
+            :randomArticle="userArticle"
+          ></article-item>
+        </div>
+      </div>
+      <hr />
       <div class="md-layout">
         <div class="md-layout-item">
           <article-item
@@ -34,11 +44,17 @@ export default {
     randomArticles: {
       get() {
         return this.$store.getters.randomArticlesGetter;
-      },
-      userCategories: {
-        get() {
-          return this.$store.getters.userCategoriesGetter;
-        }
+      }
+    },
+
+    userCategories: {
+      get() {
+        return this.$store.getters.userCategoriesGetter;
+      }
+    },
+    userArticles: {
+      get() {
+        return this.$store.getters.userArticlesGetter;
       }
     }
   },
@@ -49,7 +65,7 @@ export default {
 
   methods: {
     ...mapActions(["getRandomSubcategoriesHandler"]),
-    getRandomSubcategories() {
+    getRandomSubcategoriesHandler() {
       this.$store.dispatch("getRandomSubcategoriesHandler");
     }
   },
@@ -58,6 +74,8 @@ export default {
     console.log(this.userCategories);
     this.$store.dispatch("fetchUserCategories");
     this.$store.dispatch("readArticleContent");
+    this.$store.dispatch("fetchUserArticlesHandler");
+    // this.$store.dispatch("");
   }
 };
 </script>

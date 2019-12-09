@@ -111,7 +111,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("checkIfChosen");
+    this.$store.dispatch("checkIfCategoryChosen");
   }
 };
 </script>
