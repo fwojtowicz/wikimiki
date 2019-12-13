@@ -60,13 +60,6 @@ export const actions = {
 
             })
             .catch(error => console.log(error));
-        // const newCategoriesArray = state.categoriesArray && state.categoriesArray.length && state.categoriesArray.map(element => {
-        //     element.categoryCard.isChosen = state.userCategories && state.userCategories.some(category => category.categoryCard.title === element.categoryCard.title);
-        //     return element;
-        // })
-        // console.log('newArr', newCategoriesArray);
-        // if (newCategoriesArray) state.categoriesArray = newCategoriesArray;
-
 
     },
     getNextPageHandler: ({ commit, state }) => {

@@ -31,11 +31,25 @@ export const mutations = {
 
     },
     deleteArticle(state, { articleCard }) {
-        state.randomArticles.splice((state.randomArticles.indexOf(articleCard)), 1)
-        sessionStorage.setItem('randomArticlesArray', JSON.stringify(state.randomArticles))
-        console.log('saving articles to sessionStorage')
-        console.log(state.randomArticles)
+        const user = fb.auth.currentUser;
+        const userArticlesToSend = state.userArticles;
 
+        if (!articleCard.isChosen) {
+            state.randomArticles.splice((state.randomArticles.indexOf(articleCard)), 1)
+            sessionStorage.setItem('randomArticlesArray', JSON.stringify(state.randomArticles))
+            console.log('saving articles to sessionStorage')
+            console.log(state.randomArticles)
+        }
+        else {
+            console.log('isLiked')
+            articleCard.isChosen = false
+            state.userArticles.splice((state.userArticles.indexOf(articleCard)), 1)
+            fb.userArticlesCollecion
+                .doc(user.uid)
+                .set({
+                    articles: userArticlesToSend
+                });
+        }
 
     },
     updateName(state, payload) {
@@ -95,8 +109,6 @@ export const mutations = {
         state.pageArray = Object.values(state.categoriesArray)
         state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].title;
         console.log(state.lastElement);
-
-        // console.log(state.userCategories)
         console.log('pageArray', state.pageArray)
         if (state.userCategories != null) {
             state.pageArray = state.categoriesArray.map(element => {
@@ -104,12 +116,9 @@ export const mutations = {
                 return element;
             })
         }
-        // else { state.pageArray = Object.values(state.categoriesArray) }
         state.pageStart = 0
         state.pageEnd = 19
-        // console.log(state.pageStart)
-        // console.log(state.pageEnd)
-        // console.log(state.pageArray)
+
     },
 
     updateFilteredResults(state) {
@@ -163,7 +172,7 @@ export const mutations = {
         const user = fb.auth.currentUser;
         if (articleCard.isChosen) {
             state.userArticles.push(articleCard)
-            console.log('ARTICLE CARDS', state.userArticles)
+            console.log('USER ARTICLE CARDS', state.userArticles)
             console.log("send data to firebase", userArticlesToSend)
             fb.userArticlesCollecion
                 .doc(user.uid)
@@ -173,7 +182,7 @@ export const mutations = {
         }
         else {
             state.userArticles.splice((state.userArticles.indexOf(articleCard)), 1)
-            console.log('ARTICLE CARDS', state.userArticles)
+            console.log('USER ARTICLE CARDS', state.userArticles)
             console.log("send data to firebase", userArticlesToSend)
             fb.userArticlesCollecion
                 .doc(user.uid)
@@ -184,77 +193,6 @@ export const mutations = {
 
     },
 
-
-    // let whichTable = ""
-
-    // if (payload == 'selectPage') {
-    //     state.currentCategoryID = state.categoriesArray.map(e => e.categoryCard.title).indexOf(state.currentCategoryName);
-    //     console.log(state.currentCategoryID)
-    //     state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
-    //     whichTable = 'categoriesArray'
-    // }
-    // else if (payload == 'home') {
-    //     state.currentCategoryID = state.userCategories.map(e => e.categoryCard.title).indexOf(state.currentCategoryName);
-    //     console.log(state.currentCategoryID)
-    //     whichTable = 'userCategories'
-    //     state.userCategories[state.currentCategoryID].categoryCard.isChosen = !state.userCategories[state.currentCategoryID].categoryCard.isChosen;
-
-    // }
-    // this.dispatch('updateUserCategory', whichTable)
-
-
-    updateUserCategory(state, payload) {
-        // state.path = payload
-        // if (state[state.path][state.currentCategoryID].categoryCard.isChosen) {
-        //     state.userCategories.push(state.categoriesArray[state.currentCategoryID])
-        //     let userCategoriesFB = state.userCategories;
-        //     let user = fb.auth.currentUser;
-
-        // fb.userCategoriesCollection
-        //     .doc(user.uid)
-        //     .set({
-        //         userCategoriesFB
-        //     });
-
-        // }
-        // else {
-        //     let userCategoriesFB = state.userCategories;
-        //     let user = fb.auth.currentUser;
-        //     let indexOfToBeDeleted = 0
-        //     console.log(payload)
-        //     if (payload == 'categoriesArray') {
-        //         // state.categoriesArray[state.currentCategoryID].categoryCard.isChosen = !state.categoriesArray[state.currentCategoryID].categoryCard.isChosen;
-        //         indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
-        //         console.log(indexOfToBeDeleted)
-        //         if (indexOfToBeDeleted !== -1) {
-        //             state.userCategories.splice(indexOfToBeDeleted, 1);
-        //         }
-        //     } else if (payload == 'userCategories') {
-        //         indexOfToBeDeleted = (state.userCategories.findIndex(element => element.categoryCard.title === state.currentCategoryName))
-        //         console.log(indexOfToBeDeleted)
-        //         if (indexOfToBeDeleted !== -1) {
-        //             state.userCategories.splice(indexOfToBeDeleted, 1);
-        //         }
-        //         // if (state.categoriesArray) {
-        //         //     indexOfToBeDeleted = (state.categoriesArray.findIndex(element => element.categoryCard.title === state.currentCategoryName))
-        //         //     console.log(indexOfToBeDeleted)
-        //         //     state.categoriesArray[indexOfToBeDeleted].categoryCard.isChosen = false
-        //         // }
-
-
-        //     }
-
-        //     fb.userCategoriesCollection
-        //         .doc(user.uid)
-        //         .set({
-        //             userCategoriesFB
-        //         })
-        //     this.dispatch('fetchUserCategories')
-
-        //     console.log(state.userCategories)
-
-        // }
-    },
 
     checkIfCategoryChosen(state) {
         console.log('just checking')
@@ -288,13 +226,6 @@ export const mutations = {
         }
         state.wikiResults.splice(0, 1)
         console.log('wiki', state.wikiResults)
-
-
-        // console.log(state.categoriesArray)
-        // state.newArray = Object.values(state.wikiResults)
-        // console.log(state.newArray)
-        // console.log(state.categoriesArray)
-
         state.categoriesArray.push(...state.wikiResults);
         state.pageArray = state.wikiResults.map(element => element)
         state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].title;
@@ -307,9 +238,6 @@ export const mutations = {
     getPreviousPage(state) {
         state.lastPageNumber = state.currentPageNumber;
         state.currentPageNumber--
-        // console.log(state.categoriesArray.length)
-        // console.log(state.pageStart)
-        // console.log(state.pageEnd)
         if (state.pageStart - 19 > 0 && state.pageEnd - 19 > 0) {
             state.pageStart = state.pageStart - 20
             state.pageEnd = state.pageEnd - 20
