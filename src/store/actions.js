@@ -119,7 +119,7 @@ export const actions = {
                 const exists = (element) => {
                     return element.title == randomArticleTitle
                 }
-                if (state.randomArticles.find(exists)) {
+                if (state.randomArticles.find(exists) || state.userArticles.find(exists)) {
                     console.log('it is here')
                     dispatch("getRandomSubcategoriesHandler")
                 }

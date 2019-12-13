@@ -42,8 +42,11 @@ export const mutations = {
         }
         else {
             console.log('isLiked')
-            articleCard.isChosen = false
-            state.userArticles.splice((state.userArticles.indexOf(articleCard)), 1)
+            console.log('random', state.randomArticles.indexOf(articleCard))
+            console.log('user', state.userArticles.indexOf(articleCard))
+            if (state.randomArticles.indexOf(articleCard) != -1)
+                state.randomArticles.splice((state.randomArticles.indexOf(articleCard)), 1)
+            sessionStorage.setItem('randomArticlesArray', JSON.stringify(state.randomArticles))
             fb.userArticlesCollecion
                 .doc(user.uid)
                 .set({
@@ -248,9 +251,7 @@ export const mutations = {
         state.pageArray = []
         state.pageArray = state.categoriesArray.slice(state.pageStart, state.pageEnd + 1).map(element => element);
         state.lastElement = state.pageArray[state.pageArray.length - 1].title;
-        console.log(state.pageArray)
-        console.log(state.pageStart)
-        console.log(state.pageEnd)
+
     },
     refreshArticlesPage(state) {
         state.randomArticles = []

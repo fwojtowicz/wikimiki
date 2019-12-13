@@ -52,8 +52,10 @@ export default {
         return this.$store.getters.userCategoriesGetter;
       }
     },
-    userArticles: function() {
-      return this.$store.state.userArticles;
+    userArticles: {
+      get() {
+        return this.$store.state.userArticles;
+      }
     }
   },
   components: {
