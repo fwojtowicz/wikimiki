@@ -3,7 +3,7 @@ import App from './App.vue';
 import VueRouter from 'vue-router';
 import router from '../src/router/index'
 import { store } from './store/store'
-import { MdButton, MdContent, MdTabs, MdCard, MdIcon, MdToolbar, MdField, MdLayout } from 'vue-material/dist/components'
+import { MdButton, MdContent, MdTabs, MdCard, MdIcon, MdToolbar, MdField, MdLayout, MdSwitch } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css';
 import 'vue-material/dist/theme/default.css';
 import '../node_modules/material-icons-font/material-icons-font.css'
@@ -18,6 +18,8 @@ Vue.use(MdIcon);
 Vue.use(MdToolbar);
 Vue.use(MdField);
 Vue.use(MdLayout);
+Vue.use(MdSwitch);
+
 
 Vue.config.productionTip = false;
 
