@@ -1,17 +1,34 @@
 <template>
   <div>
-    <h1>Sign Up</h1>
-
-    <input type="text" v-model="name" placeholder="name" />
-    <br />
-    <input type="text" v-model="email" placeholder="email" />
-    <br />
-    <input type="password" v-model="password" placeholder="password" />
-
-    <button @click="signUp">Sign up</button>
-    <div>
-      Go back to
-      <router-link to="/login">login</router-link>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"
+    />
+    <div class="md-layout md-alignment-center-center">
+      <div class="md-layout-item md-size-70">
+        <div class="app-title">Wikimiki</div>
+        <div class="app-subtitle">Explore Wikipedia easily</div>
+        <md-toolbar class="md-dense md-primary">
+          <h3 class="md-title">Sign Up</h3>
+        </md-toolbar>
+        <form @submit.prevent>
+          <md-field>
+            <label>Name</label>
+            <md-input v-model="name" placeholder="name"></md-input>
+          </md-field>
+          <md-field>
+            <label>E-mail address</label>
+            <md-input v-model="email" placeholder="email"></md-input>
+          </md-field>
+          <md-field>
+            <label>Password</label>
+            <md-input v-model="password" type="password"></md-input>
+          </md-field>
+          <md-button class="md-primary md-raised md-bottom-left" @click="signUp">Sign up</md-button>
+          <md-button to="/login" class="md-accent">Go to login</md-button>
+        </form>
+      </div>
+      <div class="app-error animated fadeInUp" v-if="this.error">{{this.error}}</div>
     </div>
   </div>
 </template>
@@ -20,6 +37,9 @@
 const fb = require("../../../firebase");
 import router from "../../../router/index";
 export default {
+  data() {
+    return { error: "" };
+  },
   computed: {
     email: {
       get() {
@@ -74,7 +94,7 @@ export default {
             });
         })
         .catch(err => {
-          console.log(err);
+          this.error = err;
         });
       this.$store.commit("initializeArray");
     }
