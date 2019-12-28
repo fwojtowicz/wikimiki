@@ -5,7 +5,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"
     />
     <div class="md-layout md-alignment-center-center">
-      <div class="md-layout-item md-size-50">
+      <div class="md-layout-item md-size-70">
         <div class="app-title">Wikimiki</div>
         <div class="app-subtitle">Explore Wikipedia easily</div>
         <md-toolbar class="md-dense md-primary">
@@ -23,8 +23,8 @@
           <md-button class="md-primary md-raised md-bottom-left" @click="login">Sign in</md-button>
           <md-button to="/signup" class="md-accent">Go to signup</md-button>
         </form>
-        <div class="app-error animated fadeInUp" v-if="this.error">{{this.error}}</div>
       </div>
+      <div class="app-error animated fadeInUp" v-if="this.error">{{this.error}}</div>
     </div>
   </div>
 </template>
@@ -57,18 +57,15 @@ export default {
   },
   methods: {
     login() {
+      this.error = "";
       fb.auth
         .signInWithEmailAndPassword(this.email, this.password)
         .then(user => {
           this.$store.commit("setCurrentUser", user);
           this.$store.dispatch("fetchUserProfile");
-          // if (this.$store.state.userCategoriesFB != null)
-          //   this.$store.dispatch("fetchUserCategories");
-
           router.push("/home");
         })
         .catch(err => {
-          console.log(err);
           this.error = err;
         });
     }
@@ -94,6 +91,7 @@ export default {
   color: rgb(128, 128, 128);
 }
 .app-error {
+  text-align: center;
   color: red;
 }
 </style>
