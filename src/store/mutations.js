@@ -70,12 +70,6 @@ export const mutations = {
     updateCategoryInput(state, payload) {
         state.categoryInput = payload;
     },
-    // updateCurrentCategoryID(state, payload) {
-    //     state.currentCategoryID = payload;
-    // },
-    // updateCurrentCategoryName(state, payload) {
-    //     state.currentCategoryName = payload;
-    // },
     updateEmail(state, payload) {
         state.email = payload;
     },
@@ -100,27 +94,30 @@ export const mutations = {
     setSearchResultsValue(state, response) {
         JSON.stringify(response.data)
         console.log(response.data)
-        state.categoriesArray = []
-        for (let categoryCounter = 0; categoryCounter < 20; categoryCounter++) {
-            let categoryCard = {
-                title: response.data.query.allcategories[categoryCounter]['*'],
-                isChosen: false,
+        if (response.data.query.allcategories.length != 0) {
+            state.categoriesArray = []
+            for (let categoryCounter = 0; categoryCounter < 20; categoryCounter++) {
+                let categoryCard = {
+                    title: response.data.query.allcategories[categoryCounter]['*'],
+                    isChosen: false,
+                }
+                state.categoriesArray.push(categoryCard)
             }
-            state.categoriesArray.push(categoryCard)
+            console.log('categoriesArray', state.categoriesArray)
+            state.pageArray = Object.values(state.categoriesArray)
+            state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].title;
+            console.log(state.lastElement);
+            console.log('pageArray', state.pageArray)
+            if (state.userCategories != null) {
+                state.pageArray = state.categoriesArray.map(element => {
+                    element.isChosen = state.userCategories && state.userCategories.some(category => category.title === element.title);
+                    return element;
+                })
+            }
+            state.pageStart = 0
+            state.pageEnd = 19
         }
-        console.log('categoriesArray', state.categoriesArray)
-        state.pageArray = Object.values(state.categoriesArray)
-        state.lastElement = state.categoriesArray[state.categoriesArray.length - 1].title;
-        console.log(state.lastElement);
-        console.log('pageArray', state.pageArray)
-        if (state.userCategories != null) {
-            state.pageArray = state.categoriesArray.map(element => {
-                element.isChosen = state.userCategories && state.userCategories.some(category => category.title === element.title);
-                return element;
-            })
-        }
-        state.pageStart = 0
-        state.pageEnd = 19
+        else alert("Wrong querry, try again")
 
     },
 

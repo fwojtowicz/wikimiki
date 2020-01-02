@@ -25,11 +25,6 @@ Vue.use(MdDialog);
 Vue.use(MdDialogAlert);
 Vue.use(MdEmptyState);
 
-
-
-
-
-
 Vue.config.productionTip = false;
 
 fb.auth.onAuthStateChanged(user => {
