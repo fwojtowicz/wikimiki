@@ -1,24 +1,22 @@
 <template>
   <div>
     <md-tabs md-sync-route class="md-primary" md-alignment="fixed">
-      <md-tab id="tab-home" md-label="Home" to="/" exact></md-tab>
+      <md-tab id="tab-home" md-label="Your categories" to="/" exact></md-tab>
       <md-tab id="tab-articles" md-label="Your articles" to="articlesPage"></md-tab>
-      <md-tab id="tab-select" md-label="Select Categories" to="selectPage"></md-tab>
+      <md-tab id="tab-select" md-label="Select categories" to="selectPage"></md-tab>
       <md-tab id="tab-logout" md-label="Logout" @click="logout"></md-tab>
     </md-tabs>
-    <h3 class="md-title" style="flex: 1; padding:10px">
-      {{title
-      }}
-    </h3>
+    <div class="app-error animated fadeInUp" v-if="this.error">{{this.error}}</div>
   </div>
 </template>
 
 <script>
 const fb = require("../firebase");
 import router from "../router/index";
-import { store } from "../store/store";
 export default {
-  props: ["title"],
+  data() {
+    return { error: "" };
+  },
   methods: {
     logout() {
       fb.auth
@@ -28,14 +26,14 @@ export default {
           router.push("/login");
         })
         .catch(err => {
-          console.log(err);
+          this.error = err;
         });
     }
   }
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .md-tabs {
   margin-bottom: 16px;
 }

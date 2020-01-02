@@ -27,14 +27,10 @@ export const actions = {
                     commit('setUserArticles', response.data().articles)
                     console.log('randomArticles', state.randomArticles)
                     dispatch("checkIfArticleChosenHandler")
-
-
                 }
                 )
             }
         })
-
-
     },
 
     clearData: ({ commit }) => {
@@ -47,7 +43,7 @@ export const actions = {
 
     },
     getCategoriesHandler: ({ commit, state }) => {
-        state.dataDownloaded = true;
+        state.dataDownloaded = true
         state.filteredResults = []
         state.categoryInput = ""
         console.log("getting categories");
@@ -60,6 +56,7 @@ export const actions = {
 
             })
             .catch(error => console.log(error));
+
 
     },
     getNextPageHandler: ({ commit, state }) => {
@@ -150,12 +147,6 @@ export const actions = {
         commit('setResult', payload);
 
     },
-    // updateCurrentCategoryID: ({ commit }, payload) => {
-    //     commit('updateCurrentCategoryID', payload);
-    // },
-    // updateCurrentCategoryName: ({ commit }, payload) => {
-    //     commit('updateCurrentCategoryName', payload);
-    // },
     updateUserCategory: ({ commit }, payload) => {
         commit('updateUserCategory', payload);
     },

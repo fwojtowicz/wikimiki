@@ -73,7 +73,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .md-button {
   float: right;
   right: 0px;

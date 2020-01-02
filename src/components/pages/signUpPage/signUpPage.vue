@@ -85,12 +85,10 @@ export default {
             })
             .then(() => {
               console.log("didUsersCollection");
-              // if (this.$store.state.userCategoriesFB != null)
-              // this.$store.dispatch("fetchUserCategories");
               router.push("/home");
             })
             .catch(err => {
-              console.log(err);
+              this.error = err;
             });
         })
         .catch(err => {
@@ -102,5 +100,25 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.md-button {
+  float: right;
+  right: 0px;
+}
+.app-title {
+  text-align: center;
+  padding-top: 20px;
+  font-size: 30px;
+  font-family: "Linux Libertine";
+}
+.app-subtitle {
+  text-align: center;
+  padding: 30px;
+  font-size: 15px;
+  color: rgb(128, 128, 128);
+}
+.app-error {
+  text-align: center;
+  color: red;
+}
 </style>

@@ -1,10 +1,9 @@
 <template>
   <div>
-    <appHeader :title="title"></appHeader>
+    <appHeader></appHeader>
     <div>
       <md-content>
-        <p>your selected categories</p>
-        <div class="md-layout">
+        <div class="md-layout" style="background-color:rgb(250,250,250);">
           <app-item
             class="md-layout-item"
             v-for="(userCategories, key) in userCategories"
@@ -21,11 +20,6 @@ import appHeader from "../../Header";
 import categoryComponent from "../selectPage/categoryComponent";
 
 export default {
-  data() {
-    return {
-      title: "Home"
-    };
-  },
   components: {
     appHeader,
     appItem: categoryComponent
@@ -35,18 +29,14 @@ export default {
       get() {
         return this.$store.getters.userCategoriesGetter;
       }
-      // set(userCategories) {
-      //   this.$store.dispatch("chooseCategory", userCategories);
-      // }
     }
   },
 
   mounted() {
-    // console.log(this.userCategories);
     if (this.userCategories != null)
       this.$store.dispatch("fetchUserCategories");
   }
 };
 </script>
-<style lang="scss" scoped>
+<style scoped>
 </style>

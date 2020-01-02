@@ -1,26 +1,37 @@
 <template>
   <div>
-    <appHeader :title="title"></appHeader>
-    <md-content>
-      <md-field>
-        <label>I'll look up for categories starting with the term provided</label>
-        <md-input v-model="searchTerm"></md-input>
-      </md-field>
-      <md-button class="md-dense md-raised md-primary" @click="submitTerm">Search</md-button>
-      <searchResults></searchResults>
-      <hr />
-      <md-button
-        class="md-dense md-raised md-primary"
-        @click="getPreviousPage"
-        v-show=" dataAppended && this.$store.state.currentPageNumber > 1"
-      >Previous page</md-button>
-      <md-button
-        class="md-dense md-raised md-primary"
-        @click="getNextPage"
-        v-show="dataDownloaded"
-      >Next page</md-button>
-      <h3>page {{currentPageNumber}} of {{pageCounter}} downloaded</h3>
+    <appHeader></appHeader>
+    <md-content style="background-color:rgb(250,250,250);">
+      <div class="md-layout md-alignment-center-center">
+        <div class="md-layout-item md-size-80">
+          <md-field>
+            <label>I'll look up for categories starting with the term provided</label>
+            <md-input v-model="searchTerm"></md-input>
+          </md-field>
+          <md-button class="md-dense md-raised md-primary" @click="submitTerm">Search</md-button>
+          <searchResults></searchResults>
+          <md-divider></md-divider>
+          <div>Page {{currentPageNumber}} of {{pageCounter}} downloaded</div>
+
+          <md-button
+            class="md-dense md-raised md-primary"
+            @click="getPreviousPage"
+            v-show=" dataAppended && this.$store.state.currentPageNumber > 1"
+          >Previous page</md-button>
+          <md-button
+            class="md-dense md-raised md-primary"
+            @click="getNextPage"
+            v-show="dataDownloaded"
+          >Next page</md-button>
+        </div>
+      </div>
     </md-content>
+
+    <md-dialog-alert
+      :md-active.sync="isEmpty"
+      md-title="No category name!"
+      md-content="Provide a keyword first"
+    />
   </div>
 </template>
 
@@ -32,7 +43,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      title: "Select categories"
+      isEmpty: false
     };
   },
   computed: {
@@ -96,11 +107,15 @@ export default {
       "getPreviousPageHandler"
     ]),
     submitTerm() {
-      this.$store.commit("updateFullURL");
-      this.$store.dispatch(
-        "getCategoriesHandler",
-        this.$store.state.searchTerm
-      );
+      if (this.$store.state.searchTerm) {
+        this.$store.commit("updateFullURL");
+        this.$store.dispatch(
+          "getCategoriesHandler",
+          this.$store.state.searchTerm
+        );
+      } else {
+        this.isEmpty = true;
+      }
     },
     getNextPage() {
       this.$store.commit("updateNextURL");

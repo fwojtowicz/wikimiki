@@ -1,8 +1,7 @@
 <template>
   <div>
-    <h3>Select your categories</h3>
     <md-field>
-      <label>Search for a more specific category</label>
+      <label>Search for a particular category in these you've downloaded</label>
       <md-input v-model="categoryInput" @input="onChange"></md-input>
     </md-field>
 
@@ -14,7 +13,6 @@
         :category="filteredResult"
       ></app-item>
     </div>
-    <hr />
     <div v-if="!categoryInput"></div>
     <div class="md-layout">
       <app-item
@@ -100,9 +98,6 @@ export default {
       this.$store.dispatch("chooseCategory");
     }
   }
-  // mounted() {
-  //   this.$store.dispatch("fetchUserCategories");
-  // }
 };
 </script>
 
