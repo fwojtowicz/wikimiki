@@ -62,7 +62,7 @@ export const mutations = {
         state.searchTerm = payload;
     },
     updateFullURL(state) {
-        state.fullURL = state.searchURL + state.searchTerm + "&origin=*"
+        state.fullURL = state.searchURL + state.searchTerm.replace(/ /g, "_") + "&origin=*"
     },
     updateNextURL(state) {
         state.nextURL = state.searchURL + state.searchTerm + "&acfrom=" + state.lastElement + "&origin=*";
@@ -96,12 +96,23 @@ export const mutations = {
         console.log(response.data)
         if (response.data.query.allcategories.length != 0) {
             state.categoriesArray = []
-            for (let categoryCounter = 0; categoryCounter < 20; categoryCounter++) {
-                let categoryCard = {
-                    title: response.data.query.allcategories[categoryCounter]['*'],
-                    isChosen: false,
+            if (response.data.query.allcategories.length > 21) {
+                for (let categoryCounter = 0; categoryCounter < 20; categoryCounter++) {
+                    let categoryCard = {
+                        title: response.data.query.allcategories[categoryCounter]['*'],
+                        isChosen: false,
+                    }
+                    state.categoriesArray.push(categoryCard)
                 }
-                state.categoriesArray.push(categoryCard)
+            }
+            else if (response.data.query.allcategories.length < 21) {
+                for (let categoryCounter = 0; categoryCounter < response.data.query.allcategories.length; categoryCounter++) {
+                    let categoryCard = {
+                        title: response.data.query.allcategories[categoryCounter]['*'],
+                        isChosen: false,
+                    }
+                    state.categoriesArray.push(categoryCard)
+                }
             }
             console.log('categoriesArray', state.categoriesArray)
             state.pageArray = Object.values(state.categoriesArray)
