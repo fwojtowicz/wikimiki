@@ -16,7 +16,11 @@
           >
             <md-icon>bookmark</md-icon>
           </md-button>
-          <md-button class="md-icon-button" @click="deleteArticleHandler">
+          <md-button
+            v-if="!randomArticle.isChosen"
+            class="md-icon-button"
+            @click="deleteArticleHandler"
+          >
             <md-icon>delete</md-icon>
           </md-button>
           <md-card-expand-trigger v-show="randomArticle.content">
