@@ -3,9 +3,12 @@
     <appHeader></appHeader>
     <div>
       <md-content>
-        <div class="md-layout" style="background-color:rgb(250,250,250);">
+        <div
+          class="md-layout md-alignment-center-center"
+          style="background-color:rgb(250,250,250);"
+        >
           <app-item
-            class="md-layout-item"
+            class="md-layout-item md-size-80"
             v-for="(userCategories, key) in userCategories"
             :category="userCategories"
             :key="key"
