@@ -16,6 +16,14 @@
         </div>
       </md-content>
     </div>
+    <md-empty-state
+      v-if="userCategories.length==0"
+      class="md-accent"
+      md-rounded
+      md-icon="bookmark"
+      md-label="Nothing in Categories"
+      md-description="Search for categories you're interested in."
+    ></md-empty-state>
   </div>
 </template>
 <script>

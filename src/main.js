@@ -3,7 +3,7 @@ import App from './App.vue';
 import VueRouter from 'vue-router';
 import router from '../src/router/index'
 import { store } from './store/store'
-import { MdButton, MdContent, MdTabs, MdCard, MdIcon, MdToolbar, MdField, MdLayout, MdSwitch, MdSubheader, MdDivider, MdDialog, MdDialogAlert } from 'vue-material/dist/components'
+import { MdButton, MdContent, MdTabs, MdCard, MdIcon, MdToolbar, MdField, MdLayout, MdSwitch, MdSubheader, MdDivider, MdDialog, MdDialogAlert, MdEmptyState } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css';
 import 'vue-material/dist/theme/default.css';
 import '../node_modules/material-icons-font/material-icons-font.css'
@@ -23,6 +23,7 @@ Vue.use(MdSubheader);
 Vue.use(MdDivider);
 Vue.use(MdDialog);
 Vue.use(MdDialogAlert);
+Vue.use(MdEmptyState);
 
 
 
