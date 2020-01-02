@@ -1,5 +1,9 @@
 <template>
   <div>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"
+    />
     <div>
       <appHeader></appHeader>
       <div class="md-layout md-alignment-center-center">
@@ -10,7 +14,7 @@
             @click="getRandomSubcategoriesHandler"
           >GET</md-button>
           <md-switch v-model="showSelected" class="md-primary">Show saved articles</md-switch>
-          <div v-if="showSelected">
+          <div class="animated fadeInDown" v-if="showSelected">
             <div>
               <article-item
                 v-for="(userArticle, i) in userArticles"

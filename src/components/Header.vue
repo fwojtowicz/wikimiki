@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class>
     <md-tabs md-sync-route class="md-primary" md-alignment="fixed">
       <md-tab id="tab-home" md-label="Your categories" to="/" exact></md-tab>
       <md-tab id="tab-articles" md-label="Your articles" to="articlesPage"></md-tab>
