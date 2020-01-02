@@ -2,8 +2,6 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/c26e9fdf-996d-4fd5-af71-564f63c02798/deploy-status)](https://app.netlify.com/sites/wikimiki/deploys)
 
-https://wikimiki.netlify.com/#/
-
 
 ## Project setup
 ```
